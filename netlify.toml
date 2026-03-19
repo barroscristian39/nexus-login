@@ -1,0 +1,46 @@
+# Configuração do Netlify para frontend React + backend separado
+
+[build]
+  # Command para fazer build do frontend
+  command = "npm run build"
+  # Diretório que será publicado
+  publish = "dist"
+  # Variáveis de ambiente obrigatórias
+  environment = { NODE_VERSION = "18" }
+
+# Rewrite para servir index.html em todas as rotas (necessário para SPA React)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ===== IMPORTANTE: Configure isso abaixo com sua URL do backend =====
+# Existem 3 opções:
+
+# OPÇÃO 1: Proxy direto (recomendado se seu backend está em outro lugar)
+# Descomente a linha abaixo e substitua YOUR_BACKEND_URL
+# [[rewrites]]
+#   from = "/api/*"
+#   to = "https://seu-backend-url.com/api/:splat"
+#   status = 200
+#   force = false
+
+# OPÇÃO 2: Usar variável de ambiente (recomendado para produção)
+# Configure VITE_API_BASE_URL no Netlify Dashboard
+# O App.tsx usará: import.meta.env.VITE_API_BASE_URL
+
+# OPÇÃO 3: Serverless functions (mais complexo)
+# [functions]
+#   directory = "netlify/functions"
+#   node_bundler = "esbuild"
+
+# Cache headers para arquivos estáticos
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

@@ -1,0 +1,243 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Perfil {
+  MASTER
+  ADMIN_EMPRESA
+  GESTOR
+  SUPERVISOR
+  OPERADOR
+  VISUALIZADOR
+}
+
+enum TipoUsuario {
+  MASTER
+  PRINCIPAL
+  SUBUSUARIO
+  TECNICO
+}
+
+enum StatusRegistro {
+  ATIVO
+  INATIVO
+  PENDENTE
+  BLOQUEADO
+  ARQUIVADO
+}
+
+enum StatusProjeto {
+  PLANEJAMENTO
+  EM_ANDAMENTO
+  EM_REVISAO
+  CONCLUIDO
+  ATRASADO
+  BLOQUEADO
+}
+
+enum PrioridadeDemanda {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+enum StatusDemanda {
+  ABERTA
+  EM_ANDAMENTO
+  EM_REVISAO
+  CONCLUIDA
+  ATRASADA
+  BLOQUEADA
+}
+
+enum StatusEvidencia {
+  PENDENTE
+  VALIDA
+  ATRASADA
+  REJEITADA
+}
+
+model Empresa {
+  id           String        @id @default(cuid())
+  nome         String
+  cnpj         String        @unique
+  email        String
+  telefone     String
+  responsavel  String
+  plano        String
+  status       StatusRegistro @default(ATIVO)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  usuarios      Usuario[]
+  projetos      Projeto[]
+  demandas      Demanda[]
+  evidencias    Evidencia[]
+}
+
+model Usuario {
+  id            String        @id @default(cuid())
+  empresaId     String?
+  usuarioPaiId  String?
+  nome          String
+  email         String        @unique
+  telefone      String?
+  senhaHash     String
+  perfil        Perfil
+  tipoUsuario   TipoUsuario
+  status        StatusRegistro @default(ATIVO)
+  setor         String?
+  fotoPerfil    String?
+  ultimoAcesso  DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  empresa       Empresa?      @relation(fields: [empresaId], references: [id])
+  usuarioPai    Usuario?      @relation("Subusuarios", fields: [usuarioPaiId], references: [id])
+  subusuarios   Usuario[]     @relation("Subusuarios")
+
+  projetosResponsavel  Projeto[]    @relation("ProjetoResponsavel")
+  demandasResponsavel  Demanda[]    @relation("DemandaResponsavel")
+  evidenciasResponsavel Evidencia[] @relation("EvidenciaResponsavel")
+  comentarios          Comentario[]
+  notificacoes         Notificacao[]
+
+  masterUsuario        MasterUsuario?
+  usuarioPrincipal     UsuarioPrincipal?
+  subusuarioDetalhe    Subusuario?
+  tecnicoResponsavel   TecnicoResponsavel?
+}
+
+model MasterUsuario {
+  id            String    @id @default(cuid())
+  usuarioId     String    @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  usuario       Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+}
+
+model UsuarioPrincipal {
+  id            String    @id @default(cuid())
+  usuarioId     String    @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  usuario       Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+}
+
+model Subusuario {
+  id            String    @id @default(cuid())
+  usuarioId     String    @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  usuario       Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+}
+
+model TecnicoResponsavel {
+  id            String    @id @default(cuid())
+  usuarioId     String    @unique
+  especialidade String?
+  certificacoes String?
+  disponivel    Boolean   @default(true)
+  demandas      Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  usuario       Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+}
+
+model Projeto {
+  id            String        @id @default(cuid())
+  empresaId     String
+  nome          String
+  descricao     String
+  responsavelId String?
+  status        StatusProjeto @default(PLANEJAMENTO)
+  progresso     Int           @default(0)
+  dataInicio    DateTime?
+  dataPrevista  DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  empresa       Empresa       @relation(fields: [empresaId], references: [id])
+  responsavel   Usuario?      @relation("ProjetoResponsavel", fields: [responsavelId], references: [id])
+  demandas      Demanda[]
+  evidencias    Evidencia[]
+  comentarios   Comentario[]
+}
+
+model Demanda {
+  id            String           @id @default(cuid())
+  empresaId     String
+  projetoId     String?
+  titulo        String
+  descricao     String
+  responsavelId String?
+  prioridade    PrioridadeDemanda @default(MEDIA)
+  status        StatusDemanda    @default(ABERTA)
+  progresso     Int              @default(0)
+  vencimento    DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  empresa       Empresa          @relation(fields: [empresaId], references: [id])
+  projeto       Projeto?         @relation(fields: [projetoId], references: [id])
+  responsavel   Usuario?         @relation("DemandaResponsavel", fields: [responsavelId], references: [id])
+  evidencias    Evidencia[]
+  comentarios   Comentario[]
+}
+
+model Evidencia {
+  id            String          @id @default(cuid())
+  empresaId     String
+  demandaId     String?
+  projetoId     String?
+  nomeArquivo   String
+  tipoArquivo   String
+  responsavelId String?
+  status        StatusEvidencia @default(PENDENTE)
+  dataEnvio     DateTime        @default(now())
+  observacoes   String?
+  urlArquivo    String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  empresa       Empresa         @relation(fields: [empresaId], references: [id])
+  demanda       Demanda?        @relation(fields: [demandaId], references: [id])
+  projeto       Projeto?        @relation(fields: [projetoId], references: [id])
+  responsavel   Usuario?        @relation("EvidenciaResponsavel", fields: [responsavelId], references: [id])
+}
+
+model Comentario {
+  id           String    @id @default(cuid())
+  usuarioId    String
+  projetoId    String?
+  demandaId    String?
+  texto        String
+  createdAt    DateTime  @default(now())
+
+  usuario      Usuario   @relation(fields: [usuarioId], references: [id])
+  projeto      Projeto?  @relation(fields: [projetoId], references: [id])
+  demanda      Demanda?  @relation(fields: [demandaId], references: [id])
+}
+
+model Notificacao {
+  id           String    @id @default(cuid())
+  usuarioId    String
+  tipo         String
+  titulo       String
+  descricao    String
+  lida         Boolean   @default(false)
+  link         String?
+  createdAt    DateTime  @default(now())
+
+  usuario      Usuario   @relation(fields: [usuarioId], references: [id])
+}

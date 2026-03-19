@@ -1,0 +1,22 @@
+run = "npm run build && npm start"
+entrypoint = "backend/server.js"
+
+[env]
+REPLIT_LANGUAGE = "nodejs"
+
+[nix]
+channel = "stable-22_11"
+
+[packager]
+language = "nodejs"
+
+[packager.features]
+packageSearcher = true
+
+[[ports]]
+localPort = 4000
+externalPort = 80
+
+[[ports]]
+localPort = 3000
+externalPort = 3000

@@ -1,0 +1,8 @@
+{
+  "railway": {
+    "specVersion": 2,
+    "build": {
+      "builder": "nixpacks"
+    }
+  }
+}
