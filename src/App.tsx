@@ -2027,7 +2027,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
   );
 };
 
-const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project: any) => void, onViewDetail: (project: any) => void, currentUser: any }) => {
+const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authToken }: { onEdit: (project: any) => void, onViewDetail: (project: any) => void, currentUser: any, empresasData: any[], authToken: string }) => {
   const [projetos, setProjetos] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -2045,7 +2045,8 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
     descricao: '',
     status: 'PLANEJAMENTO',
     dataInicio: '',
-    dataPrevista: ''
+    dataPrevista: '',
+    empresaId: empresasData?.[0]?.id || ''
   });
   const [isCreating, setIsCreating] = useState(false);
 
@@ -2174,7 +2175,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
           status: novoProjeto.status,
           dataInicio: novoProjeto.dataInicio ? new Date(novoProjeto.dataInicio).toISOString() : null,
           dataPrevista: novoProjeto.dataPrevista ? new Date(novoProjeto.dataPrevista).toISOString() : null,
-          empresaId: currentUser?.empresaId || '',
+          empresaId: novoProjeto.empresaId,
           progresso: 0
         })
       });
@@ -2189,7 +2190,8 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
         descricao: '',
         status: 'PLANEJAMENTO',
         dataInicio: '',
-        dataPrevista: ''
+        dataPrevista: '',
+        empresaId: empresasData?.[0]?.id || ''
       });
       showToast('Projeto criado com sucesso', 'success');
     } catch (err) {
@@ -2593,7 +2595,8 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                     descricao: '',
                     status: 'PLANEJAMENTO',
                     dataInicio: '',
-                    dataPrevista: ''
+                    dataPrevista: '',
+                    empresaId: empresasData?.[0]?.id || ''
                   });
                 }}
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors"
@@ -2604,6 +2607,24 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
 
             {/* Body */}
             <div className="p-6 space-y-4">
+              <div>
+                <label className="text-[11px] font-bold text-gray-600">Empresa *</label>
+                <select 
+                  value={novoProjeto.empresaId}
+                  onChange={(e) => setNovoProjeto({ ...novoProjeto, empresaId: e.target.value })}
+                  className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+                >
+                  <option value="">Selecione uma empresa</option>
+                  {empresasData && empresasData.length > 0 ? (
+                    empresasData.map((empresa) => (
+                      <option key={empresa.id} value={empresa.id}>{empresa.nome}</option>
+                    ))
+                  ) : (
+                    <option disabled>Nenhuma empresa disponível</option>
+                  )}
+                </select>
+              </div>
+
               <div>
                 <label className="text-[11px] font-bold text-gray-600">Nome do Projeto *</label>
                 <input 
@@ -2683,7 +2704,8 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                     descricao: '',
                     status: 'PLANEJAMENTO',
                     dataInicio: '',
-                    dataPrevista: ''
+                    dataPrevista: '',
+                    empresaId: empresasData?.[0]?.id || ''
                   });
                 }}
                 disabled={isCreating}
@@ -7486,7 +7508,7 @@ export default function App() {
 
         {currentView === 'painel' ? <DashboardView /> : 
          currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} /> : 
-         currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} /> :
+         currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} /> :
          currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
          currentView === 'relatorio' ? <RelatorioExecucaoView /> :
          currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} /> :
