@@ -4661,7 +4661,6 @@ const EmpresaModal = ({ onClose, onSuccess, authToken }: { onClose: () => void, 
         return;
       }
 
-      alert('Empresa criada com sucesso!');
       onSuccess?.();
       onClose();
     } catch (error) {
