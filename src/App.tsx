@@ -2367,7 +2367,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
                   {projeto.responsavel && (
                     <div className="flex items-center bg-gray-50 px-2 py-1 rounded-full border border-gray-100">
                       <User size={10} className="text-blue-500 mr-1.5" />
-                      <span className="text-[9px] text-gray-600 font-medium">{projeto.responsavel?.nome || projeto.responsavel}</span>
+                      <span className="text-[9px] text-gray-600 font-medium">{projeto.responsavel?.nome || '-'}</span>
                     </div>
                   )}
                   {projeto.demandasCount && (
@@ -3735,13 +3735,13 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
       <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 p-6 mb-5">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 pr-10">
-            <h3 className="text-[16px] font-bold text-[#1e315d] mb-2">{project.titulo}</h3>
+            <h3 className="text-[16px] font-bold text-[#1e315d] mb-2">{project?.titulo || 'Projeto sem título'}</h3>
             <p className="text-[13px] text-gray-600 leading-relaxed">
-              {project.descricao}
+              {project?.descricao || 'Sem descrição'}
             </p>
           </div>
-          <span className={cn("px-2.5 py-1 rounded-[6px] text-[11px] font-bold whitespace-nowrap", project.statusColor)}>
-            {project.status}
+          <span className={cn("px-2.5 py-1 rounded-[6px] text-[11px] font-bold whitespace-nowrap", project?.statusColor || 'bg-gray-50')}>
+            {project?.status || 'Sem status'}
           </span>
         </div>
 
@@ -3752,28 +3752,28 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-[#3578d4]">
                 {(project.responsavel ?? '').split(' ').filter(Boolean).map((n: string) => n[0] ?? '').join('')}
               </div>
-              <span className="text-[13px] font-medium">{project.responsavel}</span>
+              <span className="text-[13px] font-medium">{project?.responsavel || '-'}</span>
             </div>
           </div>
           <div className="space-y-1">
             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Demandas</span>
             <div className="flex items-center space-x-2 text-[#1e315d]">
               <FileText size={16} className="text-gray-400" />
-              <span className="text-[13px] font-medium">{project.demandas} vinculadas</span>
+              <span className="text-[13px] font-medium">{project?.demandas || 0} vinculadas</span>
             </div>
           </div>
           <div className="space-y-1">
             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Início</span>
             <div className="flex items-center space-x-2 text-[#1e315d]">
               <Calendar size={16} className="text-gray-400" />
-              <span className="text-[13px] font-medium">{project.inicio}</span>
+              <span className="text-[13px] font-medium">{project?.inicio || '-'}</span>
             </div>
           </div>
           <div className="space-y-1">
             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Prazo</span>
             <div className="flex items-center space-x-2 text-[#1e315d]">
               <Clock size={16} className="text-gray-400" />
-              <span className="text-[13px] font-medium">{project.vencimento}</span>
+              <span className="text-[13px] font-medium">{project?.vencimento || '-'}</span>
             </div>
           </div>
         </div>
@@ -3781,12 +3781,12 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
         <div className="pt-4 border-t border-gray-50">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[12px] font-bold text-gray-600">Progresso Geral</span>
-            <span className="text-[13px] font-bold text-[#3578d4]">{project.progresso}%</span>
+            <span className="text-[13px] font-bold text-[#3578d4]">{project?.progresso || 0}%</span>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-[10px] overflow-hidden">
             <div 
               className="h-full transition-all duration-500" 
-              style={{ width: `${project.progresso}%`, backgroundColor: project.progressoColor }}
+              style={{ width: `${project?.progresso || 0}%`, backgroundColor: project?.progressoColor || '#3578d4' }}
             />
           </div>
         </div>
