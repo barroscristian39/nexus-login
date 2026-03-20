@@ -2152,16 +2152,17 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
           status: editFormData.status,
           progresso: editFormData.progresso,
           dataInicio: editFormData.dataInicio,
-          dataPrevista: editFormData.dataPrevista
+          dataPrevista: editFormData.dataPrevista,
+          responsavelId: editFormData.responsavelId || null
         })
       });
 
       if (!response.ok) throw new Error('Erro ao salvar');
       
       const resultado = await response.json();
-      setProjetos(projetos.map(p => p.id === resultado.data.id ? resultado.data : p));
       setShowEditModal(false);
       showToast('Projeto atualizado com sucesso', 'success');
+      await onSyncData();
     } catch (err) {
       console.error('Erro:', err);
       showToast('Erro ao atualizar projeto', 'error');
@@ -2549,6 +2550,17 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
                   value={editFormData.descricao}
                   onChange={(e) => setEditFormData({ ...editFormData, descricao: e.target.value })}
                   className="w-full mt-1 h-[100px] bg-white border border-gray-200 rounded-[6px] px-3 py-2 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-gray-600">Responsável</label>
+                <input 
+                  type="text" 
+                  value={editFormData.responsavelId || ''}
+                  onChange={(e) => setEditFormData({ ...editFormData, responsavelId: e.target.value || null })}
+                  placeholder="ID do responsável"
+                  className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                 />
               </div>
 
