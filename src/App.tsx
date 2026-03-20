@@ -652,7 +652,8 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     descricao: '',
     prioridade: 'MEDIA',
     vencimento: '',
-    responsavelId: ''
+    responsavelId: '',
+    empresaId: empresasAdminData?.[0]?.id || ''
   });
   const [isCreating, setIsCreating] = useState(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
@@ -888,8 +889,6 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         return;
       }
 
-      const empresaIdToUse = currentUser.empresaId || '';
-      
       const response = await fetch(`${API_BASE_URL}/demandas`, {
         method: 'POST',
         headers: {
@@ -901,7 +900,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
           descricao: novaDemandata.descricao,
           prioridade: novaDemandata.prioridade,
           vencimento: novaDemandata.vencimento ? new Date(novaDemandata.vencimento).toISOString() : null,
-          empresaId: empresaIdToUse,
+          empresaId: novaDemandata.empresaId,
           status: 'ABERTA',
           progresso: 0,
           responsavelId: novaDemandata.responsavelId || null
@@ -918,7 +917,8 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         descricao: '',
         prioridade: 'MEDIA',
         vencimento: '',
-        responsavelId: ''
+        responsavelId: '',
+        empresaId: empresasAdminData?.[0]?.id || ''
       });
       showToast('Demanda criada com sucesso', 'success');
     } catch (err) {
@@ -1602,7 +1602,8 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     descricao: '',
                     prioridade: 'MEDIA',
                     vencimento: '',
-                    responsavelId: ''
+                    responsavelId: '',
+                    empresaId: empresasAdminData?.[0]?.id || ''
                   });
                 }}
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors"
@@ -1613,6 +1614,24 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
 
             {/* Body */}
             <div className="p-6 space-y-4">
+              <div>
+                <label className="text-[11px] font-bold text-gray-600">Empresa *</label>
+                <select 
+                  value={novaDemandata.empresaId}
+                  onChange={(e) => setNovaDemandata({ ...novaDemandata, empresaId: e.target.value })}
+                  className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+                >
+                  <option value="">Selecione uma empresa</option>
+                  {empresasAdminData && empresasAdminData.length > 0 ? (
+                    empresasAdminData.map((empresa) => (
+                      <option key={empresa.id} value={empresa.id}>{empresa.nome}</option>
+                    ))
+                  ) : (
+                    <option disabled>Nenhuma empresa disponível</option>
+                  )}
+                </select>
+              </div>
+
               <div>
                 <label className="text-[11px] font-bold text-gray-600">Título *</label>
                 <input 
@@ -1697,7 +1716,8 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     descricao: '',
                     prioridade: 'MEDIA',
                     vencimento: '',
-                    responsavelId: ''
+                    responsavelId: '',
+                    empresaId: empresasAdminData?.[0]?.id || ''
                   });
                 }}
                 disabled={isCreating}
