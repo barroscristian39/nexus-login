@@ -2133,10 +2133,10 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
     if (selectedProjeto && showEditModal) {
       setEditFormData({
         id: selectedProjeto.id,
-        nome: selectedProjeto.nome || selectedProjeto.titulo || '',
-        responsavelId: selectedProjeto.responsavelId || '',
-        dataInicio: selectedProjeto.dataInicio || selectedProjeto.inicio || '',
-        dataPrevista: selectedProjeto.dataPrevista || selectedProjeto.vencimento || '',
+        nome: selectedProjeto.titulo || selectedProjeto.nome || '',
+        responsavelId: selectedProjeto.responsavelId || selectedProjeto.responsavel || '',
+        dataInicio: selectedProjeto.inicio || selectedProjeto.dataInicio || '',
+        dataPrevista: selectedProjeto.vencimento || selectedProjeto.dataPrevista || '',
         status: selectedProjeto.status || 'PLANEJAMENTO',
         progresso: selectedProjeto.progresso || 0,
         descricao: selectedProjeto.descricao || ''
