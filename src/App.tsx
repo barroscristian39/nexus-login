@@ -4617,7 +4617,7 @@ const AdministracaoView = ({
   );
 };
 
-const EmpresaModal = ({ onClose, onSuccess }: { onClose: () => void, onSuccess?: () => void }) => {
+const EmpresaModal = ({ onClose, onSuccess, authToken }: { onClose: () => void, onSuccess?: () => void, authToken: string }) => {
   const [formData, setFormData] = useState({
     nome: '',
     cnpj: '',
@@ -4648,7 +4648,10 @@ const EmpresaModal = ({ onClose, onSuccess }: { onClose: () => void, onSuccess?:
     try {
       const response = await fetch(`${API_BASE_URL}/empresas`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
+        },
         body: JSON.stringify(formData),
       });
 
@@ -7511,6 +7514,7 @@ export default function App() {
             setIsEmpresaModalOpen(false);
             syncData();
           }}
+          authToken={authToken || ''}
         />
       )}
 
