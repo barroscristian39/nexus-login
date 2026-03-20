@@ -81,7 +81,7 @@ function cn(...inputs: ClassValue[]) {
 /**
  * API Base URL - usando variável de ambiente ou caminho relativo
  */
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://nexus-api-nbna.onrender.com/api';
 
 /**
  * Função auxiliar para fazer fetch com tratamento robusto de resposta JSON
