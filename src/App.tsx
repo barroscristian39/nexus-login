@@ -4060,7 +4060,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
   );
 };
 
-const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, setCurrentUser: any }) => {
+const ConfiguracoesView = ({ currentUser, setCurrentUser, showToast }: { currentUser: any, setCurrentUser: any, showToast: (message: string, type: 'success' | 'error') => void }) => {
   const [profileData, setProfileData] = useState({
     nome: currentUser?.nome || '',
     email: currentUser?.email || '',
@@ -4073,21 +4073,38 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, 
     confirmaSenha: ''
   });
 
-  const [preferencias, setPreferencias] = useState({
-    tema: 'claro',
-    notificacoes: true
+  const [preferencias, setPreferencias] = useState(() => {
+    const saved = localStorage.getItem('nexus_preferencias');
+    return saved ? JSON.parse(saved) : { tema: 'claro', notificacoes: true };
   });
 
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
-  const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
+
+  // Aplicar tema ao montar componente
+  useEffect(() => {
+    aplicarTema(preferencias.tema);
+  }, [preferencias.tema]);
+
+  const aplicarTema = (tema: string) => {
+    const html = document.documentElement;
+    if (tema === 'escuro') {
+      html.classList.add('dark');
+      document.body.style.backgroundColor = '#1a1a1a';
+      document.body.style.color = '#ffffff';
+    } else if (tema === 'claro') {
+      html.classList.remove('dark');
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#000000';
+    }
+  };
 
   const handleSaveProfile = async () => {
     try {
       setIsSavingProfile(true);
       const token = localStorage.getItem('nexus_token');
       if (!token) {
-        setToast({ message: 'Token não encontrado', type: 'error' });
+        showToast('Token não encontrado', 'error');
         return;
       }
 
@@ -4109,10 +4126,10 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, 
       const updatedUser = { ...currentUser, ...profileData };
       setCurrentUser(updatedUser);
       localStorage.setItem('nexus_user', JSON.stringify(updatedUser));
-      setToast({ message: 'Perfil atualizado com sucesso!', type: 'success' });
+      showToast('Perfil atualizado com sucesso!', 'success');
     } catch (err) {
       console.error('Erro ao salvar perfil:', err);
-      setToast({ message: 'Erro ao atualizar perfil', type: 'error' });
+      showToast('Erro ao atualizar perfil', 'error');
     } finally {
       setIsSavingProfile(false);
     }
@@ -4121,23 +4138,23 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, 
   const handleSavePassword = async () => {
     try {
       if (passwordData.novaSenha !== passwordData.confirmaSenha) {
-        setToast({ message: 'Senhas não coincidem', type: 'error' });
+        showToast('Senhas não coincidem', 'error');
         return;
       }
 
       if (passwordData.novaSenha.length < 6) {
-        setToast({ message: 'Senha deve ter no mínimo 6 caracteres', type: 'error' });
+        showToast('Senha deve ter no mínimo 6 caracteres', 'error');
         return;
       }
 
       setIsSavingPassword(true);
       const token = localStorage.getItem('nexus_token');
       if (!token) {
-        setToast({ message: 'Token não encontrado', type: 'error' });
+        showToast('Token não encontrado', 'error');
         return;
       }
 
-      const response = await fetch(`${API_BASE_URL}/usuarios/${currentUser.id}/senha`, {
+      const response = await fetch(`${API_BASE_URL}/usuarios/${currentUser.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -4152,26 +4169,23 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, 
       if (!response.ok) throw new Error('Erro ao alterar senha');
 
       setPasswordData({ senhaAtual: '', novaSenha: '', confirmaSenha: '' });
-      setToast({ message: 'Senha alterada com sucesso!', type: 'success' });
+      showToast('Senha alterada com sucesso!', 'success');
     } catch (err) {
       console.error('Erro ao alterar senha:', err);
-      setToast({ message: 'Erro ao alterar senha. Verifique a senha atual.', type: 'error' });
+      showToast('Erro ao alterar senha. Verifique a senha atual.', 'error');
     } finally {
       setIsSavingPassword(false);
     }
   };
 
+  const handleSavePreferencias = () => {
+    localStorage.setItem('nexus_preferencias', JSON.stringify(preferencias));
+    aplicarTema(preferencias.tema);
+    showToast('Preferências salvas com sucesso!', 'success');
+  };
+
   return (
     <div className="flex-1 p-6 overflow-y-auto bg-gray-50">
-      {/* Toast notification */}
-      {toast && (
-        <div className={`fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium text-sm z-50 ${
-          toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-        }`}>
-          {toast.message}
-        </div>
-      )}
-
       <div className="max-w-3xl">
         <h2 className="text-2xl font-bold text-[#1e315d] mb-6">Configurações</h2>
 
@@ -4314,9 +4328,12 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, 
               </label>
             </div>
 
-            <p className="text-[11px] text-gray-500 mt-4">
-              As preferências serão aplicadas automaticamente após a próxima atualização.
-            </p>
+            <button
+              onClick={handleSavePreferencias}
+              className="h-[38px] px-5 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors"
+            >
+              Salvar Preferências
+            </button>
           </div>
         </div>
       </div>
@@ -5014,7 +5031,7 @@ export default function App() {
          currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} onSyncData={syncDataFromApi} /> :
          currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
          currentView === 'relatorio' ? <RelatorioExecucaoView /> :
-         currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} /> :
+         currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} showToast={showToast} /> :
          currentView === 'notificacoes' ? <NotificacoesView notificacoesList={notificacoesList} /> :
          currentView === 'administracao' ? (
            <AdministracaoView 
