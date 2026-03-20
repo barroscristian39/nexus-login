@@ -4617,110 +4617,225 @@ const AdministracaoView = ({
   );
 };
 
-const EmpresaModal = ({ onClose }: { onClose: () => void }) => (
-  <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[100] flex items-center justify-center p-4">
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      className="bg-white w-full max-w-[600px] rounded-[12px] shadow-2xl overflow-hidden flex flex-col"
-    >
-      <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between bg-white">
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center mr-3">
-            <Building2 size={16} className="text-[#3578d4]" />
-          </div>
-          <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Nova Empresa</h3>
-            <p className="text-[11px] text-gray-400">Preencha os dados para registrar uma nova empresa cliente</p>
-          </div>
-        </div>
-        <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors">
-          <X size={18} />
-        </button>
-      </div>
+const EmpresaModal = ({ onClose, onSuccess }: { onClose: () => void, onSuccess?: () => void }) => {
+  const [formData, setFormData] = useState({
+    nome: '',
+    cnpj: '',
+    email: '',
+    telefone: '',
+    responsavel: '',
+    plano: 'Inicial',
+    status: 'ATIVO',
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
-      <div className="p-6 overflow-y-auto max-h-[70vh]">
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Nome da Empresa</label>
-            <input type="text" placeholder="Ex: Nexus Tecnologia" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">CNPJ</label>
-            <input type="text" placeholder="00.000.000/0000-00" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
-          </div>
-        </div>
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">E-mail Corporativo</label>
-            <div className="relative">
-              <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="email" placeholder="contato@empresa.com" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
+  const handleStatusChange = (value: string) => {
+    setFormData(prev => ({ ...prev, status: value }));
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.nome || !formData.cnpj || !formData.email || !formData.telefone || !formData.responsavel || !formData.plano) {
+      alert('Por favor, preencha todos os campos obrigatórios');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/empresas`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        alert(error.message || 'Erro ao criar empresa');
+        return;
+      }
+
+      alert('Empresa criada com sucesso!');
+      onSuccess?.();
+      onClose();
+    } catch (error) {
+      console.error('Erro ao criar empresa:', error);
+      alert('Erro ao criar empresa');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[100] flex items-center justify-center p-4">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="bg-white w-full max-w-[600px] rounded-[12px] shadow-2xl overflow-hidden flex flex-col"
+      >
+        <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between bg-white">
+          <div className="flex items-center">
+            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center mr-3">
+              <Building2 size={16} className="text-[#3578d4]" />
+            </div>
+            <div>
+              <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Nova Empresa</h3>
+              <p className="text-[11px] text-gray-400">Preencha os dados para registrar uma nova empresa cliente</p>
             </div>
           </div>
-          <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Telefone</label>
-            <div className="relative">
-              <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="text" placeholder="(00) 00000-0000" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
+          <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors">
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="p-6 overflow-y-auto max-h-[70vh]">
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Nome da Empresa</label>
+              <input 
+                type="text" 
+                name="nome"
+                value={formData.nome}
+                onChange={handleChange}
+                placeholder="Ex: Nexus Tecnologia" 
+                className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" 
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">CNPJ</label>
+              <input 
+                type="text" 
+                name="cnpj"
+                value={formData.cnpj}
+                onChange={handleChange}
+                placeholder="00.000.000/0000-00" 
+                className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" 
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">E-mail Corporativo</label>
+              <div className="relative">
+                <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input 
+                  type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="contato@empresa.com" 
+                  className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" 
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Telefone</label>
+              <div className="relative">
+                <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input 
+                  type="text" 
+                  name="telefone"
+                  value={formData.telefone}
+                  onChange={handleChange}
+                  placeholder="(00) 00000-0000" 
+                  className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" 
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Responsável</label>
+              <input 
+                type="text" 
+                name="responsavel"
+                value={formData.responsavel}
+                onChange={handleChange}
+                placeholder="Nome do responsável" 
+                className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" 
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Plano</label>
+              <div className="relative">
+                <select 
+                  name="plano"
+                  value={formData.plano}
+                  onChange={handleChange}
+                  className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]"
+                >
+                  <option>Inicial</option>
+                  <option>Empresarial</option>
+                  <option>Corporativo</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-1 mb-4">
+            <label className="text-[11px] font-bold text-gray-600">Status</label>
+            <div className="flex items-center space-x-4">
+              <label className="flex items-center cursor-pointer">
+                <input 
+                  type="radio" 
+                  name="status" 
+                  checked={formData.status === 'ATIVO'}
+                  onChange={() => handleStatusChange('ATIVO')}
+                  className="w-3 h-3 text-[#3578d4]" 
+                />
+                <span className="ml-2 text-[12px] text-gray-600">Ativo</span>
+              </label>
+              <label className="flex items-center cursor-pointer">
+                <input 
+                  type="radio" 
+                  name="status"
+                  checked={formData.status === 'INATIVO'}
+                  onChange={() => handleStatusChange('INATIVO')}
+                  className="w-3 h-3 text-[#3578d4]" 
+                />
+                <span className="ml-2 text-[12px] text-gray-600">Inativo</span>
+              </label>
+              <label className="flex items-center cursor-pointer">
+                <input 
+                  type="radio" 
+                  name="status"
+                  checked={formData.status === 'PENDENTE'}
+                  onChange={() => handleStatusChange('PENDENTE')}
+                  className="w-3 h-3 text-[#3578d4]" 
+                />
+                <span className="ml-2 text-[12px] text-gray-600">Pendente</span>
+              </label>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Responsável</label>
-            <input type="text" placeholder="Nome do responsável" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Plano</label>
-            <div className="relative">
-              <select className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
-                <option>Inicial</option>
-                <option>Empresarial</option>
-                <option>Corporativo</option>
-              </select>
-              <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-            </div>
-          </div>
+        <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex items-center justify-end space-x-3">
+          <button 
+            onClick={onClose} 
+            disabled={isLoading}
+            className="h-[36px] px-6 bg-white border border-gray-200 text-gray-600 text-[12px] font-bold rounded-[6px] hover:bg-gray-50 transition-colors disabled:opacity-50"
+          >
+            Cancelar
+          </button>
+          <button 
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="h-[36px] px-6 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm disabled:opacity-50 flex items-center space-x-2"
+          >
+            {isLoading && <Loader size={14} className="animate-spin" />}
+            <span>{isLoading ? 'Salvando...' : 'Salvar empresa'}</span>
+          </button>
         </div>
-
-        <div className="space-y-1 mb-4">
-          <label className="text-[11px] font-bold text-gray-600">Status</label>
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center cursor-pointer">
-              <input type="radio" name="status" defaultChecked className="w-3 h-3 text-[#3578d4]" />
-              <span className="ml-2 text-[12px] text-gray-600">Ativo</span>
-            </label>
-            <label className="flex items-center cursor-pointer">
-              <input type="radio" name="status" className="w-3 h-3 text-[#3578d4]" />
-              <span className="ml-2 text-[12px] text-gray-600">Inativo</span>
-            </label>
-            <label className="flex items-center cursor-pointer">
-              <input type="radio" name="status" className="w-3 h-3 text-[#3578d4]" />
-              <span className="ml-2 text-[12px] text-gray-600">Pendente</span>
-            </label>
-          </div>
-        </div>
-
-        <div className="space-y-1">
-          <label className="text-[11px] font-bold text-gray-600">Observações</label>
-          <textarea placeholder="Observações internas..." className="w-full h-[80px] bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none" />
-        </div>
-      </div>
-
-      <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex items-center justify-end space-x-3">
-        <button onClick={onClose} className="h-[36px] px-6 bg-white border border-gray-200 text-gray-600 text-[12px] font-bold rounded-[6px] hover:bg-gray-50 transition-colors">
-          Cancelar
-        </button>
-        <button onClick={onClose} className="h-[36px] px-6 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm">
-          Salvar empresa
-        </button>
-      </div>
-    </motion.div>
-  </div>
-);
+      </motion.div>
+    </div>
+  );
+};
 
 const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 'error', onClose: () => void }) => (
   <motion.div 
@@ -7390,7 +7505,13 @@ export default function App() {
       )}
 
       {isEmpresaModalOpen && (
-        <EmpresaModal onClose={() => setIsEmpresaModalOpen(false)} />
+        <EmpresaModal 
+          onClose={() => setIsEmpresaModalOpen(false)} 
+          onSuccess={() => {
+            setIsEmpresaModalOpen(false);
+            syncData();
+          }}
+        />
       )}
 
       {isUsuarioModalOpen && (
