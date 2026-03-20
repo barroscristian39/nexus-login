@@ -633,7 +633,7 @@ const DashboardView = () => {
   );
 };
 
-const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: any[], currentUser: any }) => {
+const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken }: { usuariosAdminList: any[], currentUser: any, empresasData: any[], authToken: string }) => {
   const [demandas, setDemandas] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -653,7 +653,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     prioridade: 'MEDIA',
     vencimento: '',
     responsavelId: '',
-    empresaId: empresasAdminData?.[0]?.id || ''
+    empresaId: empresasData?.[0]?.id || ''
   });
   const [isCreating, setIsCreating] = useState(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
@@ -918,7 +918,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         prioridade: 'MEDIA',
         vencimento: '',
         responsavelId: '',
-        empresaId: empresasAdminData?.[0]?.id || ''
+        empresaId: empresasData?.[0]?.id || ''
       });
       showToast('Demanda criada com sucesso', 'success');
     } catch (err) {
@@ -1603,7 +1603,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     prioridade: 'MEDIA',
                     vencimento: '',
                     responsavelId: '',
-                    empresaId: empresasAdminData?.[0]?.id || ''
+                    empresaId: empresasData?.[0]?.id || ''
                   });
                 }}
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors"
@@ -1622,8 +1622,8 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                   className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                 >
                   <option value="">Selecione uma empresa</option>
-                  {empresasAdminData && empresasAdminData.length > 0 ? (
-                    empresasAdminData.map((empresa) => (
+                  {empresasData && empresasData.length > 0 ? (
+                    empresasData.map((empresa) => (
                       <option key={empresa.id} value={empresa.id}>{empresa.nome}</option>
                     ))
                   ) : (
@@ -1717,7 +1717,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     prioridade: 'MEDIA',
                     vencimento: '',
                     responsavelId: '',
-                    empresaId: empresasAdminData?.[0]?.id || ''
+                    empresaId: empresasData?.[0]?.id || ''
                   });
                 }}
                 disabled={isCreating}
@@ -7485,7 +7485,7 @@ export default function App() {
         </header>
 
         {currentView === 'painel' ? <DashboardView /> : 
-         currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} /> : 
+         currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} /> : 
          currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} /> :
          currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
          currentView === 'relatorio' ? <RelatorioExecucaoView /> :
