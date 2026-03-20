@@ -633,7 +633,7 @@ const DashboardView = () => {
   );
 };
 
-const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken, allProjetos, onSyncData }: { usuariosAdminList: any[], currentUser: any, empresasData: any[], authToken: string, allProjetos: any[], onSyncData: () => Promise<void> }) => {
+const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken, projetosData, onSyncData }: { usuariosAdminList: any[], currentUser: any, empresasData: any[], authToken: string, projetosData: any[], onSyncData: () => Promise<void> }) => {
   const [demandas, setDemandas] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -1645,8 +1645,8 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
                   className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                 >
                   <option value="">Nenhum projeto</option>
-                  {allProjetos && allProjetos.length > 0 ? (
-                    allProjetos.map((projeto) => (
+                  {projetosData && projetosData.length > 0 ? (
+                    projetosData.map((projeto) => (
                       <option key={projeto.id} value={projeto.id}>{projeto.nome}</option>
                     ))
                   ) : (
@@ -4611,7 +4611,7 @@ export default function App() {
         </header>
 
         {currentView === 'painel' ? <DashboardView /> : 
-         currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} allProjetos={allProjetos} onSyncData={syncDataFromApi} /> : 
+         currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} projetosData={allProjetos} onSyncData={syncDataFromApi} /> : 
          currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} onSyncData={syncDataFromApi} /> :
          currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
          currentView === 'relatorio' ? <RelatorioExecucaoView /> :
