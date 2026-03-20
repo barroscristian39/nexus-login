@@ -4125,6 +4125,301 @@ const NotificationDropdown = ({ onClose, onViewAll, notificacoesList }: { onClos
   );
 };
 
+const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => void }) => {
+  const [formData, setFormData] = useState({
+    nomeArquivo: evidence?.nomeArquivo || '',
+    tipo: evidence?.tipo?.toUpperCase() || 'PDF',
+    status: evidence?.status || 'Pendente',
+    descricao: evidence?.descricao || '',
+    demandaId: evidence?.demandaId || ''
+  });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const [demandas, setDemandas] = useState<any[]>([]);
+  const [isLoadingDemandas, setIsLoadingDemandas] = useState(true);
+
+  useEffect(() => {
+    // Carregar lista de demandas
+    const loadDemandas = async () => {
+      try {
+        const token = localStorage.getItem('nexus_token');
+        const response = await fetch(`${API_BASE_URL}/demandas`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setDemandas(data.data || []);
+        }
+      } catch (err) {
+        console.error('Erro ao carregar demandas:', err);
+      } finally {
+        setIsLoadingDemandas(false);
+      }
+    };
+
+    loadDemandas();
+  }, []);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const normalizeStatus = (status: string): string => {
+    const statusMap: { [key: string]: string } = {
+      'Pendente': 'PENDENTE',
+      'PENDENTE': 'PENDENTE',
+      'Valida': 'VALIDA',
+      'Válida': 'VALIDA',
+      'VALIDA': 'VALIDA',
+      'VÁLIDA': 'VALIDA',
+      'Atrasada': 'ATRASADA',
+      'ATRASADA': 'ATRASADA',
+      'Rejeitada': 'REJEITADA',
+      'REJEITADA': 'REJEITADA',
+    };
+    return statusMap[status] || status.toUpperCase();
+  };
+
+  const salvarEvidencia = async () => {
+    if (!formData.nomeArquivo.trim()) {
+      showToast('Preencha o nome do arquivo', 'error');
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      const token = localStorage.getItem('nexus_token');
+      const empresaId = 'cmmvaphw40003o9kwzr2sy6wu'; // ID da empresa
+      const isEditing = !!evidence?.id;
+      const method = isEditing ? 'PUT' : 'POST';
+      const url = isEditing
+        ? `${API_BASE_URL}/evidencias/${evidence.id}`
+        : `${API_BASE_URL}/evidencias`;
+
+      // Usar FormData para enviar arquivo
+      const formDataToSend = new FormData();
+      formDataToSend.append('empresaId', empresaId);
+      formDataToSend.append('nomeArquivo', formData.nomeArquivo);
+      formDataToSend.append('tipoArquivo', formData.tipo);
+      formDataToSend.append('status', normalizeStatus(formData.status));
+      formDataToSend.append('observacoes', formData.descricao || '');
+      if (formData.demandaId) {
+        formDataToSend.append('demandaId', formData.demandaId);
+      }
+      if (selectedFile) {
+        formDataToSend.append('arquivo', selectedFile);
+      }
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formDataToSend
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao salvar');
+      }
+
+      showToast(isEditing ? 'Evidência atualizada com sucesso' : 'Evidência salva com sucesso', 'success');
+      setTimeout(() => onClose(), 1500);
+    } catch (err) {
+      console.error('Erro:', err);
+      showToast(`Erro ao salvar evidência: ${err.message}`, 'error');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-6 backdrop-blur-[2px]">
+      <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[760px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 sticky top-0 bg-white">
+          <h2 className="text-[14px] font-bold text-[#1e315d]">{evidence ? 'Editar Evidência' : 'Adicionar Evidência'}</h2>
+          <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors">
+            <X size={14} />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="px-5 py-4 space-y-3.5">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-2.5">
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Nome do arquivo / documento *</label>
+              <input
+                type="text"
+                placeholder="Ex: Relatório auditoria Q1.pdf"
+                value={formData.nomeArquivo}
+                onChange={(e) => setFormData({ ...formData, nomeArquivo: e.target.value })}
+                className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Tipo</label>
+              <div className="relative">
+                <select
+                  value={formData.tipo}
+                  onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+                  className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]"
+                >
+                  <option>PDF</option>
+                  <option>DOCX</option>
+                  <option>XLSX</option>
+                  <option>PNG</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Status</label>
+              <div className="relative">
+                <select
+                  value={formData.status}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                  className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]"
+                >
+                  <option>Pendente</option>
+                  <option>Valida</option>
+                  <option>Atrasada</option>
+                  <option>Rejeitada</option>
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Demanda vinculada</label>
+              <div className="relative">
+                <select
+                  value={formData.demandaId}
+                  onChange={(e) => setFormData({ ...formData, demandaId: e.target.value })}
+                  disabled={isLoadingDemandas}
+                  className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] disabled:opacity-50"
+                >
+                  <option value="">Nenhuma</option>
+                  {demandas.map(d => (
+                    <option key={d.id} value={d.id}>{d.titulo}</option>
+                  ))}
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[11px] font-bold text-gray-600">Observações</label>
+            <textarea
+              placeholder="Observações sobre a evidência..."
+              value={formData.descricao}
+              onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+              className="w-full h-[76px] bg-white border border-gray-200 rounded-[6px] p-2.5 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none placeholder:text-gray-300"
+            />
+          </div>
+
+          {/* Área de Upload de Arquivo */}
+          <div className="space-y-1">
+            <label className="text-[11px] font-bold text-gray-600">Anexar arquivo (opcional)</label>
+            <div
+              className="relative"
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.currentTarget.classList.add('border-blue-400', 'bg-blue-50');
+              }}
+              onDragLeave={(e) => {
+                e.currentTarget.classList.remove('border-blue-400', 'bg-blue-50');
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.currentTarget.classList.remove('border-blue-400', 'bg-blue-50');
+                const file = e.dataTransfer.files?.[0];
+                if (file) {
+                  setSelectedFile(file);
+                }
+              }}
+            >
+              <input
+                type="file"
+                id="file-input"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setSelectedFile(file);
+                  }
+                }}
+                accept=".pdf,.docx,.xlsx,.png,.jpg,.jpeg"
+                className="hidden"
+              />
+              <label
+                htmlFor="file-input"
+                className="flex items-center justify-center w-full h-[76px] border-2 border-dashed border-gray-200 rounded-[6px] bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors"
+              >
+                <div className="text-center">
+                  <Upload size={20} className="mx-auto mb-1 text-gray-400" />
+                  <p className="text-[11px] text-gray-600 font-medium">
+                    {selectedFile ? `✓ ${selectedFile.name}` : 'Clique ou arraste um arquivo'}
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">PDF, DOCX, XLSX, PNG ou JPG (máx. 50MB)</p>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-5 py-3 bg-white border-t border-gray-50 flex items-center justify-end space-x-2 sticky bottom-0">
+          <button
+            onClick={onClose}
+            disabled={isSaving}
+            className="h-[32px] px-5 bg-white border border-gray-200 text-gray-600 text-[12px] font-bold rounded-[6px] hover:bg-gray-50 transition-colors disabled:opacity-50"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={salvarEvidencia}
+            disabled={isSaving}
+            className="h-[32px] px-5 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm disabled:opacity-50 flex items-center gap-2"
+          >
+            {isSaving ? (
+              <>
+                <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Salvando...
+              </>
+            ) : (
+              'Salvar evidência'
+            )}
+          </button>
+        </div>
+
+        {/* Toast */}
+        {toast && (
+          <div className={`fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-4 rounded-[10px] shadow-2xl ${
+            toast.type === 'success'
+              ? 'bg-green-500/95 text-white'
+              : 'bg-red-500/95 text-white'
+          }`}>
+            {toast.type === 'success' ? (
+              <CheckCircle size={18} />
+            ) : (
+              <AlertCircle size={18} />
+            )}
+            <span className="text-[13px] font-medium">{toast.message}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const ConfiguracoesView = ({ currentUser, setCurrentUser, showToast }: { currentUser: any, setCurrentUser: any, showToast: (message: string, type: 'success' | 'error') => void }) => {
   const [profileData, setProfileData] = useState({
     nome: currentUser?.nome || '',
