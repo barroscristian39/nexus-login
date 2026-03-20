@@ -4060,6 +4060,15 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
   );
 };
 
+const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, setCurrentUser: any }) => {
+  return (
+    <div className="flex-1 p-6 overflow-y-auto">
+      <h2 className="text-xl font-bold text-[#1e315d] mb-4">Configurações</h2>
+      <p className="text-gray-500">Configurações do sistema em desenvolvimento.</p>
+    </div>
+  );
+};
+
 export default function App() {
   const [currentView, setCurrentView] = useState<'painel' | 'demandas' | 'projetos' | 'evidencias' | 'relatorio' | 'configuracoes' | 'detalhe-projeto' | 'notificacoes' | 'administracao' | 'usuarios-empresa'>('painel');
   const [authToken, setAuthToken] = useState<string | null>(() => localStorage.getItem('nexus_token'));
