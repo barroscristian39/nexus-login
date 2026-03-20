@@ -4060,6 +4060,71 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
   );
 };
 
+const NotificationItem = ({ notif, compact }: { notif: any, compact?: boolean }) => {
+  if (!notif) return null;
+  
+  return (
+    <div className="p-3 bg-white rounded-lg border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+      <div className="flex items-start gap-3">
+        <div className={`w-2 h-2 rounded-full mt-1 ${notif.lida ? 'bg-gray-300' : 'bg-[#3578d4]'}`} />
+        <div className="flex-1 min-w-0">
+          <p className="text-[12px] font-semibold text-gray-800 truncate">{notif.titulo || ''}</p>
+          <p className="text-[11px] text-gray-500 line-clamp-2">{notif.descricao || ''}</p>
+          <p className="text-[10px] text-gray-400 mt-1">{notif.data || ''}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const NotificationDropdown = ({ onClose, onViewAll, notificacoesList }: { onClose: () => void, onViewAll: () => void, notificacoesList: any[] }) => {
+  if (!notificacoesList) return null;
+
+  const totalNaoLidas = (notificacoesList || []).filter((notif) => !notif?.lida).length;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
+      className="absolute right-0 mt-2 z-[100] flex w-[380px] max-w-[calc(100vw-24px)] flex-col overflow-hidden rounded-[14px] border border-gray-100 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.16)]"
+    >
+      <div className="border-b border-slate-100 bg-white px-4 py-4">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Notificações</h3>
+            <p className="mt-1 text-[11px] text-slate-400">{totalNaoLidas} pendentes de leitura</p>
+          </div>
+          <button className="text-[11px] font-bold text-[#3578d4] hover:underline">
+            Marcar todas como lidas
+          </button>
+        </div>
+      </div>
+
+      <div className="max-h-[420px] overflow-y-auto bg-slate-50/70 p-3">
+        {(notificacoesList || []).slice(0, 10).map((notif) => (
+          <div key={notif?.id || Math.random()} className="mb-3 last:mb-0">
+            <NotificationItem notif={notif} compact />
+          </div>
+        ))}
+      </div>
+
+      <div className="border-t border-slate-100 bg-white px-4 py-3 flex justify-center">
+        <button
+          onClick={() => {
+            onViewAll();
+            onClose();
+          }}
+          className="text-[11px] font-bold text-gray-500 transition-colors hover:text-[#3578d4]"
+        >
+          Ver todas notificações
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
 const ConfiguracoesView = ({ currentUser, setCurrentUser, showToast }: { currentUser: any, setCurrentUser: any, showToast: (message: string, type: 'success' | 'error') => void }) => {
   const [profileData, setProfileData] = useState({
     nome: currentUser?.nome || '',
