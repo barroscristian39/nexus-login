@@ -2848,6 +2848,30 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
 const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => void }) => {
   if (!project) return null;
 
+  const [formData, setFormData] = useState({
+    nome: '',
+    responsavel: '',
+    dataInicio: '',
+    dataPrevista: '',
+    status: 'Planejamento',
+    progresso: 0,
+    descricao: ''
+  });
+
+  useEffect(() => {
+    if (project) {
+      setFormData({
+        nome: project?.titulo || project?.nome || '',
+        responsavel: project?.responsavel || '',
+        dataInicio: project?.inicio || project?.dataInicio || '',
+        dataPrevista: project?.vencimento || project?.dataPrevista || '',
+        status: project?.status || 'Planejamento',
+        progresso: project?.progresso || 0,
+        descricao: project?.descricao || ''
+      });
+    }
+  }, [project]);
+
   return (
     <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
       <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -2866,7 +2890,8 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <label className="text-[11px] font-bold text-gray-600">Nome do projeto *</label>
               <input 
                 type="text" 
-                defaultValue={project.titulo}
+                value={formData.nome}
+                onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                 className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
               />
             </div>
@@ -2874,7 +2899,8 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <label className="text-[11px] font-bold text-gray-600">Responsável</label>
               <input 
                 type="text" 
-                defaultValue={project.responsavel}
+                value={formData.responsavel}
+                onChange={(e) => setFormData({ ...formData, responsavel: e.target.value })}
                 className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
               />
             </div>
@@ -2886,7 +2912,8 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <div className="relative">
                 <input 
                   type="text" 
-                  defaultValue={project.inicio}
+                  value={formData.dataInicio}
+                  onChange={(e) => setFormData({ ...formData, dataInicio: e.target.value })}
                   className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
                 />
                 <Calendar size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -2897,7 +2924,8 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <div className="relative">
                 <input 
                   type="text" 
-                  defaultValue={project.vencimento}
+                  value={formData.dataPrevista}
+                  onChange={(e) => setFormData({ ...formData, dataPrevista: e.target.value })}
                   className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
                 />
                 <Calendar size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -2910,7 +2938,8 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <label className="text-[11px] font-bold text-gray-600">Status</label>
               <div className="relative">
                 <select 
-                  defaultValue={project.status}
+                  value={formData.status}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                   className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]"
                 >
                   <option>Em andamento</option>
@@ -2925,7 +2954,8 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <label className="text-[11px] font-bold text-gray-600">Progresso (%)</label>
               <input 
                 type="text" 
-                defaultValue={project.progresso}
+                value={formData.progresso}
+                onChange={(e) => setFormData({ ...formData, progresso: parseInt(e.target.value) || 0 })}
                 className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
               />
             </div>
@@ -2934,7 +2964,8 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-gray-600">Descrição</label>
             <textarea 
-              defaultValue={project.descricao}
+              value={formData.descricao}
+              onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
               rows={4}
               className="w-full bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none placeholder:text-gray-300"
             />
