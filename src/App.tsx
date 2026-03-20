@@ -2129,6 +2129,21 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
     loadProjetos();
   }, []);
 
+  useEffect(() => {
+    if (selectedProjeto && showEditModal) {
+      setEditFormData({
+        id: selectedProjeto.id,
+        nome: selectedProjeto.nome || selectedProjeto.titulo || '',
+        responsavelId: selectedProjeto.responsavelId || '',
+        dataInicio: selectedProjeto.dataInicio || selectedProjeto.inicio || '',
+        dataPrevista: selectedProjeto.dataPrevista || selectedProjeto.vencimento || '',
+        status: selectedProjeto.status || 'PLANEJAMENTO',
+        progresso: selectedProjeto.progresso || 0,
+        descricao: selectedProjeto.descricao || ''
+      });
+    }
+  }, [selectedProjeto, showEditModal]);
+
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     const id = Date.now();
     setToast({ message, type, id });
