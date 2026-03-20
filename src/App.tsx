@@ -2848,6 +2848,21 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
 const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => void }) => {
   if (!project) return null;
 
+  // Converte ISO para DD-MM-YYYY para exibição
+  const isoToDisplay = (dateStr: string) => {
+    if (!dateStr) return '';
+    const d = dateStr.split('T')[0];
+    const [year, month, day] = d.split('-');
+    return `${day}-${month}-${year}`;
+  };
+
+  // Converte DD-MM-YYYY para ISO para enviar ao backend
+  const displayToIso = (dateStr: string) => {
+    if (!dateStr) return '';
+    const [day, month, year] = dateStr.split('-');
+    return `${year}-${month}-${day}`;
+  };
+
   const [formData, setFormData] = useState({
     nome: '',
     responsavel: '',
@@ -2858,19 +2873,59 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
     descricao: ''
   });
 
+  const [isSaving, setIsSaving] = useState(false);
+
   useEffect(() => {
     if (project) {
       setFormData({
         nome: project?.titulo || project?.nome || '',
         responsavel: project?.responsavel || '',
-        dataInicio: project?.inicio || project?.dataInicio || '',
-        dataPrevista: project?.vencimento || project?.dataPrevista || '',
+        dataInicio: isoToDisplay(project?.inicio || project?.dataInicio || ''),
+        dataPrevista: isoToDisplay(project?.vencimento || project?.dataPrevista || ''),
         status: project?.status || 'Planejamento',
         progresso: project?.progresso || 0,
         descricao: project?.descricao || ''
       });
     }
   }, [project]);
+
+  const handleSave = async () => {
+    try {
+      setIsSaving(true);
+      const token = localStorage.getItem('nexus_token');
+      if (!token) {
+        console.error('Token não encontrado');
+        return;
+      }
+
+      const payload = {
+        nome: formData.nome,
+        responsavel: formData.responsavel,
+        dataInicio: displayToIso(formData.dataInicio),
+        dataPrevista: displayToIso(formData.dataPrevista),
+        status: formData.status,
+        progresso: formData.progresso,
+        descricao: formData.descricao
+      };
+
+      const response = await fetch(`${API_BASE_URL}/projetos/${project.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error('Erro ao salvar');
+      
+      onClose();
+    } catch (err) {
+      console.error('Erro ao salvar projeto:', err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
@@ -2912,6 +2967,7 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <div className="relative">
                 <input 
                   type="text" 
+                  placeholder="DD-MM-YYYY"
                   value={formData.dataInicio}
                   onChange={(e) => setFormData({ ...formData, dataInicio: e.target.value })}
                   className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
@@ -2924,6 +2980,7 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               <div className="relative">
                 <input 
                   type="text" 
+                  placeholder="DD-MM-YYYY"
                   value={formData.dataPrevista}
                   onChange={(e) => setFormData({ ...formData, dataPrevista: e.target.value })}
                   className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
@@ -2981,10 +3038,11 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
             Cancelar
           </button>
           <button 
-            onClick={onClose}
-            className="h-[32px] px-5 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm"
+            onClick={handleSave}
+            disabled={isSaving}
+            className="h-[32px] px-5 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm disabled:opacity-50"
           >
-            Salvar projeto
+            {isSaving ? 'Salvando...' : 'Salvar projeto'}
           </button>
         </div>
       </div>
