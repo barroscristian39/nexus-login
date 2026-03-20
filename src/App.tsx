@@ -4061,10 +4061,265 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
 };
 
 const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any, setCurrentUser: any }) => {
+  const [profileData, setProfileData] = useState({
+    nome: currentUser?.nome || '',
+    email: currentUser?.email || '',
+    fotoPerfil: currentUser?.fotoPerfil || ''
+  });
+
+  const [passwordData, setPasswordData] = useState({
+    senhaAtual: '',
+    novaSenha: '',
+    confirmaSenha: ''
+  });
+
+  const [preferencias, setPreferencias] = useState({
+    tema: 'claro',
+    notificacoes: true
+  });
+
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
+
+  const handleSaveProfile = async () => {
+    try {
+      setIsSavingProfile(true);
+      const token = localStorage.getItem('nexus_token');
+      if (!token) {
+        setToast({ message: 'Token não encontrado', type: 'error' });
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/usuarios/${currentUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nome: profileData.nome,
+          email: profileData.email,
+          fotoPerfil: profileData.fotoPerfil
+        })
+      });
+
+      if (!response.ok) throw new Error('Erro ao atualizar perfil');
+
+      const updatedUser = { ...currentUser, ...profileData };
+      setCurrentUser(updatedUser);
+      localStorage.setItem('nexus_user', JSON.stringify(updatedUser));
+      setToast({ message: 'Perfil atualizado com sucesso!', type: 'success' });
+    } catch (err) {
+      console.error('Erro ao salvar perfil:', err);
+      setToast({ message: 'Erro ao atualizar perfil', type: 'error' });
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
+  const handleSavePassword = async () => {
+    try {
+      if (passwordData.novaSenha !== passwordData.confirmaSenha) {
+        setToast({ message: 'Senhas não coincidem', type: 'error' });
+        return;
+      }
+
+      if (passwordData.novaSenha.length < 6) {
+        setToast({ message: 'Senha deve ter no mínimo 6 caracteres', type: 'error' });
+        return;
+      }
+
+      setIsSavingPassword(true);
+      const token = localStorage.getItem('nexus_token');
+      if (!token) {
+        setToast({ message: 'Token não encontrado', type: 'error' });
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/usuarios/${currentUser.id}/senha`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          senhaAtual: passwordData.senhaAtual,
+          novaSenha: passwordData.novaSenha
+        })
+      });
+
+      if (!response.ok) throw new Error('Erro ao alterar senha');
+
+      setPasswordData({ senhaAtual: '', novaSenha: '', confirmaSenha: '' });
+      setToast({ message: 'Senha alterada com sucesso!', type: 'success' });
+    } catch (err) {
+      console.error('Erro ao alterar senha:', err);
+      setToast({ message: 'Erro ao alterar senha. Verifique a senha atual.', type: 'error' });
+    } finally {
+      setIsSavingPassword(false);
+    }
+  };
+
   return (
-    <div className="flex-1 p-6 overflow-y-auto">
-      <h2 className="text-xl font-bold text-[#1e315d] mb-4">Configurações</h2>
-      <p className="text-gray-500">Configurações do sistema em desenvolvimento.</p>
+    <div className="flex-1 p-6 overflow-y-auto bg-gray-50">
+      {/* Toast notification */}
+      {toast && (
+        <div className={`fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium text-sm z-50 ${
+          toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        }`}>
+          {toast.message}
+        </div>
+      )}
+
+      <div className="max-w-3xl">
+        <h2 className="text-2xl font-bold text-[#1e315d] mb-6">Configurações</h2>
+
+        {/* Perfil do Usuário */}
+        <div className="bg-white rounded-[8px] shadow-sm border border-gray-100 p-6 mb-6">
+          <h3 className="text-lg font-bold text-[#1e315d] mb-4">Perfil do Usuário</h3>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="text-[12px] font-bold text-gray-600 block mb-2">Nome</label>
+              <input
+                type="text"
+                placeholder="Seu nome"
+                value={profileData.nome}
+                onChange={(e) => setProfileData({ ...profileData, nome: e.target.value })}
+                className="w-full h-[38px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              />
+            </div>
+
+            <div>
+              <label className="text-[12px] font-bold text-gray-600 block mb-2">Email</label>
+              <input
+                type="email"
+                placeholder="seu@email.com"
+                value={profileData.email}
+                onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                className="w-full h-[38px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              />
+            </div>
+
+            <div>
+              <label className="text-[12px] font-bold text-gray-600 block mb-2">URL da Foto de Perfil</label>
+              <input
+                type="text"
+                placeholder="https://..."
+                value={profileData.fotoPerfil}
+                onChange={(e) => setProfileData({ ...profileData, fotoPerfil: e.target.value })}
+                className="w-full h-[38px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              />
+            </div>
+
+            {profileData.fotoPerfil && (
+              <div className="flex items-center gap-4">
+                <label className="text-[12px] font-bold text-gray-600">Prévia:</label>
+                <img 
+                  src={profileData.fotoPerfil}
+                  alt="Prévia" 
+                  className="w-16 h-16 rounded-full object-cover border border-gray-200"
+                  onError={(e) => (e.currentTarget.src = 'https://via.placeholder.com/64')}
+                />
+              </div>
+            )}
+
+            <button
+              onClick={handleSaveProfile}
+              disabled={isSavingProfile}
+              className="h-[38px] px-5 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors disabled:opacity-50"
+            >
+              {isSavingProfile ? 'Salvando...' : 'Salvar Perfil'}
+            </button>
+          </div>
+        </div>
+
+        {/* Alterar Senha */}
+        <div className="bg-white rounded-[8px] shadow-sm border border-gray-100 p-6 mb-6">
+          <h3 className="text-lg font-bold text-[#1e315d] mb-4">Alterar Senha</h3>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="text-[12px] font-bold text-gray-600 block mb-2">Senha Atual</label>
+              <input
+                type="password"
+                placeholder="Digite sua senha atual"
+                value={passwordData.senhaAtual}
+                onChange={(e) => setPasswordData({ ...passwordData, senhaAtual: e.target.value })}
+                className="w-full h-[38px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              />
+            </div>
+
+            <div>
+              <label className="text-[12px] font-bold text-gray-600 block mb-2">Nova Senha</label>
+              <input
+                type="password"
+                placeholder="Digite sua nova senha"
+                value={passwordData.novaSenha}
+                onChange={(e) => setPasswordData({ ...passwordData, novaSenha: e.target.value })}
+                className="w-full h-[38px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              />
+            </div>
+
+            <div>
+              <label className="text-[12px] font-bold text-gray-600 block mb-2">Confirmar Nova Senha</label>
+              <input
+                type="password"
+                placeholder="Confirme sua nova senha"
+                value={passwordData.confirmaSenha}
+                onChange={(e) => setPasswordData({ ...passwordData, confirmaSenha: e.target.value })}
+                className="w-full h-[38px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              />
+            </div>
+
+            <button
+              onClick={handleSavePassword}
+              disabled={isSavingPassword}
+              className="h-[38px] px-5 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors disabled:opacity-50"
+            >
+              {isSavingPassword ? 'Alterando...' : 'Alterar Senha'}
+            </button>
+          </div>
+        </div>
+
+        {/* Preferências */}
+        <div className="bg-white rounded-[8px] shadow-sm border border-gray-100 p-6">
+          <h3 className="text-lg font-bold text-[#1e315d] mb-4">Preferências</h3>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="text-[12px] font-bold text-gray-600 block mb-2">Tema</label>
+              <select
+                value={preferencias.tema}
+                onChange={(e) => setPreferencias({ ...preferencias, tema: e.target.value })}
+                className="w-full h-[38px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              >
+                <option value="claro">Tema Claro</option>
+                <option value="escuro">Tema Escuro</option>
+                <option value="auto">Auto</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="notificacoes"
+                checked={preferencias.notificacoes}
+                onChange={(e) => setPreferencias({ ...preferencias, notificacoes: e.target.checked })}
+                className="w-4 h-4 accent-[#3578d4] cursor-pointer"
+              />
+              <label htmlFor="notificacoes" className="text-[13px] text-gray-700 cursor-pointer">
+                Receber notificações por email
+              </label>
+            </div>
+
+            <p className="text-[11px] text-gray-500 mt-4">
+              As preferências serão aplicadas automaticamente após a próxima atualização.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
