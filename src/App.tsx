@@ -4161,8 +4161,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser, showToast }: { current
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          senhaAtual: passwordData.senhaAtual,
-          novaSenha: passwordData.novaSenha
+          senha: passwordData.novaSenha
         })
       });
 
@@ -4172,7 +4171,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser, showToast }: { current
       showToast('Senha alterada com sucesso!', 'success');
     } catch (err) {
       console.error('Erro ao alterar senha:', err);
-      showToast('Erro ao alterar senha. Verifique a senha atual.', 'error');
+      showToast('Erro ao alterar senha.', 'error');
     } finally {
       setIsSavingPassword(false);
     }
