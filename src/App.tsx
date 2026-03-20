@@ -6843,7 +6843,8 @@ export default function App() {
     if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
     if (authToken) headers.set('Authorization', `Bearer ${authToken}`);
 
-    const response = await fetch(url, { ...options, headers });
+    const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+    const response = await fetch(fullUrl, { ...options, headers });
     const payload = await response.json();
 
     if (!response.ok || !payload.success) {
@@ -6853,16 +6854,16 @@ export default function App() {
     return payload.data;
   };
 
-  const syncDataFromApi = async () => {
+  const syncDataFromApi = async (retryCount = 0) => {
     try {
       console.log('[SYNC] Iniciando sincronização de dados...', { authToken: !!authToken });
       const [empresas, usuarios, projetos, demandas, evidencias, notificacoes] = await Promise.all([
-        apiRequest('/api/empresas'),
-        apiRequest('/api/usuarios'),
-        apiRequest('/api/projetos'),
-        apiRequest('/api/demandas'),
-        apiRequest('/api/evidencias'),
-        apiRequest('/api/notificacoes'),
+        apiRequest('/empresas'),
+        apiRequest('/usuarios'),
+        apiRequest('/projetos'),
+        apiRequest('/demandas'),
+        apiRequest('/evidencias'),
+        apiRequest('/notificacoes'),
       ]);
       console.log('[SYNC] Dados recebidos:', { empresas: empresas.length, usuarios: usuarios.length });
 
@@ -6968,7 +6969,23 @@ export default function App() {
       setDataSyncVersion((current) => current + 1);
     } catch (error: any) {
       console.error('[SYNC ERROR]', error);
-      // showToast não está disponível aqui, apenas log no console
+      
+      // Retry automático para erro de JSON parse (problema do backend "dormindo" no Render)
+      const isJsonError = error instanceof SyntaxError || 
+                         error?.message?.includes('JSON') || 
+                         error?.message?.includes('Unexpected token');
+      
+      if (isJsonError && retryCount === 0) {
+        console.log('[SYNC RETRY] Erro de JSON detectado. Aguardando 3 segundos antes de nova tentativa...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.log('[SYNC RETRY] Tentando sincronizar novamente...');
+        return syncDataFromApi(1); // Tenta novamente com retryCount = 1
+      }
+      
+      // Se for um erro de retry ou outro tipo de erro, apenas loga
+      if (retryCount > 0) {
+        console.error('[SYNC FINAL ERROR] Falha mesmo após retry:', error);
+      }
     }
   };
 
