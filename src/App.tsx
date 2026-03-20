@@ -1413,7 +1413,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
                                 <p className="text-[12px] text-gray-700 mt-2">{com.texto || com.conteudo}</p>
                               </div>
                               <div className="flex items-center gap-2 flex-shrink-0">
-                                <p className="text-[10px] text-gray-400 whitespace-nowrap">{new Date(com.createdAt).toLocaleDateString('pt-BR')}</p>
+                                <p className="text-[10px] text-gray-400 whitespace-nowrap">{com.createdAt ? new Date(com.createdAt).toLocaleDateString('pt-BR') : '-'}</p>
                                 <select 
                                   onChange={(e) => {
                                     const action = e.target.value;
@@ -3126,7 +3126,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                   <div className="flex items-center space-x-3">
                     <div className="flex items-center text-[10px] text-gray-400">
                       <Calendar size={10} className="mr-1" />
-                      {new Date(item.createdAt).toLocaleDateString('pt-BR')}
+                      {item.createdAt ? new Date(item.createdAt).toLocaleDateString('pt-BR') : '-'}
                     </div>
                     <div className="flex items-center text-[10px] text-gray-400">
                       <User size={10} className="mr-1" />
@@ -3212,7 +3212,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                       {confirmEvidencia.status || 'Pendente'}
                     </span>
                     <span className="text-gray-500">
-                      Enviada em {new Date(confirmEvidencia.createdAt).toLocaleDateString('pt-BR')}
+                      Enviada em {confirmEvidencia.createdAt ? new Date(confirmEvidencia.createdAt).toLocaleDateString('pt-BR') : '-'}
                     </span>
                   </div>
                 </div>
@@ -4457,7 +4457,7 @@ const AdministracaoView = ({
                       <td className="px-4 py-3">
                         <div className="flex items-center">
                           <div className="w-8 h-8 rounded bg-blue-50 flex items-center justify-center text-[#3578d4] font-bold text-[10px] mr-3">
-                            {empresa.nome.substring(0, 2).toUpperCase()}
+                            {(empresa.nome || '').substring(0, 2).toUpperCase()}
                           </div>
                           <span className="text-[12px] font-bold text-[#1e315d]">{empresa.nome}</span>
                         </div>
@@ -4647,7 +4647,7 @@ const AdministracaoView = ({
                     </button>
                   </div>
                   <div className="space-y-2">
-                    {Object.entries(perfil.modulos).map(([modulo, permissao], mIdx) => (
+                    {Object.entries(perfil.modulos || {}).map(([modulo, permissao], mIdx) => (
                       <div key={mIdx} className="flex items-center justify-between py-1 border-b border-gray-50 last:border-0">
                         <span className="text-[11px] text-gray-500 capitalize">{modulo}</span>
                         <span className={cn(
@@ -6611,7 +6611,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
       'Rejeitada': 'REJEITADA',
       'REJEITADA': 'REJEITADA',
     };
-    return statusMap[status] || status.toUpperCase();
+    return statusMap[status] || (status || '').toUpperCase();
   };
 
   const salvarEvidencia = async () => {
@@ -6870,7 +6870,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
         const token = localStorage.getItem('nexus_token');
         if (!token || !project?.id) return;
         
-        const response = await fetch(`${API_BASE_URL}/demandas?projetoId=${project.id}`, {
+        const response = await fetch(`${API_BASE_URL}/demandas?projetoId=${project?.id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -6895,7 +6895,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
       const token = localStorage.getItem('nexus_token');
       if (!token) return;
 
-      const response = await fetch(`${API_BASE_URL}/projetos/${project.id}/status`, {
+      const response = await fetch(`${API_BASE_URL}/projetos/${project?.id}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -6919,7 +6919,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
       const token = localStorage.getItem('nexus_token');
       if (!token) return;
 
-      const response = await fetch(`${API_BASE_URL}/projetos/${project.id}/progresso`, {
+      const response = await fetch(`${API_BASE_URL}/projetos/${project?.id}/progresso`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -6943,7 +6943,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: 
   };
 
   const calculateAutoProgresso = () => {
-    if (demandasVinculadas.length === 0) return projetoEditando.progresso;
+    if (demandasVinculadas.length === 0) return projetoEditando?.progresso || 0;
     const concluidas = demandasVinculadas.filter((d: any) => d.status === 'CONCLUIDA').length;
     return Math.round((concluidas / demandasVinculadas.length) * 100);
   };
