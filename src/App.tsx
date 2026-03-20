@@ -1613,9 +1613,9 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
       {/* Modal de Criação de Demanda */}
       {showFormNew && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
-          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] overflow-hidden animate-in fade-in zoom-in duration-200">
+          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] max-h-[90vh] overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div className="sticky top-0 bg-white flex items-center justify-between px-6 py-4 border-b border-gray-100 z-10">
               <h2 className="text-[16px] font-bold text-[#1e315d]">Nova Demanda</h2>
               <button 
                 onClick={() => {
@@ -1637,7 +1637,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
             </div>
 
             {/* Body */}
-            <div className="p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
               <div>
                 <label className="text-[11px] font-bold text-gray-600">Empresa *</label>
                 <select 
@@ -1749,7 +1749,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3">
+            <div className="sticky bottom-0 bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3 z-10">
               <button 
                 onClick={() => {
                   setShowFormNew(false);
