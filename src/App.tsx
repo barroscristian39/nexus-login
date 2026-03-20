@@ -838,7 +838,8 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
         status: editFormData.status,
         progresso: editFormData.progresso,
         vencimento: editFormData.vencimento,
-        responsavelId: editFormData.responsavelId || null
+        responsavelId: editFormData.responsavelId || null,
+        projetoId: editFormData.projetoId || null
       };
       
       console.log('[SALVAR] Payload:', payload);
@@ -1562,6 +1563,24 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
                         ))
                       ) : (
                         <option disabled>Nenhum técnico disponível</option>
+                      )}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-gray-600">Projeto (opcional)</label>
+                    <select 
+                      value={editFormData.projetoId || ''}
+                      onChange={(e) => setEditFormData({ ...editFormData, projetoId: e.target.value || null })}
+                      className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+                    >
+                      <option value="">Nenhum projeto</option>
+                      {projetosData && projetosData.length > 0 ? (
+                        projetosData.map((projeto) => (
+                          <option key={projeto.id} value={projeto.id}>{projeto.nome}</option>
+                        ))
+                      ) : (
+                        <option disabled>Nenhum projeto disponível</option>
                       )}
                     </select>
                   </div>
