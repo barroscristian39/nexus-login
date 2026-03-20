@@ -7511,7 +7511,7 @@ export default function App() {
           onClose={() => setIsEmpresaModalOpen(false)} 
           onSuccess={() => {
             setIsEmpresaModalOpen(false);
-            syncData();
+            syncDataFromApi();
           }}
           authToken={authToken || ''}
         />
