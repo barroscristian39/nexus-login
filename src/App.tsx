@@ -1637,7 +1637,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken,
             </div>
 
             {/* Body */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent p-6 space-y-4" style={{ scrollbarWidth: 'thin', scrollbarColor: '#d1d5db transparent' }}>
               <div>
                 <label className="text-[11px] font-bold text-gray-600">Empresa *</label>
                 <select 
