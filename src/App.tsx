@@ -4125,13 +4125,14 @@ const NotificationDropdown = ({ onClose, onViewAll, notificacoesList }: { onClos
   );
 };
 
-const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => void }) => {
+const EvidenceModal = ({ evidence, onClose, projetosData, authToken }: { evidence?: any, onClose: () => void, projetosData?: any[], authToken?: string }) => {
   const [formData, setFormData] = useState({
     nomeArquivo: evidence?.nomeArquivo || '',
     tipo: evidence?.tipo?.toUpperCase() || 'PDF',
     status: evidence?.status || 'Pendente',
     descricao: evidence?.descricao || '',
-    demandaId: evidence?.demandaId || ''
+    demandaId: evidence?.demandaId || '',
+    projetoId: evidence?.projetoId || ''
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -4144,7 +4145,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
     // Carregar lista de demandas
     const loadDemandas = async () => {
       try {
-        const token = localStorage.getItem('nexus_token');
+        const token = authToken || localStorage.getItem('nexus_token');
         const response = await fetch(`${API_BASE_URL}/demandas`, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -4163,7 +4164,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
     };
 
     loadDemandas();
-  }, []);
+  }, [authToken]);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -4192,9 +4193,14 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
       return;
     }
 
+    if (!formData.demandaId) {
+      showToast('Selecione uma demanda obrigatoriamente', 'error');
+      return;
+    }
+
     try {
       setIsSaving(true);
-      const token = localStorage.getItem('nexus_token');
+      const token = authToken || localStorage.getItem('nexus_token');
       const empresaId = 'cmmvaphw40003o9kwzr2sy6wu'; // ID da empresa
       const isEditing = !!evidence?.id;
       const method = isEditing ? 'PUT' : 'POST';
@@ -4209,8 +4215,9 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
       formDataToSend.append('tipoArquivo', formData.tipo);
       formDataToSend.append('status', normalizeStatus(formData.status));
       formDataToSend.append('observacoes', formData.descricao || '');
-      if (formData.demandaId) {
-        formDataToSend.append('demandaId', formData.demandaId);
+      formDataToSend.append('demandaId', formData.demandaId);
+      if (formData.projetoId) {
+        formDataToSend.append('projetoId', formData.projetoId);
       }
       if (selectedFile) {
         formDataToSend.append('arquivo', selectedFile);
@@ -4298,7 +4305,24 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-gray-600">Demanda vinculada</label>
+              <label className="text-[11px] font-bold text-gray-600">Projeto (opcional)</label>
+              <div className="relative">
+                <select
+                  value={formData.projetoId}
+                  onChange={(e) => setFormData({ ...formData, projetoId: e.target.value })}
+                  className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]"
+                >
+                  <option value="">Nenhum projeto</option>
+                  {(projetosData || []).map(p => (
+                    <option key={p.id} value={p.id}>{p.titulo || p.nome}</option>
+                  ))}
+                </select>
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-gray-600">Demanda vinculada *</label>
               <div className="relative">
                 <select
                   value={formData.demandaId}
@@ -4306,7 +4330,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
                   disabled={isLoadingDemandas}
                   className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] disabled:opacity-50"
                 >
-                  <option value="">Nenhuma</option>
+                  <option value="">Selecione uma demanda</option>
                   {demandas.map(d => (
                     <option key={d.id} value={d.id}>{d.titulo}</option>
                   ))}
@@ -5440,7 +5464,9 @@ export default function App() {
       {isEvidenceModalOpen && (
         <EvidenceModal 
           evidence={selectedEvidence}
-          onClose={handleCloseEvidenceModal} 
+          onClose={handleCloseEvidenceModal}
+          projetosData={allProjetos}
+          authToken={authToken}
         />
       )}
 
