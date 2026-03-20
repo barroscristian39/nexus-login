@@ -3632,7 +3632,7 @@ const RelatorioExecucaoView = () => {
                       <td className="py-3 px-5">
                         <div className="flex items-center">
                           <div className="w-6 h-6 rounded-full bg-blue-50 text-[#3578d4] flex items-center justify-center text-[10px] font-bold mr-3">
-                            {(item.responsible || '').split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
+                            {(item.responsible ?? '').split(' ').filter(Boolean).map((n: string) => n[0] ?? '').join('').substring(0, 2)}
                           </div>
                           <span className="text-[12px] font-bold text-[#1e315d]">{item.responsible}</span>
                         </div>
@@ -3750,7 +3750,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Responsável</span>
             <div className="flex items-center space-x-2 text-[#1e315d]">
               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-[#3578d4]">
-                {(project.responsavel || '').split(' ').map((n: string) => n[0]).join('')}
+                {(project.responsavel ?? '').split(' ').filter(Boolean).map((n: string) => n[0] ?? '').join('')}
               </div>
               <span className="text-[13px] font-medium">{project.responsavel}</span>
             </div>
