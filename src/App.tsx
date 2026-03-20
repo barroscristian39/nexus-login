@@ -633,7 +633,7 @@ const DashboardView = () => {
   );
 };
 
-const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken }: { usuariosAdminList: any[], currentUser: any, empresasData: any[], authToken: string }) => {
+const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken, allProjetos, onSyncData }: { usuariosAdminList: any[], currentUser: any, empresasData: any[], authToken: string, allProjetos: any[], onSyncData: () => Promise<void> }) => {
   const [demandas, setDemandas] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -653,7 +653,8 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
     prioridade: 'MEDIA',
     vencimento: '',
     responsavelId: '',
-    empresaId: empresasData?.[0]?.id || ''
+    empresaId: empresasData?.[0]?.id || '',
+    projetoId: ''
   });
   const [isCreating, setIsCreating] = useState(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
@@ -903,7 +904,8 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
           empresaId: novaDemandata.empresaId,
           status: 'ABERTA',
           progresso: 0,
-          responsavelId: novaDemandata.responsavelId || null
+          responsavelId: novaDemandata.responsavelId || null,
+          projetoId: novaDemandata.projetoId || null
         })
       });
 
@@ -918,9 +920,11 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
         prioridade: 'MEDIA',
         vencimento: '',
         responsavelId: '',
-        empresaId: empresasData?.[0]?.id || ''
+        empresaId: empresasData?.[0]?.id || '',
+        projetoId: ''
       });
       showToast('Demanda criada com sucesso', 'success');
+      await onSyncData();
     } catch (err) {
       console.error('Erro:', err);
       showToast('Erro ao criar demanda', 'error');
@@ -1603,7 +1607,8 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
                     prioridade: 'MEDIA',
                     vencimento: '',
                     responsavelId: '',
-                    empresaId: empresasData?.[0]?.id || ''
+                    empresaId: empresasData?.[0]?.id || '',
+                    projetoId: ''
                   });
                 }}
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors"
@@ -1628,6 +1633,24 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
                     ))
                   ) : (
                     <option disabled>Nenhuma empresa disponível</option>
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-gray-600">Projeto (opcional)</label>
+                <select 
+                  value={novaDemandata.projetoId}
+                  onChange={(e) => setNovaDemandata({ ...novaDemandata, projetoId: e.target.value })}
+                  className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+                >
+                  <option value="">Nenhum projeto</option>
+                  {allProjetos && allProjetos.length > 0 ? (
+                    allProjetos.map((projeto) => (
+                      <option key={projeto.id} value={projeto.id}>{projeto.nome}</option>
+                    ))
+                  ) : (
+                    <option disabled>Nenhum projeto disponível</option>
                   )}
                 </select>
               </div>
@@ -1717,7 +1740,8 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
                     prioridade: 'MEDIA',
                     vencimento: '',
                     responsavelId: '',
-                    empresaId: empresasData?.[0]?.id || ''
+                    empresaId: empresasData?.[0]?.id || '',
+                    projetoId: ''
                   });
                 }}
                 disabled={isCreating}
@@ -2027,7 +2051,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasData, authToken 
   );
 };
 
-const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authToken }: { onEdit: (project: any) => void, onViewDetail: (project: any) => void, currentUser: any, empresasData: any[], authToken: string }) => {
+const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authToken, onSyncData }: { onEdit: (project: any) => void, onViewDetail: (project: any) => void, currentUser: any, empresasData: any[], authToken: string, onSyncData: () => Promise<void> }) => {
   const [projetos, setProjetos] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -2194,6 +2218,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser, empresasData, authTok
         empresaId: empresasData?.[0]?.id || ''
       });
       showToast('Projeto criado com sucesso', 'success');
+      await onSyncData();
     } catch (err) {
       console.error('Erro:', err);
       showToast('Erro ao criar projeto', 'error');
@@ -6823,6 +6848,227 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
   );
 };
 
+const DetalheProjetoView = ({ project, onBack, onEdit, onSyncData }: { project: any, onBack: () => void, onEdit: () => void, onSyncData: () => Promise<void> }) => {
+  const [projetoEditando, setProjetoEditando] = useState(project);
+  const [statusDropdown, setStatusDropdown] = useState(false);
+  const [demandasVinculadas, setDemandasVinculadas] = useState<any[]>([]);
+  const [isLoadingDemandas, setIsLoadingDemandas] = useState(false);
+  
+  const statusOptions = [
+    { value: 'PLANEJAMENTO', label: 'Planejamento' },
+    { value: 'EM_ANDAMENTO', label: 'Em andamento' },
+    { value: 'EM_REVISAO', label: 'Em revisão' },
+    { value: 'CONCLUIDO', label: 'Concluído' },
+    { value: 'ATRASADO', label: 'Atrasado' },
+    { value: 'BLOQUEADO', label: 'Bloqueado' }
+  ];
+
+  useEffect(() => {
+    const loadDemandasVinculadas = async () => {
+      try {
+        setIsLoadingDemandas(true);
+        const token = localStorage.getItem('nexus_token');
+        if (!token || !project?.id) return;
+        
+        const response = await fetch(`${API_BASE_URL}/demandas?projetoId=${project.id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const resultado = await response.json();
+          setDemandasVinculadas(resultado.data || []);
+        }
+      } catch (err) {
+        console.error('Erro ao carregar demandas:', err);
+      } finally {
+        setIsLoadingDemandas(false);
+      }
+    };
+    
+    loadDemandasVinculadas();
+  }, [project?.id]);
+
+  const handleStatusChange = async (novoStatus: string) => {
+    try {
+      const token = localStorage.getItem('nexus_token');
+      if (!token) return;
+
+      const response = await fetch(`${API_BASE_URL}/projetos/${project.id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: novoStatus })
+      });
+
+      if (response.ok) {
+        setProjetoEditando({ ...projetoEditando, status: novoStatus });
+        setStatusDropdown(false);
+        await onSyncData();
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar status:', err);
+    }
+  };
+
+  const handleProgressoChange = async (novoProgresso: number) => {
+    try {
+      const token = localStorage.getItem('nexus_token');
+      if (!token) return;
+
+      const response = await fetch(`${API_BASE_URL}/projetos/${project.id}/progresso`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ progresso: novoProgresso })
+      });
+
+      if (response.ok) {
+        setProjetoEditando({ ...projetoEditando, progresso: novoProgresso });
+        await onSyncData();
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar progresso:', err);
+    }
+  };
+
+  const formatDate = (date: string) => {
+    if (!date) return '-';
+    return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
+  };
+
+  const calculateAutoProgresso = () => {
+    if (demandasVinculadas.length === 0) return projetoEditando.progresso;
+    const concluidas = demandasVinculadas.filter((d: any) => d.status === 'CONCLUIDA').length;
+    return Math.round((concluidas / demandasVinculadas.length) * 100);
+  };
+
+  return (
+    <div className="h-full bg-gray-50 overflow-y-auto">
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={onBack}
+              className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+            >
+              <ArrowLeft size={24} className="text-gray-600" />
+            </button>
+            <h1 className="text-[28px] font-bold text-[#1e315d]">{projetoEditando?.nome}</h1>
+          </div>
+          <button 
+            onClick={onEdit}
+            className="px-4 py-2 bg-[#3578d4] text-white rounded-lg hover:bg-[#2d66b5] transition-colors"
+          >
+            Editar Projeto
+          </button>
+        </div>
+
+        <div className="grid grid-cols-3 gap-6 mb-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <p className="text-sm text-gray-600 mb-2">Descrição</p>
+            <p className="text-lg text-gray-800">{projetoEditando?.descricao || 'Sem descrição'}</p>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <p className="text-sm text-gray-600 mb-2">Data de Início</p>
+            <p className="text-lg text-gray-800">{formatDate(projetoEditando?.dataInicio)}</p>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <p className="text-sm text-gray-600 mb-2">Data Prevista</p>
+            <p className="text-lg text-gray-800">{formatDate(projetoEditando?.dataPrevista)}</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-[#1e315d]">Status e Progresso</h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Status</p>
+              <div className="relative">
+                <button 
+                  onClick={() => setStatusDropdown(!statusDropdown)}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-left flex items-center justify-between hover:bg-gray-50"
+                >
+                  <span>{statusOptions.find(s => s.value === projetoEditando?.status)?.label || 'Selecionar'}</span>
+                  <ChevronDown size={16} />
+                </button>
+                
+                {statusDropdown && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                    {statusOptions.map(option => (
+                      <button
+                        key={option.value}
+                        onClick={() => handleStatusChange(option.value)}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors text-sm"
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Progresso: {projetoEditando?.progresso}%</p>
+              <div className="flex items-center gap-4">
+                <input 
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={projetoEditando?.progresso || 0}
+                  onChange={(e) => handleProgressoChange(parseInt(e.target.value))}
+                  className="flex-1"
+                />
+                <span className="text-sm font-semibold text-gray-800 w-12">{projetoEditando?.progresso}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-bold text-[#1e315d] mb-4">Demandas Vinculadas ({demandasVinculadas.length})</h2>
+          
+          {isLoadingDemandas ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Carregando demandas...</p>
+            </div>
+          ) : demandasVinculadas.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Nenhuma demanda vinculada a este projeto</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {demandasVinculadas.map((demanda: any) => (
+                <div key={demanda.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <div className="flex-1">
+                    <p className="font-semibold text-gray-800">{demanda.titulo}</p>
+                    <p className="text-sm text-gray-500">{demanda.descricao}</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm px-3 py-1 bg-gray-100 rounded-full">{demanda.status}</span>
+                    <span className="text-sm font-medium">{demanda.progresso || 0}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function App() {
   const [currentView, setCurrentView] = useState<'painel' | 'demandas' | 'projetos' | 'evidencias' | 'relatorio' | 'configuracoes' | 'detalhe-projeto' | 'notificacoes' | 'administracao' | 'usuarios-empresa'>('painel');
   const [authToken, setAuthToken] = useState<string | null>(() => localStorage.getItem('nexus_token'));
@@ -6845,6 +7091,7 @@ export default function App() {
   const [isConfirmacaoModalOpen, setIsConfirmacaoModalOpen] = useState(false);
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [allProjetos, setAllProjetos] = useState<any[]>([]);
   const [selectedEvidence, setSelectedEvidence] = useState<any>(null);
   const [selectedEmpresa, setSelectedEmpresa] = useState<any>(null);
   const [selectedUsuario, setSelectedUsuario] = useState<any>(null);
@@ -7002,6 +7249,7 @@ export default function App() {
       setEmpresasAdminData(empresasData);
       setUsuariosAdminList(usuariosAdminData);
       setSubusuariosList(subusuariosData);
+      setAllProjetos(projetos);
       console.log('[SYNC] Estados atualizados:', { 
         empresas: empresasData.length, 
         usuarios: usuariosAdminData.length, 
@@ -7507,8 +7755,8 @@ export default function App() {
         </header>
 
         {currentView === 'painel' ? <DashboardView /> : 
-         currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} /> : 
-         currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} /> :
+         currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} allProjetos={allProjetos} onSyncData={syncDataFromApi} /> : 
+         currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} empresasData={empresasAdminData} authToken={authToken} onSyncData={syncDataFromApi} /> :
          currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
          currentView === 'relatorio' ? <RelatorioExecucaoView /> :
          currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} /> :
@@ -7548,7 +7796,7 @@ export default function App() {
              onDelete={handleDeleteUser}
            />
          ) :
-         <DetalheProjetoView project={selectedProject} onBack={() => setCurrentView('projetos')} onEdit={() => setIsEditModalOpen(true)} />}
+         <DetalheProjetoView project={selectedProject} onBack={() => setCurrentView('projetos')} onEdit={() => setIsEditModalOpen(true)} onSyncData={syncDataFromApi} />}
       </div>
 
       {isEditModalOpen && (
