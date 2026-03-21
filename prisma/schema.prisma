@@ -197,7 +197,7 @@ model Demanda {
 
 model Evidencia {
   id            String          @id @default(cuid())
-  empresaId     String
+  empresaId     String?
   demandaId     String?
   projetoId     String?
   nomeArquivo   String
@@ -210,7 +210,7 @@ model Evidencia {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 
-  empresa       Empresa         @relation(fields: [empresaId], references: [id])
+  empresa       Empresa?        @relation(fields: [empresaId], references: [id])
   demanda       Demanda?        @relation(fields: [demandaId], references: [id])
   projeto       Projeto?        @relation(fields: [projetoId], references: [id])
   responsavel   Usuario?        @relation("EvidenciaResponsavel", fields: [responsavelId], references: [id])
