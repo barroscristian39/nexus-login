@@ -14,9 +14,9 @@ app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 }));
-
-app.options('*', cors());
 
 // Logging middleware
 app.use((req, res, next) => {
