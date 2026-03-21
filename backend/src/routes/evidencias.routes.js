@@ -45,7 +45,7 @@ const upload = multer({
 const router = Router();
 
 const schema = z.object({
-  empresaId: z.string(),
+  empresaId: z.string().nullable().optional(),
   demandaId: z.string().nullable().optional(),
   projetoId: z.string().nullable().optional(),
   nomeArquivo: z.string().min(2),
@@ -78,7 +78,7 @@ router.post('/', upload.single('arquivo'), async (req, res) => {
     console.log('[EVIDENCIAS POST] User:', req.user);
 
     // Extrair empresaId do usuário se não for fornecido
-    const empresaId = req.body.empresaId || req.user?.empresaId;
+    const empresaId = req.body.empresaId || req.user?.empresaId || null;
     
     const bodyData = {
       empresaId,
@@ -105,6 +105,7 @@ router.post('/', upload.single('arquivo'), async (req, res) => {
     const data = await prisma.evidencia.create({
       data: {
         ...parsed.data,
+        empresaId: empresaId || undefined,
         urlArquivo: urlArquivo,
         dataEnvio: new Date(),
       },
