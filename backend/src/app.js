@@ -12,17 +12,11 @@ const app = express();
 
 app.use(cors({
   origin: '*',
-  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'multipart/form-data'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200);
-});
+app.options('*', cors());
 
 // Logging middleware
 app.use((req, res, next) => {
