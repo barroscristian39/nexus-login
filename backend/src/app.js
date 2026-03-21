@@ -10,6 +10,14 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Handle preflight requests
+app.options('*', cors({
+  origin: ['https://nexus-login-teal.vercel.app', 'http://localhost:5173', 'http://localhost:4000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 // Logging middleware
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
