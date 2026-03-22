@@ -635,7 +635,7 @@ const DashboardView = () => {
   );
 };
 
-const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: any[], currentUser: any }) => {
+const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [] }: { usuariosAdminList: any[], currentUser: any, empresasAdminData?: any[] }) => {
   const [demandas, setDemandas] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -5599,7 +5599,9 @@ const UsuariosEmpresaView = ({
   onResetPassword,
   onDeactivateUser,
   onToggleLock,
-  onDelete
+  onDelete,
+  usuariosAdminData = [],
+  subusuariosData = []
 }: { 
   empresa: any, 
   onBack: () => void,
@@ -5610,7 +5612,9 @@ const UsuariosEmpresaView = ({
   onResetPassword: (user: any) => void,
   onDeactivateUser: (user: any) => void,
   onToggleLock: (user: any) => void,
-  onDelete: (user: any) => void
+  onDelete: (user: any) => void,
+  usuariosAdminData?: any[],
+  subusuariosData?: any[]
 }) => {
   const [activeTab, setActiveTab] = useState<'principais' | 'subusuarios' | 'permissoes'>('principais');
 
@@ -7480,7 +7484,7 @@ export default function App() {
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center px-2.5 py-1 rounded border border-red-100 text-[#ef4444] text-[10px] font-bold hover:bg-red-50 transition-colors"
+              className="hidden sm:flex items-center px-2.5 py-1 rounded border border-red-100 text-[#ef4444] text-[10px] font-bold hover:bg-red-50 transition-colors"
             >
               <div className="w-1 h-1 rounded-full border border-red-400 mr-1.5" />
               Sair
@@ -7491,7 +7495,7 @@ export default function App() {
         {/* Views Container */}
         <div className="flex-1 overflow-y-auto">
           {currentView === 'painel' ? <DashboardView /> : 
-           currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} /> : 
+           currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasAdminData={empresasAdminData} /> : 
            currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} /> :
            currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
            currentView === 'relatorio' ? <RelatorioExecucaoView /> :
@@ -7530,6 +7534,8 @@ export default function App() {
              onDeactivateUser={handleDeactivateUser}
              onToggleLock={handleToggleLock}
              onDelete={handleDeleteUser}
+             usuariosAdminData={usuariosAdminList}
+             subusuariosData={subusuariosList}
            />
          ) :
          <DetalheProjetoView project={selectedProject} onBack={() => setCurrentView('projetos')} onEdit={() => setIsEditModalOpen(true)} />}
