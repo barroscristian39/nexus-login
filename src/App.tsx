@@ -2273,35 +2273,34 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
   return (
     <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="mb-4">
-        <h1 className="text-lg font-bold text-[#1e315d]">Gestão de Projetos</h1>
+        <h1 className="text-base sm:text-lg font-bold text-[#1e315d]">Gestão de Projetos</h1>
       </div>
 
-      {/* Toolbar */}
-      <div className="flex items-center justify-between mb-4 bg-white p-3 rounded-[6px] shadow-sm border border-gray-100">
-        <div className="flex items-center space-x-2">
+      {/* Toolbar - Responsivo */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 bg-white p-3 rounded-[6px] shadow-sm border border-gray-100">
+        <div className="flex flex-wrap items-center gap-2">
           <button 
             onClick={() => setShowFormNew(true)}
-            className="h-[34px] px-4 bg-[#3578d4] text-white text-[13px] font-bold rounded-[6px] flex items-center hover:bg-[#2d66b5] transition-colors"
+            className="h-[34px] px-3 sm:px-4 bg-[#3578d4] text-white text-[12px] sm:text-[13px] font-bold rounded-[6px] flex items-center hover:bg-[#2d66b5] transition-colors whitespace-nowrap"
           >
             + Novo Projeto
           </button>
-          <button className="h-[34px] px-3 bg-white border border-gray-200 text-gray-600 text-[12px] font-medium rounded-[6px] flex items-center hover:bg-gray-50 transition-colors">
+          <button className="h-[34px] px-3 bg-white border border-gray-200 text-gray-600 text-[12px] font-medium rounded-[6px] flex items-center hover:bg-gray-50 transition-colors hidden sm:flex">
             <FileBarChart size={14} className="mr-2 text-blue-500" />
             Exportar
           </button>
-          <div className="w-[1px] h-6 bg-gray-200 mx-2" />
         </div>
 
-        <div className="flex items-center space-x-2">
-          <div className="relative">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
+          <div className="relative w-full sm:w-[200px]">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Buscar projeto..." 
-              className="h-[34px] w-[200px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              placeholder="Buscar..." 
+              className="h-[34px] w-full bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
             />
           </div>
-          <div className="relative">
+          <div className="hidden sm:block relative w-full sm:w-auto">
             <select className="h-[34px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
               <option>Todos os status</option>
             </select>
@@ -3434,33 +3433,33 @@ const RelatorioExecucaoView = () => {
 
   return (
     <main className="flex-1 overflow-y-auto bg-[#f3f4f6]">
-      {/* Toolbar */}
-      <div className="h-[52px] bg-white border-b border-gray-100 flex items-center justify-between px-5 shrink-0">
-        <div className="flex items-center space-x-2">
+      {/* Toolbar - Responsivo */}
+      <div className="bg-white border-b border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-3 sm:px-5 py-3 sm:py-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button 
             onClick={() => window.location.reload()}
-            className="h-[32px] px-4 bg-[#3578d4] text-white text-[12px] font-bold rounded-[4px] hover:bg-[#2d66b5] transition-colors shadow-sm"
+            className="h-[32px] px-3 sm:px-4 bg-[#3578d4] text-white text-[11px] sm:text-[12px] font-bold rounded-[4px] hover:bg-[#2d66b5] transition-colors shadow-sm"
           >
-            Atualizar Relatório
+            Atualizar
           </button>
-          <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[4px] flex items-center hover:bg-gray-50 transition-colors">
+          <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[4px] flex items-center hover:bg-gray-50 transition-colors hidden sm:flex">
             <FileText size={14} className="mr-2 text-red-500" />
-            Exportar PDF
+            PDF
           </button>
-          <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[4px] flex items-center hover:bg-gray-50 transition-colors">
+          <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[4px] flex items-center hover:bg-gray-50 transition-colors hidden sm:flex">
             <FileSpreadsheet size={14} className="mr-2 text-green-600" />
-            Exportar Excel
+            Excel
           </button>
         </div>
 
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-tight">Período:</span>
-            <div className="relative">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <span className="text-[10px] sm:text-[11px] font-bold text-gray-400 uppercase tracking-tight whitespace-nowrap">Período:</span>
+            <div className="relative flex-1 sm:flex-initial">
               <select 
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="h-[32px] bg-gray-50 border border-gray-200 rounded-[4px] pl-3 pr-8 text-[11px] text-gray-600 font-bold outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] min-w-[140px]"
+                className="h-[32px] w-full bg-gray-50 border border-gray-200 rounded-[4px] pl-3 pr-8 text-[11px] text-gray-600 font-bold outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]"
               >
                 <option>Março / 2026</option>
                 <option>Fevereiro / 2026</option>
@@ -3469,15 +3468,15 @@ const RelatorioExecucaoView = () => {
               <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-tight">ürea:</span>
-            <div className="relative">
+          <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+            <span className="text-[10px] sm:text-[11px] font-bold text-gray-400 uppercase tracking-tight whitespace-nowrap">Área:</span>
+            <div className="relative flex-1 sm:flex-initial">
               <select 
                 value={selectedArea}
                 onChange={(e) => setSelectedArea(e.target.value)}
-                className="h-[32px] bg-gray-50 border border-gray-200 rounded-[4px] pl-3 pr-8 text-[11px] text-gray-600 font-bold outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] min-w-[140px]"
+                className="h-[32px] w-full bg-gray-50 border border-gray-200 rounded-[4px] pl-3 pr-8 text-[11px] text-gray-600 font-bold outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]"
               >
-                <option>Todas as üreas</option>
+                <option>Todas as áreas</option>
               </select>
               <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
             </div>
