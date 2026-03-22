@@ -164,7 +164,7 @@ const LoginView = ({
           <div className="px-8 pb-6 pt-6">
             <form className="space-y-4" onSubmit={handleSubmit}>
               <label className="block">
-                <span className="mb-2 block text-[13px] font-bold text-[#243963]">E-mail / Usuírio</span>
+                <span className="mb-2 block text-[13px] font-bold text-[#243963]">E-mail / usuário</span>
                 <input
                   type="text"
                   value={email}
@@ -181,7 +181,7 @@ const LoginView = ({
                     type={mostrarSenha ? 'text' : 'password'}
                     value={senha}
                     onChange={(event) => setSenha(event.target.value)}
-                    placeholder="ÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇó"
+                    placeholder="••••••••"
                     className="h-[36px] w-full rounded-[8px] border border-[#d1d8e5] bg-white px-4 pr-10 text-[12px] text-[#1e315d] outline-none transition placeholder:text-[#98a4bb] focus:border-[#3775d2] focus:ring-2 focus:ring-[#3775d2]/15"
                   />
                   <button
@@ -223,7 +223,7 @@ const LoginView = ({
           </div>
 
           <div className="border-t border-[#e5e7eb] bg-[#f2f4f8] px-6 py-3 text-center text-[11px] text-[#a0aec0]">
-            Nexus v2.4.1 ÔÇó ┬® 2026 Empresa Modelo S.A.
+            Nexus v2.4.1 • © 2026 Empresa Modelo S.A.
           </div>
         </div>
       </div>
@@ -443,14 +443,14 @@ const DashboardView = () => {
       <div className="grid grid-cols-4 gap-3">
         <KPICard title="Demandas Abertas" value={String(kpis?.demandasAbertas || 0)} color="bg-[#2fb15d]" icon={ListTodo} />
         <KPICard title="Em Execução" value={String(kpis?.emExecucao || 0)} color="bg-[#3578d4]" icon={CheckCircle2} />
-        <KPICard title="Evid~ncias Pendentes" value={String(kpis?.evidenciasPendentes || 0)} color="bg-[#f59e0b]" icon={Clock} />
+        <KPICard title="Evidências Pendentes" value={String(kpis?.evidenciasPendentes || 0)} color="bg-[#f59e0b]" icon={Clock} />
         <KPICard title="Bloqueadas / Atrasadas" value={String(kpis?.bloqueadasAtrasadas || 0)} color="bg-[#ef4444]" icon={AlertCircle} />
       </div>
 
       {/* First Chart Row */}
       <div className="grid grid-cols-[1.8fr_1fr] gap-3">
         <ChartCard 
-          title="Fluxo de Demandas ÔÇö ├║ltimos 30 dias" 
+          title="Fluxo de Demandas - ültimos 30 dias" 
           subtitle="Abertas vs Conclu├¡das por semana"
           className="h-[380px]"
         >
@@ -668,7 +668,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     { value: 'ATRASADA', label: 'Atrasada', color: '#dc2626' }
   ];
 
-  // Estados para comentírios e anexos
+  // Estados para comentários e anexos
   const [comentarios, setComentarios] = useState<any[]>([]);
   const [novoComentario, setNovoComentario] = useState('');
   const [isAddingComment, setIsAddingComment] = useState(false);
@@ -708,14 +708,14 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     loadDemandas();
   }, []);
 
-  // Carregar comentírios e evid~ncias ao selecionar uma demanda
+  // Carregar comentários e evidências ao selecionar uma demanda
   useEffect(() => {
     if (selectedDemanda && showModal && modalMode === 'view') {
       const loadRelated = async () => {
         try {
           const token = localStorage.getItem('nexus_token');
           
-          // Carregar comentírios
+          // Carregar comentários
           const commentsRes = await fetch(`${API_BASE_URL}/comentarios?demandaId=${selectedDemanda.id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
@@ -724,7 +724,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
             setComentarios(commentsData.data || []);
           }
 
-          // Carregar evid~ncias
+          // Carregar evidências
           const evidenciasRes = await fetch(`${API_BASE_URL}/evidencias?demandaId=${selectedDemanda.id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
@@ -809,7 +809,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       setDemandas(demandas.filter(d => d.id !== id));
       setShowConfirmDelete(false);
       setConfirmDeleteDemanda(null);
-      showToast('Demanda exclu├¡da com sucesso', 'success');
+      showToast('Demanda excluída com sucesso', 'success');
     } catch (err) {
       console.error('Erro:', err);
       showToast('Erro ao excluir demanda', 'error');
@@ -876,7 +876,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     }
 
     if (!currentUser) {
-      showToast('Erro: Usuírio não autenticado', 'error');
+      showToast('Erro: usuário não autenticado', 'error');
       return;
     }
 
@@ -949,7 +949,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
 
       if (!currentUser || !currentUser.id) {
         console.error('[COMENTARIO] Usuario não dispon├¡vel:', currentUser);
-        showToast('Erro: Dados de usuírio não encontrados. Faça login novamente.', 'error');
+        showToast('Erro: Dados de usuário não encontrados. Faça login novamente.', 'error');
         return;
       }
 
@@ -1258,7 +1258,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                           }}
                           defaultValue=""
                         >
-                          <option value="">ÔÇö Ação ÔÇö</option>
+                          <option value="">- Ação -</option>
                           <option value="Ver detalhes">Ver detalhes</option>
                           <option value="Editar">Editar</option>
                           <option value="Alterar Status">Alterar Status</option>
@@ -1274,7 +1274,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
 
             {/* Footer / Pagination */}
             <div className="px-4 py-3 bg-white flex items-center justify-between border-t border-gray-100">
-              <span className="text-[11px] text-gray-400 font-medium">Pígina 1 de 1 ┬À {demandas.length} demanda{demandas.length !== 1 ? 's' : ''}</span>
+              <span className="text-[11px] text-gray-400 font-medium">Página 1 de 1   {demandas.length} demanda{demandas.length !== 1 ? 's' : ''}</span>
               <div className="flex items-center space-x-1">
                 <button className="px-2 py-1 text-[11px] text-gray-500 border border-gray-200 rounded hover:bg-gray-50">Ant</button>
                 <button className="px-2.5 py-1 text-[11px] text-white bg-[#3578d4] rounded font-bold">1</button>
@@ -1386,14 +1386,14 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     )}
                   </div>
 
-                  {/* Seção de Comentírios */}
+                  {/* Seção de comentários */}
                   <div className="border-t border-gray-200 pt-4">
                     <label className="text-[11px] font-bold text-gray-500 uppercase flex items-center gap-2">
                       <MessageSquare size={12} />
-                      Comentírios
+                      comentários
                     </label>
                     
-                    {/* Lista de Comentírios */}
+                    {/* Lista de comentários */}
                     <div className="mt-3 max-h-[200px] overflow-y-auto space-y-2">
                       {comentarios.length > 0 ? (
                         comentarios.map((com) => (
@@ -1403,7 +1403,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                                 <div className="flex items-center gap-2">
                                   <UserCircle size={14} className="text-[#1e315d] flex-shrink-0" />
                                   <p className="text-[11px] font-bold text-[#1e315d]">
-                                    {com.usuario?.nome || com.usuarioId || 'Usuírio An├┤nimo'}
+                                    {com.usuario?.nome || com.usuarioId || 'usuário Anônimo'}
                                   </p>
                                 </div>
                                 <p className="text-[12px] text-gray-700 mt-2">{com.texto || com.conteudo}</p>
@@ -1700,7 +1700,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <p className="text-[12px] text-blue-800 flex items-start gap-2">
                   <Info size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    A demanda serí criada com status "Aberta" e progresso 0%.
+                    A demanda será criada com status "Aberta" e progresso 0%.
                   </span>
                 </p>
               </div>
@@ -1787,7 +1787,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    Todas as evid~ncias e comentírios vinculados õ demanda também serão removidos.
+                    Todas as evidências e comentários vinculados à demanda também serão removidos.
                   </span>
                 </p>
               </div>
@@ -1918,7 +1918,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     <div className="flex items-center gap-2">
                       <UserCircle size={14} className="text-[#1e315d] flex-shrink-0" />
                       <p className="text-[13px] font-semibold text-[#1e315d]">
-                        {comentarios.find(c => c.id === commentToDeleteId)?.usuario?.nome || 'Usuírio'}
+                        {comentarios.find(c => c.id === commentToDeleteId)?.usuario?.nome || 'usuário'}
                       </p>
                     </div>
                     <p className="text-[12px] text-gray-600 bg-white rounded-[6px] p-2 border border-gray-200">
@@ -1932,7 +1932,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    Voc~ tem certeza que deseja excluir este comentírio?
+                    você tem certeza que deseja excluir este comentírio?
                   </span>
                 </p>
               </div>
@@ -2143,7 +2143,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
       setProjetos(projetos.filter(p => p.id !== id));
       setShowConfirmDelete(false);
       setConfirmDeleteProjeto(null);
-      showToast('Projeto exclu├¡do com sucesso', 'success');
+      showToast('Projeto excluído com sucesso', 'success');
     } catch (err) {
       console.error('Erro:', err);
       showToast('Erro ao excluir projeto', 'error');
@@ -2430,7 +2430,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    Todas as demandas e comentírios vinculados ao projeto também serão removidos.
+                    Todas as demandas e comentários vinculados ao projeto também serão removidos.
                   </span>
                 </p>
               </div>
@@ -2667,7 +2667,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                 <p className="text-[12px] text-blue-800 flex items-start gap-2">
                   <Info size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    O projeto serí criado com status inicial e progresso 0%.
+                    O projeto será criado com status inicial e progresso 0%.
                   </span>
                 </p>
               </div>
@@ -2906,13 +2906,13 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
           }
         });
 
-        if (!response.ok) throw new Error('Erro ao carregar evid~ncias');
+        if (!response.ok) throw new Error('Erro ao carregar evidências');
         
         const data = await response.json();
         setEvidenciasAPI(data.data || []);
       } catch (err) {
         console.error('Erro:', err);
-        setError('Erro ao carregar evid~ncias');
+        setError('Erro ao carregar evidências');
       } finally {
         setIsLoading(false);
       }
@@ -2950,10 +2950,10 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
       setEvidenciasAPI(evidenciasAPI.filter(e => e.id !== confirmEvidencia.id));
       setShowConfirmDelete(false);
       setConfirmEvidencia(null);
-      showToast('Evid~ncia exclu├¡da com sucesso', 'success');
+      showToast('evidência excluída com sucesso', 'success');
     } catch (err) {
       console.error('Erro:', err);
-      showToast('Erro ao excluir evid~ncia', 'error');
+      showToast('Erro ao excluir evidência', 'error');
     } finally {
       setIsDeleting(false);
     }
@@ -2999,7 +2999,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
   return (
     <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="mb-4">
-        <h1 className="text-lg font-bold text-[#1e315d]">Gestão de Evid~ncias</h1>
+        <h1 className="text-lg font-bold text-[#1e315d]">Gestão de evidências</h1>
       </div>
 
       {/* Toolbar */}
@@ -3009,7 +3009,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
             onClick={onAdd}
             className="h-[34px] px-4 bg-[#3578d4] text-white text-[13px] font-bold rounded-[6px] flex items-center hover:bg-[#2d66b5] transition-colors"
           >
-            + Adicionar Evid~ncia
+            + Adicionar evidência
           </button>
           <button className="h-[34px] px-3 bg-white border border-gray-200 text-gray-600 text-[12px] font-medium rounded-[6px] flex items-center hover:bg-gray-50 transition-colors">
             <FileBarChart size={14} className="mr-2 text-blue-500" />
@@ -3025,7 +3025,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
               type="text" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar evid~ncia..." 
+              placeholder="Buscar evidência..." 
               className="h-[34px] w-[200px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
             />
           </div>
@@ -3049,7 +3049,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
             <div className="w-10 h-10 border-3 border-gray-300 border-t-[#3578d4] rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-gray-500 text-[13px]">Carregando evid~ncias...</p>
+            <p className="text-gray-500 text-[13px]">Carregando evidências...</p>
           </div>
         </div>
       ) : error ? (
@@ -3059,8 +3059,8 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
       ) : filteredEvidencias.length === 0 ? (
         <div className="bg-white rounded-[10px] p-12 text-center border border-gray-100">
           <Paperclip size={40} className="mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 text-[14px]">Nenhuma evid~ncia encontrada</p>
-          <p className="text-gray-400 text-[12px] mt-1">{searchTerm ? 'Tente ajustar seus filtros' : 'Comece adicionando uma evid~ncia'}</p>
+          <p className="text-gray-500 text-[14px]">Nenhuma evidência encontrada</p>
+          <p className="text-gray-400 text-[12px] mt-1">{searchTerm ? 'Tente ajustar seus filtros' : 'Comece adicionando uma evidência'}</p>
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-4">
@@ -3145,7 +3145,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                 <Trash2 size={24} className="text-red-600" />
               </div>
               <div>
-                <h3 className="text-[16px] font-bold text-[#1e315d]">Excluir evid~ncia?</h3>
+                <h3 className="text-[16px] font-bold text-[#1e315d]">Excluir evidência?</h3>
                 <p className="text-[13px] text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
               </div>
             </div>
@@ -3153,7 +3153,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
             {/* Body com contexto */}
             <div className="px-6 py-5">
               <div className="bg-gray-50 rounded-[10px] p-4 mb-4 border border-gray-200">
-                <p className="text-[12px] text-gray-500 uppercase tracking-wide mb-2">Evid~ncia a excluir</p>
+                <p className="text-[12px] text-gray-500 uppercase tracking-wide mb-2">evidência a excluir</p>
                 <div className="space-y-2">
                   <div>
                     <p className="text-[13px] text-gray-600">
@@ -3175,7 +3175,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    A evid~ncia serí removida do banco de dados e não poderí ser recuperada.
+                    A evidência será removida do banco de dados e não poderá ser recuperada.
                   </span>
                 </p>
               </div>
@@ -3206,7 +3206,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                 ) : (
                   <>
                     <Trash2 size={16} />
-                    Excluir evid~ncia
+                    Excluir evidência
                   </>
                 )}
               </button>
@@ -3751,7 +3751,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
         <div className="lg:col-span-2 space-y-5">
           <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 flex flex-col h-full">
             <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="text-[14px] font-bold text-[#1e315d]">Comentírios e Histórico</h3>
+              <h3 className="text-[14px] font-bold text-[#1e315d]">comentários e Histórico</h3>
               <MessageSquare size={16} className="text-gray-400" />
             </div>
             
@@ -3767,7 +3767,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                     <span className="text-[10px] text-gray-400">15/03/2026 09:30</span>
                   </div>
                   <div className="bg-gray-50 rounded-[8px] p-3 text-[12px] text-gray-600 leading-relaxed">
-                    Iniciado redesenho da interface principal. Foco em melhorar a usabilidade da gestão de evid~ncias.
+                    Iniciado redesenho da interface principal. Foco em melhorar a usabilidade da gestão de evidências.
                   </div>
                 </div>
               </div>
@@ -3782,7 +3782,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                     <span className="text-[10px] text-gray-400">18/03/2026 14:10</span>
                   </div>
                   <div className="bg-gray-50 rounded-[8px] p-3 text-[12px] text-gray-600 leading-relaxed">
-                    Depend~ncia identificada com a homologação da API financeira. Aguardando retorno do time de infra.
+                    Dependência identificada com a homologação da API financeira. Aguardando retorno do time de infra.
                   </div>
                 </div>
               </div>
@@ -3885,7 +3885,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
               </button>
               <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[6px] flex items-center space-x-2 hover:bg-gray-50 transition-colors">
                 <Paperclip size={14} className="text-[#3578d4]" />
-                <span>Adicionar evid~ncia</span>
+                <span>Adicionar evidência</span>
               </button>
               <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[6px] flex items-center space-x-2 hover:bg-gray-50 transition-colors">
                 <User size={14} className="text-[#3578d4]" />
@@ -3915,7 +3915,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                 <span className="text-[12px] font-bold text-green-600">1</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[12px] text-gray-500">Evid~ncias anexadas</span>
+                <span className="text-[12px] text-gray-500">evidências anexadas</span>
                 <span className="text-[12px] font-bold text-[#3578d4]">4</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-gray-50">
@@ -3927,7 +3927,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
 
           {/* Files / Evidence Card */}
           <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 p-5">
-            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">Arquivos / Evid~ncias</h3>
+            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">Arquivos / evidências</h3>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-2 bg-gray-50 rounded-[6px]">
                 <div className="flex items-center space-x-2 overflow-hidden">
@@ -4096,7 +4096,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
                     <option>Todas</option>
                     <option>Demandas</option>
                     <option>Projetos</option>
-                    <option>Evid~ncias</option>
+                    <option>evidências</option>
                     <option>Sistema</option>
                   </select>
                   <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -4150,7 +4150,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
           </div>
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3 px-1">
-            <span className="text-[11px] font-medium tracking-wide text-gray-400">Pígina 1 de 5 ┬À Exibindo 6 notificações</span>
+            <span className="text-[11px] font-medium tracking-wide text-gray-400">Página 1 de 5   Exibindo 6 notificações</span>
             <div className="flex items-center gap-1">
               <button className="rounded-[6px] border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-bold text-gray-500 transition-colors hover:bg-gray-50">Anterior</button>
               <button className="rounded-[6px] bg-[#3578d4] px-3 py-1.5 text-[11px] font-bold text-white shadow-sm">1</button>
@@ -4257,7 +4257,7 @@ const AdministracaoView = ({
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-lg font-bold text-[#1e315d]">Administrador</h1>
-          <p className="text-[11px] text-gray-500 mt-0.5">Gerencie empresas, usuírios e permissões do sistema</p>
+          <p className="text-[11px] text-gray-500 mt-0.5">Gerencie empresas, usuários e permissões do sistema</p>
         </div>
         <div className="flex items-center space-x-2">
           <button 
@@ -4272,7 +4272,7 @@ const AdministracaoView = ({
             className="h-[32px] px-4 bg-white border border-gray-200 text-gray-600 text-[12px] font-bold rounded-[6px] hover:bg-gray-50 transition-colors flex items-center shadow-sm"
           >
             <UserPlus size={14} className="mr-2 text-gray-400" />
-            Novo usuírio
+            Novo usuário
           </button>
         </div>
       </div>
@@ -4286,7 +4286,7 @@ const AdministracaoView = ({
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input 
                 type="text" 
-                placeholder="Buscar empresa, usuírio ou e-mail..." 
+                placeholder="Buscar empresa, usuário ou e-mail..." 
                 className="h-[32px] w-[280px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
               />
             </div>
@@ -4352,7 +4352,7 @@ const AdministracaoView = ({
             activeTab === 'usuarios' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
           )}
         >
-          Usuírios
+          usuários
           {activeTab === 'usuarios' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
         </button>
         <button 
@@ -4362,7 +4362,7 @@ const AdministracaoView = ({
             activeTab === 'subusuarios' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
           )}
         >
-          Subusuírios
+          Subusuários
           {activeTab === 'subusuarios' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
         </button>
         <button 
@@ -4454,13 +4454,13 @@ const AdministracaoView = ({
         {activeTab === 'usuarios' && (
           <div>
             <div className="p-4 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="text-[13px] font-bold text-[#1e315d]">Usuírios Principais</h3>
+              <h3 className="text-[13px] font-bold text-[#1e315d]">usuários Principais</h3>
               <button 
                 onClick={onNewUser}
                 className="text-[11px] font-bold text-[#3578d4] hover:underline flex items-center"
               >
                 <Plus size={14} className="mr-1" />
-                Novo usuírio
+                Novo usuário
               </button>
             </div>
             <div className="overflow-x-auto">
@@ -4520,13 +4520,13 @@ const AdministracaoView = ({
         {activeTab === 'subusuarios' && (
           <div>
             <div className="p-4 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="text-[13px] font-bold text-[#1e315d]">Subusuírios Vinculados</h3>
+              <h3 className="text-[13px] font-bold text-[#1e315d]">Subusuários Vinculados</h3>
               <button 
                 onClick={onNewSubUser}
                 className="text-[11px] font-bold text-[#3578d4] hover:underline flex items-center"
               >
                 <Plus size={14} className="mr-1" />
-                Novo subusuírio
+                Novo subusuário
               </button>
             </div>
             <div className="overflow-x-auto">
@@ -4922,7 +4922,7 @@ const UserActionDropdown = ({
         }}
         className="w-full px-2 py-1 bg-white border border-gray-200 rounded-[4px] text-[10px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] focus:border-[#3578d4] cursor-pointer pr-6"
       >
-        <option value="">ÔÇö Ação ÔÇö</option>
+        <option value="">- Ação -</option>
         <option value="view">Visualizar</option>
         <option value="edit">Editar</option>
         <option value="resetPassword">Redefinir Senha</option>
@@ -4978,10 +4978,10 @@ const CompanyActionDropdown = ({
         }}
         className="w-full px-2 py-1 bg-white border border-gray-200 rounded-[4px] text-[10px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] focus:border-[#3578d4] cursor-pointer pr-6"
       >
-        <option value="">ÔÇö Ação ÔÇö</option>
+        <option value="">- Ação -</option>
         <option value="view">Visualizar</option>
         <option value="edit">Editar</option>
-        <option value="manageUsers">Gerenciar Usuírios</option>
+        <option value="manageUsers">Gerenciar usuários</option>
         <option value="toggleStatus">{isActive ? 'Desativar' : 'Ativar'}</option>
         <option value="delete" className="text-red-600">Deletar</option>
       </select>
@@ -5003,7 +5003,7 @@ const UsuarioDetalheModal = ({ usuario, onClose }: { usuario: any, onClose: () =
             <User size={16} className="text-[#3578d4]" />
           </div>
           <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Detalhes do Usuírio</h3>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Detalhes do usuário</h3>
             <p className="text-[11px] text-gray-400">Informações completas do cadastro</p>
           </div>
         </div>
@@ -5051,7 +5051,7 @@ const UsuarioDetalheModal = ({ usuario, onClose }: { usuario: any, onClose: () =
           </div>
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tipo</span>
-            <p className="text-[13px] font-medium text-gray-600">Usuírio Principal</p>
+            <p className="text-[13px] font-medium text-gray-600">usuário Principal</p>
           </div>
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">├Ültimo Acesso</span>
@@ -5095,7 +5095,7 @@ const UsuarioEditModal = ({ usuario, onClose, onSave }: { usuario: any, onClose:
               <Edit size={16} className="text-[#3578d4]" />
             </div>
             <div>
-              <h3 className="text-[15px] font-bold text-[#1e315d]">Editar Usuírio</h3>
+              <h3 className="text-[15px] font-bold text-[#1e315d]">Editar usuário</h3>
               <p className="text-[11px] text-gray-400">Atualize as informações do cadastro</p>
             </div>
           </div>
@@ -5182,7 +5182,7 @@ const UsuarioEditModal = ({ usuario, onClose, onSave }: { usuario: any, onClose:
               value={formData.observacoes}
               onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
               className="w-full h-[80px] bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none"
-              placeholder="Notas sobre o usuírio..."
+              placeholder="Notas sobre o usuário..."
             />
           </div>
         </div>
@@ -5216,9 +5216,9 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
             <UserPlus size={16} className="text-[#3578d4]" />
           </div>
           <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo Usuírio</h3>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo usuário</h3>
             <p className="text-[11px] text-gray-400">
-              {empresa ? `Vincular novo usuírio õ ${empresa.nome}` : 'Crie um acesso principal para um administrador de empresa'}
+              {empresa ? `Vincular novo usuário à ${empresa.nome}` : 'Crie um acesso principal para um administrador de empresa'}
             </p>
           </div>
         </div>
@@ -5300,13 +5300,13 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
           <label className="text-[11px] font-bold text-gray-600">Senha Provisória</label>
           <div className="relative">
             <Key size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input type="password" placeholder="ÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇó" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
+            <input type="password" placeholder="••••••••" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
           <input type="checkbox" id="sendEmail" className="w-3.5 h-3.5 text-[#3578d4] rounded" defaultChecked />
-          <label htmlFor="sendEmail" className="text-[12px] text-gray-600 cursor-pointer">Enviar dados de acesso por e-mail para o usuírio</label>
+          <label htmlFor="sendEmail" className="text-[12px] text-gray-600 cursor-pointer">Enviar dados de acesso por e-mail para o usuário</label>
         </div>
       </div>
 
@@ -5315,7 +5315,7 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
           Cancelar
         </button>
         <button onClick={onClose} className="h-[36px] px-6 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm">
-          Salvar usuírio
+          Salvar usuário
         </button>
       </div>
     </motion.div>
@@ -5335,9 +5335,9 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
             <Users size={16} className="text-purple-600" />
           </div>
           <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo Subusuírio</h3>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo Subusuário</h3>
             <p className="text-[11px] text-gray-400">
-              {empresa ? `Vincular novo subusuírio õ ${empresa.nome}` : 'Vincule um novo colaborador a um usuírio principal'}
+              {empresa ? `Vincular novo subusuário à ${empresa.nome}` : 'Vincule um novo colaborador a um usuário principal'}
             </p>
           </div>
         </div>
@@ -5380,7 +5380,7 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
             </div>
           </div>
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Usuírio Principal Vinculado</label>
+            <label className="text-[11px] font-bold text-gray-600">usuário Principal Vinculado</label>
             <div className="relative">
               <select className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
                 <option>Carlos Alberto</option>
@@ -5425,7 +5425,7 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
 
         <div className="space-y-1">
           <label className="text-[11px] font-bold text-gray-600">Observações</label>
-          <textarea placeholder="Observações sobre o subusuírio..." className="w-full h-[80px] bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none" />
+          <textarea placeholder="Observações sobre o subusuário..." className="w-full h-[80px] bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none" />
         </div>
       </div>
 
@@ -5434,7 +5434,7 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
           Cancelar
         </button>
         <button onClick={onClose} className="h-[36px] px-6 bg-purple-600 text-white text-[12px] font-bold rounded-[6px] hover:bg-purple-700 transition-colors shadow-sm">
-          Salvar subusuírio
+          Salvar subusuário
         </button>
       </div>
     </motion.div>
@@ -5511,7 +5511,7 @@ const EmpresaDetalheModal = ({ empresa, onClose }: { empresa: any, onClose: () =
             <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Estat├¡sticas</h4>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-3 rounded-[6px]">
-                <span className="text-[9px] font-bold text-gray-400 uppercase">Usuírios</span>
+                <span className="text-[9px] font-bold text-gray-400 uppercase">usuários</span>
                 <p className="text-lg font-bold text-[#1e315d]">12</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-[6px]">
@@ -5626,7 +5626,7 @@ const UsuariosEmpresaView = ({
             <ArrowLeft size={16} />
           </button>
           <div>
-            <h1 className="text-[20px] font-bold text-[#1e315d]">Usuírios da Empresa</h1>
+            <h1 className="text-[20px] font-bold text-[#1e315d]">usuários da Empresa</h1>
             <p className="text-[12px] text-gray-400 flex items-center">
               <Building2 size={12} className="mr-1.5" />
               {empresa.nome}
@@ -5639,14 +5639,14 @@ const UsuariosEmpresaView = ({
             className="h-[36px] px-4 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm flex items-center"
           >
             <UserPlus size={14} className="mr-2" />
-            Novo usuírio
+            Novo usuário
           </button>
           <button 
             onClick={onNewSubUser}
             className="h-[36px] px-4 bg-white border border-gray-200 text-gray-600 text-[12px] font-bold rounded-[6px] hover:bg-gray-50 transition-colors shadow-sm flex items-center"
           >
             <Users size={14} className="mr-2" />
-            Novo subusuírio
+            Novo subusuário
           </button>
         </div>
       </div>
@@ -5682,7 +5682,7 @@ const UsuariosEmpresaView = ({
             </div>
           </div>
           <div className="space-y-1">
-            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Total Usuírios</span>
+            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Total usuários</span>
             <p className="text-[13px] font-bold text-[#1e315d]">{usuariosPrincipais.length + subusuarios.length}</p>
           </div>
         </div>
@@ -5698,7 +5698,7 @@ const UsuariosEmpresaView = ({
               activeTab === 'principais' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
             )}
           >
-            Usuírios Principais
+            usuários Principais
             {activeTab === 'principais' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
           </button>
           <button 
@@ -5708,7 +5708,7 @@ const UsuariosEmpresaView = ({
               activeTab === 'subusuarios' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
             )}
           >
-            Subusuírios
+            Subusuários
             {activeTab === 'subusuarios' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
           </button>
           <button 
@@ -5766,7 +5766,7 @@ const UsuariosEmpresaView = ({
                       <td className="px-4 py-3 text-[11px] text-gray-500">{usuario.ultimoAcesso}</td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <NexusTooltip text="Visualizar usuírio">
+                          <NexusTooltip text="Visualizar usuário">
                             <button 
                               onClick={() => onViewUser(usuario)}
                               className="p-1.5 text-gray-400 hover:text-[#3578d4] hover:bg-blue-50 rounded transition-colors"
@@ -5774,7 +5774,7 @@ const UsuariosEmpresaView = ({
                               <Eye size={14} />
                             </button>
                           </NexusTooltip>
-                          <NexusTooltip text="Editar usuírio">
+                          <NexusTooltip text="Editar usuário">
                             <button 
                               onClick={() => onEditUser(usuario)}
                               className="p-1.5 text-gray-400 hover:text-[#3578d4] hover:bg-blue-50 rounded transition-colors"
@@ -5790,7 +5790,7 @@ const UsuariosEmpresaView = ({
                               <Key size={14} />
                             </button>
                           </NexusTooltip>
-                          <NexusTooltip text="Desativar usuírio">
+                          <NexusTooltip text="Desativar usuário">
                             <button 
                               onClick={() => onDeactivateUser(usuario)}
                               className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
@@ -5880,7 +5880,7 @@ const UsuariosEmpresaView = ({
               </div>
               <h3 className="text-[16px] font-bold text-[#1e315d] mb-2">Gestão de Permissões</h3>
               <p className="text-[12px] text-gray-500 max-w-[400px] mx-auto">
-                Em breve voc~ poderí gerenciar permissões granulares para cada perfil desta empresa.
+                Em breve você poderá gerenciar permissões granulares para cada perfil desta empresa.
               </p>
             </div>
           )}
@@ -5989,7 +5989,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
 
   const handleUploadPhoto = async () => {
     if (!selectedPhotoFile || !currentUser?.id) {
-      showToast('Usuírio não carregado', 'error');
+      showToast('usuário não carregado', 'error');
       return;
     }
 
@@ -6050,7 +6050,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
     }
 
     if (!currentUser?.id) {
-      showToast('Usuírio não carregado', 'error');
+      showToast('usuário não carregado', 'error');
       return;
     }
 
@@ -6099,10 +6099,10 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
       return;
     }
 
-    // Garantir que temos o ID do usuírio antes de prosseguir
+    // Garantir que temos o ID do usuário antes de prosseguir
     if (!currentUser?.id) {
       console.error('currentUser não possui ID:', currentUser);
-      showToast('Erro: Usuírio não autenticado corretamente. Recarregue a pígina.', 'error');
+      showToast('Erro: usuário não autenticado corretamente. Recarregue a Página.', 'error');
       return;
     }
 
@@ -6610,11 +6610,11 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
         throw new Error(errorData.message || 'Erro ao salvar');
       }
       
-      showToast(isEditing ? 'Evid~ncia atualizada com sucesso' : 'Evid~ncia salva com sucesso', 'success');
+      showToast(isEditing ? 'evidência atualizada com sucesso' : 'evidência salva com sucesso', 'success');
       setTimeout(() => onClose(), 1500);
     } catch (err) {
       console.error('Erro:', err);
-      showToast(`Erro ao salvar evid~ncia: ${err.message}`, 'error');
+      showToast(`Erro ao salvar evidência: ${err.message}`, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -6625,7 +6625,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
       <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[760px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 sticky top-0 bg-white">
-          <h2 className="text-[14px] font-bold text-[#1e315d]">{evidence ? 'Editar Evid~ncia' : 'Adicionar Evid~ncia'}</h2>
+          <h2 className="text-[14px] font-bold text-[#1e315d]">{evidence ? 'Editar evidência' : 'Adicionar evidência'}</h2>
           <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors">
             <X size={14} />
           </button>
@@ -6700,7 +6700,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-gray-600">Observações</label>
             <textarea 
-              placeholder="Observações sobre a evid~ncia..."
+              placeholder="Observações sobre a evidência..."
               value={formData.descricao}
               onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
               className="w-full h-[76px] bg-white border border-gray-200 rounded-[6px] p-2.5 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none placeholder:text-gray-300"
@@ -6776,7 +6776,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
                 Salvando...
               </>
             ) : (
-              'Salvar evid~ncia'
+              'Salvar evidência'
             )}
           </button>
         </div>
@@ -6854,7 +6854,7 @@ export default function App() {
   const mapNotificationVisual = (tipo: string) => {
     if (tipo === 'Demanda') return { icon: ListTodo, color: 'text-blue-500', bgColor: 'bg-blue-50' };
     if (tipo === 'Projeto') return { icon: Briefcase, color: 'text-purple-500', bgColor: 'bg-purple-50' };
-    if (tipo === 'Evid~ncia') return { icon: FileText, color: 'text-yellow-500', bgColor: 'bg-yellow-50' };
+    if (tipo === 'evidência') return { icon: FileText, color: 'text-yellow-500', bgColor: 'bg-yellow-50' };
     return { icon: AlertCircle, color: 'text-red-500', bgColor: 'bg-red-50' };
   };
 
@@ -7111,7 +7111,7 @@ export default function App() {
         payload = JSON.parse(responseText);
       } catch (parseError: any) {
         console.error('[LOGIN] JSON parse error:', parseError.message);
-        console.error('[LOGIN] Conte├║do recebido:', responseText?.substring(0, 500));
+        console.error('[LOGIN] Conteüdo recebido:', responseText?.substring(0, 500));
         throw new Error(`Resposta invílida do servidor: ${parseError.message}`);
       }
 
@@ -7163,7 +7163,7 @@ export default function App() {
 
   const handleCloseEvidenceModal = () => {
     setIsEvidenceModalOpen(false);
-    // Recarregar lista de evid~ncias
+    // Recarregar lista de evidências
     setDataSyncVersion((current) => current + 1);
   };
 
@@ -7191,7 +7191,7 @@ export default function App() {
     setSelectedEmpresa(empresa);
     setConfirmacaoConfig({
       title: 'Desativar Empresa',
-      message: `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados não serão exclu├¡dos, mas o acesso serí bloqueado.`,
+      message: `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados não serão excluídos, mas o acesso será bloqueado.`,
       onConfirm: () => {
         showToast("Empresa desativada com sucesso");
       },
@@ -7219,7 +7219,7 @@ export default function App() {
     setSelectedUsuario(usuario);
     setConfirmacaoConfig({
       title: 'Redefinir Senha',
-      message: `Deseja redefinir a senha do usuírio ${usuario.nome}? Um link de redefinição serí enviado para o e-mail ${usuario.email}.`,
+      message: `Deseja redefinir a senha do usuário ${usuario.nome}? Um link de redefinição será enviado para o e-mail ${usuario.email}.`,
       onConfirm: () => {
         showToast("Senha redefinida com sucesso");
       },
@@ -7231,10 +7231,10 @@ export default function App() {
   const handleDeactivateUser = (usuario: any) => {
     setSelectedUsuario(usuario);
     setConfirmacaoConfig({
-      title: 'Desativar Usuírio',
-      message: `Deseja desativar o usuírio ${usuario.nome}? O usuírio perderí acesso ao sistema até ser reativado.`,
+      title: 'Desativar usuário',
+      message: `Deseja desativar o usuário ${usuario.nome}? O usuário perderá acesso ao sistema até ser reativado.`,
       onConfirm: () => {
-        showToast("Usuírio desativado com sucesso");
+        showToast("usuário desativado com sucesso");
       },
       type: 'danger'
     });
@@ -7245,12 +7245,12 @@ export default function App() {
     setSelectedUsuario(usuario);
     const isLocked = usuario.status === 'Bloqueado' || usuario.status === 'Inativo';
     setConfirmacaoConfig({
-      title: isLocked ? 'Desbloquear Usuírio' : 'Bloquear Usuírio',
+      title: isLocked ? 'Desbloquear usuário' : 'Bloquear usuário',
       message: isLocked 
-        ? `Deseja desbloquear o usuírio ${usuario.nome}? O usuírio voltarí a ter acesso ao sistema.`
-        : `Deseja bloquear o usuírio ${usuario.nome}? O usuírio perderí acesso imediatamente.`,
+        ? `Deseja desbloquear o usuário ${usuario.nome}? O usuário voltará a ter acesso ao sistema.`
+        : `Deseja bloquear o usuário ${usuario.nome}? O usuário perderá acesso imediatamente.`,
       onConfirm: () => {
-        showToast(`Usuírio ${isLocked ? 'desbloqueado' : 'bloqueado'} com sucesso`);
+        showToast(`usuário ${isLocked ? 'desbloqueado' : 'bloqueado'} com sucesso`);
       },
       type: isLocked ? 'warning' : 'danger'
     });
@@ -7260,8 +7260,8 @@ export default function App() {
   const handleDeleteUser = (usuario: any) => {
     setSelectedUsuario(usuario);
     setConfirmacaoConfig({
-      title: 'Deletar Usuírio',
-      message: `Tem certeza que deseja deletar o usuírio ${usuario.nome}? Esta ação é irrevers├¡vel e todos os dados associados serão removidos do sistema.`,
+      title: 'Deletar usuário',
+      message: `Tem certeza que deseja deletar o usuário ${usuario.nome}? Esta ação é irreversível e todos os dados associados serão removidos do sistema.`,
       onConfirm: async () => {
         try {
           const response = await fetch(`/api/usuarios/${usuario.id}`, {
@@ -7271,14 +7271,14 @@ export default function App() {
             },
           });
           if (response.ok) {
-            showToast("Usuírio deletado com sucesso");
+            showToast("usuário deletado com sucesso");
             syncDataFromApi();
           } else {
-            showToast("Erro ao deletar usuírio", 'error');
+            showToast("Erro ao deletar usuário", 'error');
           }
         } catch (error) {
           console.error('Delete user error:', error);
-          showToast("Erro ao deletar usuírio", 'error');
+          showToast("Erro ao deletar usuário", 'error');
         }
       },
       type: 'danger'
@@ -7292,8 +7292,8 @@ export default function App() {
     setConfirmacaoConfig({
       title: isActive ? 'Desativar Empresa' : 'Ativar Empresa',
       message: isActive
-        ? `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados não serão exclu├¡dos, mas o acesso serí bloqueado.`
-        : `Tem certeza que deseja ativar a empresa ${empresa.nome}? O acesso serí restaurado.`,
+        ? `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados não serão excluídos, mas o acesso será bloqueado.`
+        : `Tem certeza que deseja ativar a empresa ${empresa.nome}? O acesso será restaurado.`,
       onConfirm: () => {
         showToast(`Empresa ${isActive ? 'desativada' : 'ativada'} com sucesso`);
         syncDataFromApi();
@@ -7307,7 +7307,7 @@ export default function App() {
     setSelectedEmpresa(empresa);
     setConfirmacaoConfig({
       title: 'Deletar Empresa',
-      message: `Tem certeza que deseja deletar a empresa ${empresa.nome}? Esta ação é irrevers├¡vel e todos os dados associados serão removidos do sistema.`,
+      message: `Tem certeza que deseja deletar a empresa ${empresa.nome}? Esta ação é irreversível e todos os dados associados serão removidos do sistema.`,
       onConfirm: async () => {
         try {
           const response = await fetch(`/api/empresas/${empresa.id}`, {
@@ -7335,7 +7335,7 @@ export default function App() {
   const onSaveUserEdit = (data: any) => {
     console.log("Saving user edit", data);
     setIsUsuarioEditModalOpen(false);
-    showToast("Usuírio atualizado com sucesso");
+    showToast("usuário atualizado com sucesso");
   };
 
   if (!isAuthenticated) {
@@ -7391,7 +7391,7 @@ export default function App() {
           />
           <SidebarItem 
             icon={FileText} 
-            label="Evid~ncias" 
+            label="evidências" 
             active={currentView === 'evidencias'}
             onClick={() => setCurrentView('evidencias')}
           />
@@ -7437,12 +7437,12 @@ export default function App() {
             {currentView === 'painel' ? 'Painel' : 
              currentView === 'demandas' ? 'Gestão de Demandas' : 
              currentView === 'projetos' ? 'Gestão de Projetos' : 
-             currentView === 'evidencias' ? 'Gestão de Evid~ncias' :
+             currentView === 'evidencias' ? 'Gestão de evidências' :
              currentView === 'relatorio' ? 'Relatório de Execução' :
              currentView === 'configuracoes' ? 'Configurações' :
              currentView === 'notificacoes' ? 'Notificações' :
              currentView === 'administracao' ? 'Administrador' :
-             currentView === 'usuarios-empresa' ? 'Usuírios da Empresa' :
+             currentView === 'usuarios-empresa' ? 'usuários da Empresa' :
              'Detalhes do Projeto'}
           </h2>
           <div className="flex items-center space-x-3">
