@@ -3961,7 +3961,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
   );
 };
 
-const NotificationItem = ({ notif, compact = false }: { notif: any, compact?: boolean }) => (
+const NotificationItem = ({ notif, compact = false, onMarkAsRead }: { notif: any, compact?: boolean, onMarkAsRead?: (id: string) => void }) => (
   <div
     className={cn(
       "group relative overflow-hidden rounded-[16px] border transition-all",
@@ -4002,7 +4002,7 @@ const NotificationItem = ({ notif, compact = false }: { notif: any, compact?: bo
           {!compact && (
             <div className="flex shrink-0 items-center gap-2 self-start lg:opacity-0 lg:transition-opacity lg:group-hover:opacity-100">
               {!notif.lida && (
-                <button className="rounded-full border border-blue-100 bg-white p-2 text-blue-500 transition-colors hover:bg-blue-50" title="Marcar como lida">
+                <button onClick={() => onMarkAsRead?.(notif.id)} className="rounded-full border border-blue-100 bg-white p-2 text-blue-500 transition-colors hover:bg-blue-50" title="Marcar como lida">
                   <CheckCircle size={14} />
                 </button>
               )}
@@ -4043,7 +4043,7 @@ const NotificationItem = ({ notif, compact = false }: { notif: any, compact?: bo
   </div>
 );
 
-const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => {
+const NotificacoesView = ({ notificacoesList, onMarkAsRead }: { notificacoesList: any[], onMarkAsRead: (id: string) => void }) => {
   const totalNaoLidas = notificacoesList.filter((notif) => !notif.lida).length;
   const totalProjetos = notificacoesList.filter((notif) => notif.tipo === 'Projeto').length;
   const totalDemandas = notificacoesList.filter((notif) => notif.tipo === 'Demanda').length;
@@ -4168,7 +4168,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
   );
 };
 
-const NotificationDropdown = ({ onClose, onViewAll, notificacoesList }: { onClose: () => void, onViewAll: () => void, notificacoesList: any[] }) => {
+const NotificationDropdown = ({ onClose, onViewAll, notificacoesList, onMarkAsRead }: { onClose: () => void, onViewAll: () => void, notificacoesList: any[], onMarkAsRead: (id: string) => void }) => {
   const totalNaoLidas = notificacoesList.filter((notif) => !notif.lida).length;
 
   return (
@@ -4194,7 +4194,7 @@ const NotificationDropdown = ({ onClose, onViewAll, notificacoesList }: { onClos
       <div className="max-h-[420px] overflow-y-auto bg-slate-50/70 p-3">
         {notificacoesList.slice(0, 10).map((notif) => (
           <div key={notif.id} className="mb-3 last:mb-0">
-            <NotificationItem notif={notif} compact />
+            <NotificationItem notif={notif} compact onMarkAsRead={onMarkAsRead} />
           </div>
         ))}
       </div>
@@ -5996,7 +5996,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
 
   const handleUploadPhoto = async () => {
     if (!selectedPhotoFile || !currentUser?.id) {
-      showToast('usuário não carregado', 'error');
+      showToast('Usuário não carregado', 'error');
       return;
     }
 
@@ -6020,17 +6020,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
         throw new Error(`Erro ao fazer upload: ${response.status} - ${errorText}`);
       }
 
-      let userData;
-      try {
-        const responseText = await response.text();
-        if (!responseText) {
-          throw new Error('Resposta vazia do servidor');
-        }
-        userData = JSON.parse(responseText);
-      } catch (parseError: any) {
-        console.error('Erro ao fazer parse da resposta de upload:', parseError.message);
-        throw new Error(`Resposta invílida: ${parseError.message}`);
-      }
+      const userData = await response.json();
 
       showToast('Foto de perfil atualizada com sucesso', 'success');
       setSelectedPhotoFile(null);
@@ -7150,6 +7140,31 @@ export default function App() {
     }
   };
 
+  const handleMarkNotificationAsRead = async (notificationId: string) => {
+    try {
+      const token = localStorage.getItem('nexus_token');
+      const response = await fetch(`${API_BASE_URL}/notificacoes/${notificationId}/lida`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ lida: true })
+      });
+
+      if (!response.ok) throw new Error('Erro ao marcar como lida');
+      
+      // Atualizar estado local
+      setNotificacoesList(notificacoesList.map(notif => 
+        notif.id === notificationId ? { ...notif, lida: true } : notif
+      ));
+      showToast('Notificação marcada como lida', 'success');
+    } catch (err) {
+      console.error('Erro:', err);
+      showToast('Erro ao marcar notificação como lida', 'error');
+    }
+  };
+
   const handleLogout = () => {
     resetInterfaceState();
     localStorage.removeItem('nexus_token');
@@ -7477,6 +7492,7 @@ export default function App() {
                       onClose={() => setIsNotificationDropdownOpen(false)}
                       onViewAll={() => setCurrentView('notificacoes')}
                       notificacoesList={notificacoesList}
+                      onMarkAsRead={handleMarkNotificationAsRead}
                     />
                   </div>
                 )}
@@ -7500,7 +7516,7 @@ export default function App() {
            currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
            currentView === 'relatorio' ? <RelatorioExecucaoView /> :
            currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} /> :
-           currentView === 'notificacoes' ? <NotificacoesView notificacoesList={notificacoesList} /> :
+           currentView === 'notificacoes' ? <NotificacoesView notificacoesList={notificacoesList} onMarkAsRead={handleMarkNotificationAsRead} /> :
            currentView === 'administracao' ? (
            <AdministracaoView 
              onNewCompany={() => setIsEmpresaModalOpen(true)}
