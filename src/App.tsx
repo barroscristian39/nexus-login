@@ -440,7 +440,7 @@ const DashboardView = () => {
   }));
 
   return (
-    <main className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-3 sm:p-4 space-y-3">
       {/* KPI Row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         <KPICard title="Demandas Abertas" value={String(kpis?.demandasAbertas || 0)} color="bg-[#2fb15d]" icon={ListTodo} />
@@ -1120,7 +1120,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
   }
 
   return (
-    <main className="flex-1 overflow-y-auto p-3 sm:p-5">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-3 sm:p-5">
       <div className="mb-4">
         <h1 className="text-base sm:text-lg font-bold text-[#1e315d]">Gestão de Demandas</h1>
       </div>
@@ -2271,7 +2271,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
   }
 
   return (
-    <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="mb-4">
         <h1 className="text-base sm:text-lg font-bold text-[#1e315d]">Gestão de Projetos</h1>
       </div>
@@ -3000,7 +3000,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
   });
 
   return (
-    <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="mb-4">
         <h1 className="text-lg font-bold text-[#1e315d]">Gestão de evidências</h1>
       </div>
@@ -3432,7 +3432,7 @@ const RelatorioExecucaoView = () => {
   const { reportKpiData, executionByProjectData, demandsByResponsibleData, summaryByStatusData } = reportData;
 
   return (
-    <main className="flex-1 overflow-y-auto bg-[#f3f4f6]">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto bg-[#f3f4f6]">
       {/* Toolbar - Responsivo */}
       <div className="bg-white border-b border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-3 sm:px-5 py-3 sm:py-2 shrink-0">
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
@@ -3662,7 +3662,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
   if (!project) return null;
 
   return (
-    <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-5 bg-[#f3f4f6]">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
@@ -4049,7 +4049,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
   const totalDemandas = notificacoesList.filter((notif) => notif.tipo === 'Demanda').length;
 
   return (
-    <main className="flex-1 overflow-y-auto bg-[#f3f4f6] p-5">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto bg-[#f3f4f6] p-5">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-lg font-bold text-[#1e315d]">Notificações</h1>
@@ -4255,7 +4255,7 @@ const AdministracaoView = ({
   const [activeTab, setActiveTab] = useState<'empresas' | 'usuarios' | 'subusuarios' | 'permissoes'>('empresas');
 
   return (
-    <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-5 bg-[#f3f4f6]">
       {/* Page Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
@@ -5619,7 +5619,7 @@ const UsuariosEmpresaView = ({
   const subusuarios = subusuariosData.filter(s => s.empresa === empresa.nome);
 
   return (
-    <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <button 
@@ -6210,7 +6210,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
   };
 
   return (
-    <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
+    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="max-w-[900px] space-y-6">
         {/* Tabs */}
         <div className="bg-white rounded-[10px] shadow-sm border border-gray-100">
