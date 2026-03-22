@@ -6753,6 +6753,9 @@ export default function App() {
   const [empresasAdminData, setEmpresasAdminData] = useState<any[]>([]);
   const [usuariosAdminList, setUsuariosAdminList] = useState<any[]>([]);
   const [subusuariosList, setSubusuariosList] = useState<any[]>([]);
+  const [demandasData, setDemandasData] = useState<any[]>([]);
+  const [projetosData, setProjetosData] = useState<any[]>([]);
+  const [evidenciasData, setEvidenciasData] = useState<any[]>([]);
   const [confirmacaoConfig, setConfirmacaoConfig] = useState<{ title: string, message: string, onConfirm: () => void, type?: 'danger' | 'warning' }>({
     title: '',
     message: '',
@@ -6902,10 +6905,16 @@ export default function App() {
       setEmpresasAdminData(empresasData);
       setUsuariosAdminList(usuariosAdminData);
       setSubusuariosList(subusuariosData);
+      setDemandasData(demandasData);
+      setProjetosData(projetosData);
+      setEvidenciasData(evidenciasData);
       console.log('[SYNC] Estados atualizados:', { 
         empresas: empresasData.length, 
         usuarios: usuariosAdminData.length, 
         subusuarios: subusuariosData.length,
+        demandas: demandasData.length,
+        projetos: projetosData.length,
+        evidencias: evidenciasData.length,
         notificacoes: notificacoesData.length
       });
       setDataSyncVersion((current) => current + 1);
