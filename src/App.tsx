@@ -635,9 +635,9 @@ const DashboardView = () => {
   );
 };
 
-const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [] }: { usuariosAdminList: any[], currentUser: any, empresasAdminData?: any[] }) => {
-  const [demandas, setDemandas] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [], demandasData = [] }: { usuariosAdminList: any[], currentUser: any, empresasAdminData?: any[], demandasData?: any[] }) => {
+  const [demandas, setDemandas] = useState<any[]>(demandasData || []);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedDemanda, setSelectedDemanda] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
@@ -679,36 +679,12 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [] }
   const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);
   const [commentToDeleteId, setCommentToDeleteId] = useState<string | null>(null);
 
+  // ✅ Usar dados sincronizados globalmente - sem requisição duplicada
   useEffect(() => {
-    const loadDemandas = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        
-        const token = localStorage.getItem('nexus_token');
-        if (!token) {
-          setError('Token não encontrado');
-          return;
-        }
-
-        const { data } = await fetchAPI(`${API_BASE_URL}/demandas`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        setDemandas(data?.data || []);
-      } catch (err: any) {
-        console.error('Erro ao carregar demandas:', err.message);
-        setError(err.message || 'Falha ao carregar demandas. Tente novamente.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadDemandas();
-  }, []);
+    if (demandasData && demandasData.length > 0) {
+      setDemandas(demandasData);
+    }
+  }, [demandasData]);
 
   // Carregar comentários e evidências ao selecionar uma demanda
   useEffect(() => {
@@ -2031,9 +2007,9 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [] }
   );
 };
 
-const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project: any) => void, onViewDetail: (project: any) => void, currentUser: any }) => {
-  const [projetos, setProjetos] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const ProjetosView = ({ onEdit, onViewDetail, currentUser, projetosData = [] }: { onEdit: (project: any) => void, onViewDetail: (project: any) => void, currentUser: any, projetosData?: any[] }) => {
+  const [projetos, setProjetos] = useState<any[]>(projetosData || []);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedProjeto, setSelectedProjeto] = useState<any>(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -2053,41 +2029,12 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
   });
   const [isCreating, setIsCreating] = useState(false);
 
+  // ✅ Usar dados sincronizados globalmente - sem requisição duplicada
   useEffect(() => {
-    const loadProjetos = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        
-        const token = localStorage.getItem('nexus_token');
-        if (!token) {
-          setError('Token não encontrado');
-          return;
-        }
-
-        const response = await fetch(`${API_BASE_URL}/projetos`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error(`Erro ${response.status}: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setProjetos(data.data || []);
-      } catch (err) {
-        console.error('Erro ao carregar projetos:', err);
-        setError('Falha ao carregar projetos. Tente novamente.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadProjetos();
-  }, []);
+    if (projetosData && projetosData.length > 0) {
+      setProjetos(projetosData);
+    }
+  }, [projetosData]);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     const id = Date.now();
@@ -2871,9 +2818,9 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
   );
 };
 
-const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onEdit: (item: any) => void, syncVersion?: number }) => {
-  const [evidenciasAPI, setEvidenciasAPI] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const EvidenciasView = ({ onAdd, onEdit, syncVersion, evidenciasData = [] }: { onAdd: () => void, onEdit: (item: any) => void, syncVersion?: number, evidenciasData?: any[] }) => {
+  const [evidenciasAPI, setEvidenciasAPI] = useState<any[]>(evidenciasData || []);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos');
@@ -2890,39 +2837,12 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
     { value: 'Rejeitada', label: 'Rejeitada' }
   ];
 
+  // ✅ Usar dados sincronizados globalmente - sem requisição duplicada
   useEffect(() => {
-    const loadEvidencias = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        
-        const token = localStorage.getItem('nexus_token');
-        if (!token) {
-          setError('Token não encontrado');
-          return;
-        }
-
-        const response = await fetch(`${API_BASE_URL}/evidencias`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!response.ok) throw new Error('Erro ao carregar evidências');
-        
-        const data = await response.json();
-        setEvidenciasAPI(data.data || []);
-      } catch (err) {
-        console.error('Erro:', err);
-        setError('Erro ao carregar evidências');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadEvidencias();
-  }, [syncVersion]);
+    if (evidenciasData && evidenciasData.length > 0) {
+      setEvidenciasAPI(evidenciasData);
+    }
+  }, [evidenciasData]);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -7519,9 +7439,9 @@ export default function App() {
         {/* Views Container */}
         <div className="flex-1 overflow-y-auto">
           {currentView === 'painel' ? <DashboardView /> : 
-           currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasAdminData={empresasAdminData} /> : 
-           currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} /> :
-           currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
+           currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} empresasAdminData={empresasAdminData} demandasData={demandasData} /> : 
+           currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} projetosData={projetosData} /> :
+           currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} evidenciasData={evidenciasData} /> :
            currentView === 'relatorio' ? <RelatorioExecucaoView /> :
            currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} /> :
            currentView === 'notificacoes' ? <NotificacoesView notificacoesList={notificacoesList} onMarkAsRead={handleMarkNotificationAsRead} /> :
