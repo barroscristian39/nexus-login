@@ -392,7 +392,7 @@ const DashboardView = () => {
 
   if (isLoading) {
     return (
-      <main className="flex-1 overflow-y-auto p-4 space-y-3 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#3578d4] mb-3"></div>
           <p className="text-gray-500 text-sm">Carregando dashboard...</p>
@@ -403,7 +403,7 @@ const DashboardView = () => {
 
   if (error || !dashboardData) {
     return (
-      <main className="flex-1 overflow-y-auto p-4 space-y-3 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <AlertCircle size={32} className="text-red-500 mb-3 mx-auto" />
           <p className="text-red-600 font-medium">{error || 'Erro ao carregar dashboard'}</p>
@@ -1093,7 +1093,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [] }
 
   if (isLoading) {
     return (
-      <main className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#3578d4] mb-3"></div>
           <p className="text-gray-500 text-sm">Carregando demandas...</p>
@@ -1104,7 +1104,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [] }
 
   if (error) {
     return (
-      <main className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <AlertCircle size={32} className="text-red-500 mb-3 mx-auto" />
           <p className="text-red-600 font-medium">{error}</p>
@@ -2244,7 +2244,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
 
   if (isLoading) {
     return (
-      <main className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#3578d4] mb-3"></div>
           <p className="text-gray-500 text-sm">Carregando projetos...</p>
@@ -2255,7 +2255,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
 
   if (error) {
     return (
-      <main className="flex-1 overflow-y-auto p-5 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <AlertCircle size={32} className="text-red-500 mb-3 mx-auto" />
           <p className="text-red-600 font-medium">{error}</p>
@@ -3049,7 +3049,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
 
       {/* Loading State */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
+        <div className="flex-1 flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="w-10 h-10 border-3 border-gray-300 border-t-[#3578d4] rounded-full animate-spin mx-auto mb-3" />
             <p className="text-gray-500 text-[13px]">Carregando evidências...</p>
@@ -3403,7 +3403,7 @@ const RelatorioExecucaoView = () => {
 
   if (isLoading) {
     return (
-      <main className="flex-1 overflow-y-auto p-4 space-y-3 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#3578d4] mb-3"></div>
           <p className="text-gray-500 text-sm">Carregando relatório...</p>
@@ -3414,7 +3414,7 @@ const RelatorioExecucaoView = () => {
 
   if (error || !reportData) {
     return (
-      <main className="flex-1 overflow-y-auto p-4 space-y-3 flex items-center justify-center">
+      <main className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center">
           <AlertCircle size={32} className="text-red-500 mb-3 mx-auto" />
           <p className="text-red-600 font-medium">{error || 'Erro ao carregar relatório'}</p>
