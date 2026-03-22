@@ -1120,58 +1120,58 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
   }
 
   return (
-    <main className="flex-1 overflow-y-auto p-5">
+    <main className="flex-1 overflow-y-auto p-3 sm:p-5">
       <div className="mb-4">
-        <h1 className="text-lg font-bold text-[#1e315d]">Gestão de Demandas</h1>
+        <h1 className="text-base sm:text-lg font-bold text-[#1e315d]">Gestão de Demandas</h1>
       </div>
 
-      {/* Toolbar */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center space-x-2">
+      {/* Toolbar - Responsivo */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+        <div className="flex flex-wrap items-center gap-2">
           <button 
             onClick={() => setShowFormNew(true)}
-            className="h-[34px] px-4 bg-[#3578d4] text-white text-[13px] font-bold rounded-[6px] flex items-center hover:bg-[#2d66b5] transition-colors"
+            className="h-[34px] px-3 sm:px-4 bg-[#3578d4] text-white text-[12px] sm:text-[13px] font-bold rounded-[6px] flex items-center hover:bg-[#2d66b5] transition-colors whitespace-nowrap"
           >
             + Inserir
           </button>
           <button className="h-[34px] px-3 bg-white border border-gray-200 text-gray-600 text-[12px] font-medium rounded-[6px] flex items-center hover:bg-gray-50 transition-colors">
             <FileSpreadsheet size={14} className="mr-2 text-green-600" />
-            Excel
+            <span className="hidden sm:inline">Excel</span>
           </button>
           <button className="h-[34px] px-3 bg-white border border-gray-200 text-gray-600 text-[12px] font-medium rounded-[6px] flex items-center hover:bg-gray-50 transition-colors">
             <FileBarChart size={14} className="mr-2 text-blue-500" />
-            Relatórios
+            <span className="hidden sm:inline">Relatórios</span>
           </button>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <div className="relative">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
+          <div className="relative w-full sm:w-[200px]">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Buscar demanda..." 
-              className="h-[34px] w-[200px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
+              placeholder="Buscar..." 
+              className="h-[34px] w-full bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
             />
           </div>
-          <div className="relative">
+          <div className="hidden sm:block relative w-full sm:w-auto">
             <select className="h-[34px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
-              <option>Todas as íreas</option>
+              <option>Todas as áreas</option>
             </select>
             <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
-          <div className="relative">
+          <div className="hidden sm:block relative w-full sm:w-auto">
             <select className="h-[34px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
               <option>Todos os status</option>
             </select>
             <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
-          <div className="relative">
+          <div className="hidden sm:block relative w-full sm:w-auto">
             <select className="h-[34px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
               <option>Todas as prioridades</option>
             </select>
             <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
-          <button className="h-[34px] w-[34px] flex items-center justify-center bg-white border border-gray-200 rounded-[6px] text-blue-500">
+          <button className="hidden sm:flex h-[34px] w-[34px] items-center justify-center bg-white border border-gray-200 rounded-[6px] text-blue-500">
             <Filter size={14} />
           </button>
         </div>
