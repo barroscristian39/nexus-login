@@ -1365,7 +1365,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [], 
       {/* Modal de Detalhes/Edição */}
       {showModal && selectedDemanda && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
-          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[700px] overflow-hidden sm:overflow-y-auto animate-in fade-in zoom-in duration-200 max-h-[90vh]">
+          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[700px] overflow-y-auto animate-in fade-in zoom-in duration-200 max-h-[90vh]">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white">
               <h2 className="text-[16px] font-bold text-[#1e315d]">
