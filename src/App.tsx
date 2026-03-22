@@ -6198,6 +6198,8 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
     } catch (error: any) {
       console.error('[DELETE TECNICO ERROR]', error.message);
       showToast(error.message || 'Erro ao deletar técnico', 'error');
+      // Recarregar a lista se falhar
+      loadTecnicos();
     } finally {
       setIsSavingTecnico(false);
     }
