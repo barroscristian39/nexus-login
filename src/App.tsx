@@ -5966,8 +5966,10 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
         }
       });
       
-      // Filtrar por tipoUsuario SUBUSUARIO (inclui OPERADOR e SUPERVISOR)
-      const tecnicosFiltered = (data?.data || []).filter((u: any) => u.tipoUsuario === 'SUBUSUARIO');
+      // Filtrar por tipoUsuario SUBUSUARIO e status ATIVO
+      const tecnicosFiltered = (data?.data || []).filter((u: any) => 
+        u.tipoUsuario === 'SUBUSUARIO' && u.status === 'ATIVO'
+      );
       setTecnicos(tecnicosFiltered);
     } catch (error: any) {
       console.error('Erro ao carregar técnicos:', error.message);
