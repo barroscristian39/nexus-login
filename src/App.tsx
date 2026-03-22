@@ -70,6 +70,8 @@ import {
 } from 'recharts';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useIsMobile } from './hooks/useIsMobile';
+import { BottomNavigation } from './components/BottomNavigation';
 
 /**
  * Utility for Tailwind class merging
@@ -438,9 +440,9 @@ const DashboardView = () => {
   }));
 
   return (
-    <main className="flex-1 overflow-y-auto p-4 space-y-3">
+    <main className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3">
       {/* KPI Row */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         <KPICard title="Demandas Abertas" value={String(kpis?.demandasAbertas || 0)} color="bg-[#2fb15d]" icon={ListTodo} />
         <KPICard title="Em Execução" value={String(kpis?.emExecucao || 0)} color="bg-[#3578d4]" icon={CheckCircle2} />
         <KPICard title="Evidências Pendentes" value={String(kpis?.evidenciasPendentes || 0)} color="bg-[#f59e0b]" icon={Clock} />
@@ -448,7 +450,7 @@ const DashboardView = () => {
       </div>
 
       {/* First Chart Row */}
-      <div className="grid grid-cols-[1.8fr_1fr] gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-[1.8fr_1fr] gap-2 sm:gap-3">
         <ChartCard 
           title="Fluxo de Demandas - ültimos 30 dias" 
           subtitle="Abertas vs Conclu├¡das por semana"
@@ -1185,8 +1187,9 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
           </div>
         ) : (
           <>
-            <table className="w-full text-left border-collapse">
-              <thead>
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <table className="w-full text-left border-collapse min-w-max">
+                <thead>
                 <tr className="bg-[#f9fafb] border-b border-gray-100">
                   <th className="py-3 px-4 w-10">
                     <input type="checkbox" className="rounded border-gray-300 text-[#3578d4] focus:ring-[#3578d4]" />
@@ -1271,6 +1274,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 ))}
               </tbody>
             </table>
+            </div>
 
             {/* Footer / Pagination */}
             <div className="px-4 py-3 bg-white flex items-center justify-between border-t border-gray-100">
@@ -1491,7 +1495,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     />
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                     <div>
                       <label className="text-[11px] font-bold text-gray-600">Status</label>
                       <select 
@@ -2316,7 +2320,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {projetos.map((projeto) => {
             const statusInfo = getStatusColor(projeto.status);
             return (
@@ -3063,7 +3067,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
           <p className="text-gray-400 text-[12px] mt-1">{searchTerm ? 'Tente ajustar seus filtros' : 'Comece adicionando uma evidência'}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {filteredEvidencias.map((item) => (
             <div key={item.id} className="bg-white rounded-[10px] shadow-sm border border-gray-100 p-4 flex flex-col hover:shadow-md transition-shadow">
               {/* Top Section */}
@@ -3482,9 +3486,9 @@ const RelatorioExecucaoView = () => {
       </div>
 
       {/* Content */}
-      <div className="p-5 space-y-4">
+      <div className="p-3 sm:p-5 space-y-4">
         {/* KPI Cards */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {reportKpiData.map((kpi, idx) => (
             <div key={idx} className="bg-white rounded-[6px] shadow-sm border border-gray-100 overflow-hidden flex h-[76px]">
               <div className={cn("w-[6px] shrink-0", kpi.color)} />
@@ -5464,7 +5468,7 @@ const EmpresaDetalheModal = ({ empresa, onClose }: { empresa: any, onClose: () =
       </div>
 
       <div className="p-6 overflow-y-auto max-h-[80vh]">
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">CNPJ</span>
             <p className="text-[13px] font-medium text-[#1e315d]">{empresa.cnpj}</p>
@@ -6802,6 +6806,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
 };
 
 export default function App() {
+  const isMobile = useIsMobile();
   const [currentView, setCurrentView] = useState<'painel' | 'demandas' | 'projetos' | 'evidencias' | 'relatorio' | 'configuracoes' | 'detalhe-projeto' | 'notificacoes' | 'administracao' | 'usuarios-empresa'>('painel');
   const [authToken, setAuthToken] = useState<string | null>(() => localStorage.getItem('nexus_token'));
   const [currentUser, setCurrentUser] = useState<any>(() => {
@@ -7344,8 +7349,8 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-[#f3f4f6] font-sans text-[#0f172a] overflow-hidden">
-      {/* Sidebar */}
-      <aside className="w-[220px] bg-[#1e315d] flex flex-col shrink-0 z-20">
+      {/* Sidebar - Hidden on mobile (sm) */}
+      <aside className="hidden sm:flex w-[220px] bg-[#1e315d] flex-col shrink-0 z-20">
         {/* Logo */}
         <div className="p-4 flex items-center">
           <div className="w-7 h-7 bg-[#3578d4] rounded flex flex-wrap p-1 gap-0.5 items-center justify-center mr-2.5">
@@ -7430,9 +7435,9 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden sm:pb-0 pb-[64px]">
         {/* Topbar */}
-        <header className="h-[46px] bg-white border-b border-gray-100 flex items-center justify-between px-4 shrink-0 z-10">
+        <header className="h-[46px] bg-white border-b border-gray-100 flex items-center justify-between px-3 sm:px-4 shrink-0 z-10">
           <h2 className="text-[13px] font-bold text-[#1e315d]">
             {currentView === 'painel' ? 'Painel' : 
              currentView === 'demandas' ? 'Gestão de Demandas' : 
@@ -7609,6 +7614,16 @@ export default function App() {
           />
         )}
       </AnimatePresence>
+
+      {isMobile && (
+        <BottomNavigation 
+          currentView={currentView}
+          onViewChange={setCurrentView}
+          notificacoesCount={notificacoesList.filter(n => !n.lida).length}
+          onLogout={handleLogout}
+          onOpenNotificacoes={() => setCurrentView('notificacoes')}
+        />
+      )}
     </div>
   );
 }
