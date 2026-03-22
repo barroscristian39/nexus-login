@@ -7488,14 +7488,16 @@ export default function App() {
           </div>
         </header>
 
-        {currentView === 'painel' ? <DashboardView /> : 
-         currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} /> : 
-         currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} /> :
-         currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
-         currentView === 'relatorio' ? <RelatorioExecucaoView /> :
-         currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} /> :
-         currentView === 'notificacoes' ? <NotificacoesView notificacoesList={notificacoesList} /> :
-         currentView === 'administracao' ? (
+        {/* Views Container */}
+        <div className="flex-1 overflow-y-auto">
+          {currentView === 'painel' ? <DashboardView /> : 
+           currentView === 'demandas' ? <DemandasView usuariosAdminList={usuariosAdminList} currentUser={currentUser} /> : 
+           currentView === 'projetos' ? <ProjetosView onEdit={handleEditProject} onViewDetail={handleViewProjectDetail} currentUser={currentUser} /> :
+           currentView === 'evidencias' ? <EvidenciasView onAdd={handleAddEvidence} onEdit={handleEditEvidence} syncVersion={dataSyncVersion} /> :
+           currentView === 'relatorio' ? <RelatorioExecucaoView /> :
+           currentView === 'configuracoes' ? <ConfiguracoesView currentUser={currentUser} setCurrentUser={setCurrentUser} /> :
+           currentView === 'notificacoes' ? <NotificacoesView notificacoesList={notificacoesList} /> :
+           currentView === 'administracao' ? (
            <AdministracaoView 
              onNewCompany={() => setIsEmpresaModalOpen(true)}
              onNewUser={() => setIsUsuarioModalOpen(true)}
@@ -7531,8 +7533,10 @@ export default function App() {
            />
          ) :
          <DetalheProjetoView project={selectedProject} onBack={() => setCurrentView('projetos')} onEdit={() => setIsEditModalOpen(true)} />}
+        </div>
       </div>
 
+      {/* Modals and Overlays */}
       {isEditModalOpen && (
         <EditProjectModal 
           project={selectedProject} 
