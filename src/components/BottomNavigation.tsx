@@ -65,7 +65,14 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
             return (
               <button
                 key={item.id}
-                onClick={() => handleMenuToggle()}
+                onClick={() => {
+                  if (item.id === 'menu') {
+                    handleMenuToggle();
+                  } else {
+                    onViewChange(item.id);
+                    setIsMenuOpen(false);
+                  }
+                }}
                 className={`flex flex-col items-center justify-center w-full h-full relative transition-colors ${
                   isActive ? 'text-[#3578d4]' : 'text-gray-500'
                 }`}
@@ -109,7 +116,7 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
                 {/* Notificações */}
                 <button
                   onClick={() => {
-                    onOpenNotificacoes?.();
+                    onViewChange('notificacoes');
                     setIsMenuOpen(false);
                   }}
                   className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 transition-colors"
