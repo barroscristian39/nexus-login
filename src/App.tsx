@@ -1344,7 +1344,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [], 
                     onClick={() => handleAction('Editar', item)}
                     className="flex-1 h-9 bg-gray-100 border border-gray-200 rounded-[8px] text-gray-700 text-[12px] font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
                   >
-                    <Edit2 size={14} />
+                    <Edit size={14} />
                     Editar
                   </motion.button>
                   <motion.button
