@@ -1154,114 +1154,211 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [], 
       </div>
 
       {/* Table Container */}
-      <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 overflow-hidden">
+      <div className="space-y-3">
+        {/* Desktop Table View - Hidden on Mobile */}
+        <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 overflow-hidden hidden sm:block">
+          {demandas.length === 0 ? (
+            <div className="p-12 text-center">
+              <ListTodo size={40} className="text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-500 font-medium">Nenhuma demanda cadastrada</p>
+              <p className="text-gray-400 text-sm mt-1">As demandas aparecerão aqui quando forem criadas</p>
+            </div>
+          ) : (
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                  <tr className="bg-[#f9fafb] border-b border-gray-100">
+                    <th className="py-3 px-4 w-10">
+                      <input type="checkbox" className="rounded border-gray-300 text-[#3578d4] focus:ring-[#3578d4]" />
+                    </th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
+                      <div className="flex items-center cursor-pointer hover:text-gray-700">
+                        Título <ArrowUpDown size={10} className="ml-1" />
+                      </div>
+                    </th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
+                      <div className="flex items-center cursor-pointer hover:text-gray-700">
+                        Vencimento <ArrowUpDown size={10} className="ml-1" />
+                      </div>
+                    </th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
+                      <div className="flex items-center cursor-pointer hover:text-gray-700">
+                        Descrição <ArrowUpDown size={10} className="ml-1" />
+                      </div>
+                    </th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
+                      <div className="flex items-center cursor-pointer hover:text-gray-700">
+                        Responsível <ArrowUpDown size={10} className="ml-1" />
+                      </div>
+                    </th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Prioridade</th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Status</th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Progresso</th>
+                    <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {demandas.map((item) => (
+                    <tr key={item.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                      <td className="py-2.5 px-4">
+                        <input type="checkbox" className="rounded border-gray-300 text-[#3578d4] focus:ring-[#3578d4]" />
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span className="text-[12px] font-medium text-[#1e315d]">{item.titulo}</span>
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span className="text-[12px] text-gray-600">{formatDate(item.vencimento)}</span>
+                      </td>
+                      <td className="py-2.5 px-3 max-w-[240px]">
+                        <span className="text-[12px] text-[#3578d4] font-medium cursor-pointer hover:underline truncate block">
+                          {item.descricao}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span className="text-[12px] text-gray-600">{item.responsavel?.nome || '-'}</span>
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <PriorityTag level={formatPrioridade(item.prioridade)} />
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <StatusTag status={formatStatus(item.status)} />
+                      </td>
+                      <td className="py-2.5 px-3 w-[100px]">
+                        <ProgressBar value={item.progresso || 0} color={getStatusColor(item.status)} />
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <div className="relative">
+                          <select 
+                            className="bg-white border border-gray-200 rounded-[4px] px-2 py-1 text-[10px] text-gray-600 outline-none appearance-none pr-6 w-full cursor-pointer"
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                handleAction(e.target.value, item);
+                                e.target.value = '';
+                              }
+                            }}
+                            defaultValue=""
+                          >
+                            <option value="">- Ação -</option>
+                            <option value="Ver detalhes">Ver detalhes</option>
+                            <option value="Editar">Editar</option>
+                            <option value="Alterar Status">Alterar Status</option>
+                            <option value="Excluir">Excluir</option>
+                          </select>
+                          <ChevronDown size={10} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              </div>
+
+              {/* Footer / Pagination */}
+              <div className="px-4 py-3 bg-white flex items-center justify-between border-t border-gray-100">
+                <span className="text-[11px] text-gray-400 font-medium">Página 1 de 1   {demandas.length} demanda{demandas.length !== 1 ? 's' : ''}</span>
+                <div className="flex items-center space-x-1">
+                  <button className="px-2 py-1 text-[11px] text-gray-500 border border-gray-200 rounded hover:bg-gray-50">Ant</button>
+                  <button className="px-2.5 py-1 text-[11px] text-white bg-[#3578d4] rounded font-bold">1</button>
+                  <button className="px-2 py-1 text-[11px] text-gray-500 border border-gray-200 rounded hover:bg-gray-50">Prox</button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Mobile Card View - Visible Only on Mobile */}
         {demandas.length === 0 ? (
-          <div className="p-12 text-center">
+          <div className="sm:hidden bg-white rounded-[10px] shadow-sm border border-gray-100 p-8 text-center">
             <ListTodo size={40} className="text-gray-300 mx-auto mb-3" />
             <p className="text-gray-500 font-medium">Nenhuma demanda cadastrada</p>
             <p className="text-gray-400 text-sm mt-1">As demandas aparecerão aqui quando forem criadas</p>
           </div>
         ) : (
-          <>
-            <div className="overflow-x-auto -mx-4 sm:mx-0">
-              <table className="w-full text-left border-collapse min-w-max">
-                <thead>
-                <tr className="bg-[#f9fafb] border-b border-gray-100">
-                  <th className="py-3 px-4 w-10">
-                    <input type="checkbox" className="rounded border-gray-300 text-[#3578d4] focus:ring-[#3578d4]" />
-                  </th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
-                    <div className="flex items-center cursor-pointer hover:text-gray-700">
-                      Título <ArrowUpDown size={10} className="ml-1" />
-                    </div>
-                  </th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
-                    <div className="flex items-center cursor-pointer hover:text-gray-700">
-                      Vencimento <ArrowUpDown size={10} className="ml-1" />
-                    </div>
-                  </th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
-                    <div className="flex items-center cursor-pointer hover:text-gray-700">
-                      Descrição <ArrowUpDown size={10} className="ml-1" />
-                    </div>
-                  </th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
-                    <div className="flex items-center cursor-pointer hover:text-gray-700">
-                      Responsível <ArrowUpDown size={10} className="ml-1" />
-                    </div>
-                  </th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Prioridade</th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Status</th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Progresso</th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Ação</th>
-                </tr>
-              </thead>
-              <tbody>
-                {demandas.map((item) => (
-                  <tr key={item.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                    <td className="py-2.5 px-4">
-                      <input type="checkbox" className="rounded border-gray-300 text-[#3578d4] focus:ring-[#3578d4]" />
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <span className="text-[12px] font-medium text-[#1e315d]">{item.titulo}</span>
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <span className="text-[12px] text-gray-600">{formatDate(item.vencimento)}</span>
-                    </td>
-                    <td className="py-2.5 px-3 max-w-[240px]">
-                      <span className="text-[12px] text-[#3578d4] font-medium cursor-pointer hover:underline truncate block">
-                        {item.descricao}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <span className="text-[12px] text-gray-600">{item.responsavel?.nome || '-'}</span>
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <PriorityTag level={formatPrioridade(item.prioridade)} />
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <StatusTag status={formatStatus(item.status)} />
-                    </td>
-                    <td className="py-2.5 px-3 w-[100px]">
-                      <ProgressBar value={item.progresso || 0} color={getStatusColor(item.status)} />
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <div className="relative">
-                        <select 
-                          className="bg-white border border-gray-200 rounded-[4px] px-2 py-1 text-[10px] text-gray-600 outline-none appearance-none pr-6 w-full cursor-pointer"
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              handleAction(e.target.value, item);
-                              e.target.value = '';
-                            }
-                          }}
-                          defaultValue=""
-                        >
-                          <option value="">- Ação -</option>
-                          <option value="Ver detalhes">Ver detalhes</option>
-                          <option value="Editar">Editar</option>
-                          <option value="Alterar Status">Alterar Status</option>
-                          <option value="Excluir">Excluir</option>
-                        </select>
-                        <ChevronDown size={10} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            </div>
+          <div className="sm:hidden grid grid-cols-1 gap-3">
+            {demandas.map((item) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-[12px] shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200"
+              >
+                {/* Header com Título e Status */}
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <div className="flex-1">
+                    <h3 className="text-[13px] font-bold text-[#1e315d] leading-tight">{item.titulo}</h3>
+                    <p className="text-[11px] text-gray-500 mt-1">{item.area}</p>
+                  </div>
+                  <StatusTag status={formatStatus(item.status)} />
+                </div>
 
-            {/* Footer / Pagination */}
-            <div className="px-4 py-3 bg-white flex items-center justify-between border-t border-gray-100">
-              <span className="text-[11px] text-gray-400 font-medium">Página 1 de 1   {demandas.length} demanda{demandas.length !== 1 ? 's' : ''}</span>
-              <div className="flex items-center space-x-1">
-                <button className="px-2 py-1 text-[11px] text-gray-500 border border-gray-200 rounded hover:bg-gray-50">Ant</button>
-                <button className="px-2.5 py-1 text-[11px] text-white bg-[#3578d4] rounded font-bold">1</button>
-                <button className="px-2 py-1 text-[11px] text-gray-500 border border-gray-200 rounded hover:bg-gray-50">Seg</button>
-              </div>
-            </div>
-          </>
+                {/* Descrição */}
+                <p className="text-[12px] text-gray-600 mb-3 line-clamp-2">{item.descricao}</p>
+
+                {/* Info Grid - 2 colunas */}
+                <div className="grid grid-cols-2 gap-3 mb-3 pb-3 border-b border-gray-100">
+                  <div>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">Responsável</p>
+                    <p className="text-[12px] font-medium text-gray-700 mt-1">{item.responsavel?.nome || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">Vencimento</p>
+                    <p className="text-[12px] font-medium text-gray-700 mt-1">{formatDate(item.vencimento)}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">Prioridade</p>
+                    <div className="mt-1">
+                      <PriorityTag level={formatPrioridade(item.prioridade)} />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">Progresso</p>
+                    <p className="text-[12px] font-bold text-gray-700 mt-1">{item.progresso || 0}%</p>
+                  </div>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="mb-3">
+                  <div className="flex-1 bg-gray-100 rounded-full h-[5px] overflow-hidden">
+                    <div 
+                      className="h-full transition-all duration-500" 
+                      style={{ width: `${item.progresso || 0}%`, backgroundColor: getStatusColor(item.status) }}
+                    />
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleAction('Ver detalhes', item)}
+                    className="flex-1 h-9 bg-blue-50 border border-blue-200 rounded-[8px] text-blue-600 text-[12px] font-semibold hover:bg-blue-100 transition-colors flex items-center justify-center gap-1"
+                  >
+                    <Eye size={14} />
+                    Ver
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleAction('Editar', item)}
+                    className="flex-1 h-9 bg-gray-100 border border-gray-200 rounded-[8px] text-gray-700 text-[12px] font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
+                  >
+                    <Edit2 size={14} />
+                    Editar
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleAction('Excluir', item)}
+                    className="h-9 w-9 bg-red-50 border border-red-200 rounded-[8px] text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center justify-center"
+                  >
+                    <Trash2 size={14} />
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         )}
       </div>
 
