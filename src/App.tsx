@@ -7457,10 +7457,10 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden sm:pb-0 pb-[64px]">
-        {/* Topbar */}
-        <header className="h-[46px] bg-white border-b border-gray-100 flex items-center justify-between px-3 sm:px-4 shrink-0 z-10">
-          <h2 className="text-[13px] font-bold text-[#1e315d]">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden sm:pb-0 pb-[68px]">
+        {/* Topbar - Premium Design */}
+        <header className="h-[56px] bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-5 shrink-0 z-10 shadow-sm">
+          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#1e315d] truncate">
             {currentView === 'painel' ? 'Painel' : 
              currentView === 'demandas' ? 'Gestão de Demandas' : 
              currentView === 'projetos' ? 'Gestão de Projetos' : 
@@ -7469,25 +7469,29 @@ export default function App() {
              currentView === 'configuracoes' ? 'Configurações' :
              currentView === 'notificacoes' ? 'Notificações' :
              currentView === 'administracao' ? 'Administrador' :
-             currentView === 'usuarios-empresa' ? 'usuários da Empresa' :
+             currentView === 'usuarios-empresa' ? 'Usuários da Empresa' :
              'Detalhes do Projeto'}
           </h2>
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center">
-              <span className="text-[11px] font-medium text-gray-500 mr-2">Administrador principal</span>
-              <User size={14} className="text-gray-400" />
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="text-[12px] font-medium text-gray-600">{currentUser?.nome || 'Usuário'}</span>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-[12px] font-bold">
+                {currentUser?.nome?.charAt(0).toUpperCase() || 'U'}
+              </div>
             </div>
             <div 
               ref={bellRef}
               className="relative cursor-pointer" 
               onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
             >
-              <div className="w-7 h-7 rounded-full bg-[#3578d4] flex items-center justify-center">
-                <Bell size={14} className="text-white" />
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center hover:shadow-lg transition-all">
+                <Bell size={16} className="text-white" />
               </div>
-              <span className="absolute -top-0.5 -right-0.5 bg-[#ef4444] text-white text-[8px] font-bold px-1 rounded-full border border-white">
-                {notificacoesList.filter((notif) => !notif.lida).length}
-              </span>
+              {notificacoesList.filter((notif) => !notif.lida).length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-red-600 text-white text-[8px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-md">
+                  {notificacoesList.filter((notif) => !notif.lida).length > 9 ? '9+' : notificacoesList.filter((notif) => !notif.lida).length}
+                </span>
+              )}
 
               <AnimatePresence>
                 {isNotificationDropdownOpen && (
@@ -7504,9 +7508,9 @@ export default function App() {
             </div>
             <button
               onClick={handleLogout}
-              className="hidden sm:flex items-center px-2.5 py-1 rounded border border-red-100 text-[#ef4444] text-[10px] font-bold hover:bg-red-50 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] border border-red-200 text-red-600 text-[11px] font-semibold hover:bg-red-50 hover:border-red-300 transition-all"
             >
-              <div className="w-1 h-1 rounded-full border border-red-400 mr-1.5" />
+              <LogOut size={14} />
               Sair
             </button>
           </div>
