@@ -250,22 +250,22 @@ const SidebarItem = ({ icon: Icon, label, active = false, onClick }: { icon: any
 );
 
 const KPICard = ({ title, value, color, icon: Icon }: { title: string, value: string, color: string, icon: any }) => (
-  <div className="bg-white rounded-[4px] shadow-sm border border-gray-100 overflow-hidden flex h-[72px]">
+  <div className="bg-white rounded-[8px] shadow-md border border-gray-200 overflow-hidden flex h-[72px] hover:shadow-lg hover:border-gray-300 transition-all duration-200">
     <div className={cn("w-[52px] flex items-center justify-center shrink-0", color)}>
-      <Icon size={18} className="text-white/90" />
+      <Icon size={18} className="text-white" />
     </div>
     <div className="flex flex-col justify-center px-3">
-      <span className="text-[10px] font-medium text-gray-400 uppercase tracking-tight mb-0.5">{title}</span>
+      <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-tight mb-0.5">{title}</span>
       <span className="text-xl font-bold text-[#1e315d] leading-none">{value}</span>
     </div>
   </div>
 );
 
 const ChartCard = ({ title, subtitle, children, className }: { title: string, subtitle: string, children: React.ReactNode, className?: string }) => (
-  <div className={cn("bg-white rounded-[6px] shadow-sm border border-gray-100 p-4 flex flex-col", className)}>
+  <div className={cn("bg-white rounded-[10px] shadow-md border border-gray-200 p-4 flex flex-col hover:shadow-lg hover:border-gray-300 transition-all duration-200", className)}>
     <div className="mb-4">
       <h3 className="text-[14px] font-bold text-[#1e315d] leading-tight">{title}</h3>
-      <p className="text-[10px] text-gray-400 mt-0.5">{subtitle}</p>
+      <p className="text-[10px] text-gray-500 mt-0.5">{subtitle}</p>
     </div>
     <div className="flex-1 min-h-0">
       {children}
@@ -354,6 +354,17 @@ const DashboardView = () => {
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Get current user from localStorage
+  const currentUser = (() => {
+    try {
+      const userStr = localStorage.getItem('nexus_user');
+      return userStr ? JSON.parse(userStr) : null;
+    } catch (e) {
+      return null;
+    }
+  })();
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -440,14 +451,65 @@ const DashboardView = () => {
   }));
 
   return (
-    <main className="flex-1 overflow-hidden sm:overflow-y-auto p-3 sm:p-4 space-y-3">
-      {/* KPI Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-        <KPICard title="Demandas Abertas" value={String(kpis?.demandasAbertas || 0)} color="bg-[#2fb15d]" icon={ListTodo} />
-        <KPICard title="Em Execução" value={String(kpis?.emExecucao || 0)} color="bg-[#3578d4]" icon={CheckCircle2} />
-        <KPICard title="Evidências Pendentes" value={String(kpis?.evidenciasPendentes || 0)} color="bg-[#f59e0b]" icon={Clock} />
-        <KPICard title="Bloqueadas / Atrasadas" value={String(kpis?.bloqueadasAtrasadas || 0)} color="bg-[#ef4444]" icon={AlertCircle} />
-      </div>
+    <>
+      {/* Header Mobile - Fixed */}
+      <section className="fixed top-0 left-0 right-0 z-30 bg-white px-6 pt-5 pb-6 sm:px-8 sm:pt-6 sm:pb-7 border-b border-gray-200 shadow-sm">
+        {/* Top Bar: Menu Icon + Avatar */}
+        <div className="flex items-center justify-between mb-4">
+          {/* Menu Icon */}
+          <div className="flex flex-col gap-1.5 cursor-pointer">
+            <div className="w-6 h-0.5 bg-[#1565C0]"></div>
+            <div className="w-4 h-0.5 bg-[#1565C0]"></div>
+          </div>
+          
+          {/* Avatar */}
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#1976D2] to-[#1565C0] shadow-lg flex items-center justify-center flex-shrink-0">
+            <span className="text-white font-bold text-[13px]">
+              {(currentUser?.nome || 'US').split(' ').map((n: string) => n[0]).join('').toUpperCase()}
+            </span>
+          </div>
+        </div>
+
+        {/* Greeting Title */}
+        <div className="mb-2">
+          <h2 className="text-[14px] text-[#212121] font-normal">Olá!</h2>
+          <h1 className="text-[30px] sm:text-[32px] font-black text-[#212121] leading-tight -mt-1">
+            {currentUser?.nome || 'Usuário'}
+          </h1>
+        </div>
+
+        {/* Subtitle */}
+        <p className="text-[13px] text-[#9A9AB0] font-light mb-5 leading-relaxed">
+          Gerencie suas demandas, projetos e evidências
+        </p>
+
+        {/* Search Bar */}
+        <div className="relative flex gap-2">
+          <input
+            type="text"
+            placeholder="Pesquisar"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 px-4 py-2.5 rounded-[14px] bg-[#F5F5F5] border-0 text-[13px] text-[#212121] placeholder-[#9A9AB0] focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#1976D2] transition-all"
+          />
+          <button className="px-3 py-2.5 rounded-[14px] bg-[#1976D2] hover:bg-[#1565C0] flex items-center justify-center transition-colors flex-shrink-0">
+            <Search className="text-white" size={18} />
+          </button>
+        </div>
+      </section>
+
+      {/* Gradient Transition */}
+      <div className="fixed top-[122px] sm:top-[132px] left-0 right-0 h-8 bg-gradient-to-b from-white via-white to-transparent z-20 pointer-events-none"></div>
+
+      <main className="flex-1 overflow-y-auto bg-white pt-[280px] sm:pt-[300px]">
+        {/* KPI Row */}
+        <div className="px-3 sm:px-5 space-y-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <KPICard title="Demandas Abertas" value={String(kpis?.demandasAbertas || 0)} color="bg-[#2fb15d]" icon={ListTodo} />
+          <KPICard title="Em Execução" value={String(kpis?.emExecucao || 0)} color="bg-[#3578d4]" icon={CheckCircle2} />
+          <KPICard title="Evidências Pendentes" value={String(kpis?.evidenciasPendentes || 0)} color="bg-[#f59e0b]" icon={Clock} />
+          <KPICard title="Bloqueadas / Atrasadas" value={String(kpis?.bloqueadasAtrasadas || 0)} color="bg-[#ef4444]" icon={AlertCircle} />
+        </div>
 
       {/* First Chart Row */}
       <div className="grid grid-cols-1 sm:grid-cols-[1.8fr_1fr] gap-2 sm:gap-3">
@@ -631,7 +693,9 @@ const DashboardView = () => {
           </div>
         </ChartCard>
       </div>
-    </main>
+        </div>
+      </main>
+    </>
   );
 };
 
@@ -7484,79 +7548,6 @@ export default function App() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden sm:pb-0 pb-[68px]">
-        {/* Topbar - Premium Design */}
-        <header className="h-[64px] bg-gradient-to-r from-white to-gray-50/80 border-b border-gray-200 flex items-center justify-between px-5 sm:px-6 shrink-0 z-10 shadow-sm hover:shadow-md transition-shadow duration-300">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full opacity-80"></div>
-            <h2 className="text-[15px] sm:text-[16px] font-bold text-[#1e315d] truncate leading-tight">
-              {currentView === 'painel' ? 'Painel' : 
-               currentView === 'demandas' ? 'Gestão de Demandas' : 
-               currentView === 'projetos' ? 'Gestão de Projetos' : 
-               currentView === 'evidencias' ? 'Gestão de evidências' :
-               currentView === 'relatorio' ? 'Relatório de Execução' :
-               currentView === 'configuracoes' ? 'Configurações' :
-               currentView === 'notificacoes' ? 'Notificações' :
-               currentView === 'administracao' ? 'Administrador' :
-               currentView === 'usuarios-empresa' ? 'Usuários da Empresa' :
-               'Detalhes do Projeto'}
-            </h2>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="hidden sm:flex items-center gap-3 px-3 py-2 rounded-[10px] bg-white/60 hover:bg-white/80 transition-colors duration-200">
-              <span className="text-[12px] font-semibold text-gray-700">{currentUser?.nome || 'Usuário'}</span>
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center text-white text-[12px] font-bold shadow-sm">
-                {currentUser?.nome?.charAt(0).toUpperCase() || 'U'}
-              </div>
-            </div>
-            <div className="w-px h-6 bg-gray-200 hidden sm:block"></div>
-            <div 
-              ref={bellRef}
-              className="relative cursor-pointer" 
-              onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
-            >
-              <motion.div 
-                className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 via-blue-500 to-blue-600 flex items-center justify-center hover:shadow-lg hover:shadow-blue-200 transition-all duration-200"
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Bell size={18} className="text-white" strokeWidth={2} />
-              </motion.div>
-              {notificacoesList.filter((notif) => !notif.lida).length > 0 && (
-                <motion.span 
-                  className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-red-500 to-red-600 text-white text-[8px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-lg"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 400 }}
-                >
-                  {notificacoesList.filter((notif) => !notif.lida).length > 9 ? '9+' : notificacoesList.filter((notif) => !notif.lida).length}
-                </motion.span>
-              )}
-
-              <AnimatePresence>
-                {isNotificationDropdownOpen && (
-                  <div ref={notificationRef}>
-                    <NotificationDropdown 
-                      onClose={() => setIsNotificationDropdownOpen(false)}
-                      onViewAll={() => setCurrentView('notificacoes')}
-                      notificacoesList={notificacoesList}
-                      onMarkAsRead={handleMarkNotificationAsRead}
-                    />
-                  </div>
-                )}
-              </AnimatePresence>
-            </div>
-            <motion.button
-              onClick={handleLogout}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-gradient-to-r from-red-50 to-red-50/50 border border-red-300 text-red-700 text-[11px] font-semibold hover:bg-red-100 hover:border-red-400 hover:shadow-md transition-all duration-200"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <LogOut size={15} />
-              Sair
-            </motion.button>
-          </div>
-        </header>
-
         {/* Views Container */}
         <div className="flex-1 overflow-y-auto">
           {currentView === 'painel' ? <DashboardView /> : 
