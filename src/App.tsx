@@ -292,7 +292,7 @@ const StatusTag = ({ status }: { status: string }) => {
     'Em andamento': 'bg-yellow-50 text-yellow-600',
     'Bloqueada': 'bg-red-50 text-red-500',
     'Aberta': 'bg-blue-50 text-blue-500',
-    'Conclu├¡da': 'bg-green-50 text-green-600',
+    'Concluída': 'bg-green-50 text-green-600',
   };
   return (
     <span className={cn("px-2 py-1 rounded-[6px] text-[10px] font-bold", styles[status])}>
@@ -347,7 +347,7 @@ const statusColorMap: Record<string, string> = {
   'Em andamento': '#f59e0b',
   'Em revisão': '#8b5cf6',
   'Bloqueada': '#3578d4',
-  'Conclu├¡da': '#2fb15d'
+  'Concluída': '#2fb15d'
 };
 
 const DashboardView = () => {
@@ -452,8 +452,8 @@ const DashboardView = () => {
       {/* First Chart Row */}
       <div className="grid grid-cols-1 sm:grid-cols-[1.8fr_1fr] gap-2 sm:gap-3">
         <ChartCard 
-          title="Fluxo de Demandas - ültimos 30 dias" 
-          subtitle="Abertas vs Conclu├¡das por semana"
+          title="Fluxo de Demandas - últimos 30 dias" 
+          subtitle="Abertas vs Concluídas por semana"
           className="h-[380px]"
         >
           <ResponsiveContainer width="100%" height="100%">
@@ -463,7 +463,7 @@ const DashboardView = () => {
                   <stop offset="5%" stopColor="#3578d4" stopOpacity={0.08}/>
                   <stop offset="95%" stopColor="#3578d4" stopOpacity={0}/>
                 </linearGradient>
-                <linearGradient id="colorConclu├¡das" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="colorConcluídas" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#2fb15d" stopOpacity={0.08}/>
                   <stop offset="95%" stopColor="#2fb15d" stopOpacity={0}/>
                 </linearGradient>
@@ -505,11 +505,11 @@ const DashboardView = () => {
               <Area 
                 type="monotone" 
                 dataKey="concluidas" 
-                name="Conclu├¡das"
+                name="Concluídas"
                 stroke="#2fb15d" 
                 strokeWidth={1.5}
                 fillOpacity={1} 
-                fill="url(#colorConclu├¡das)" 
+                fill="url(#colorConcluídas)" 
                 dot={{ r: 2.5, fill: '#2fb15d' }}
                 activeDot={{ r: 4 }}
               />
@@ -595,7 +595,7 @@ const DashboardView = () => {
         </ChartCard>
 
         <ChartCard 
-          title="Demandas por ├ürea" 
+          title="Demandas por Área" 
           subtitle="Distribuição por departamento"
           className="h-[380px]"
         >
@@ -666,7 +666,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     { value: 'EM_ANDAMENTO', label: 'Em andamento', color: '#3578d4' },
     { value: 'EM_REVISAO', label: 'Em revisão', color: '#f59e0b' },
     { value: 'BLOQUEADA', label: 'Bloqueada', color: '#8b5cf6' },
-    { value: 'CONCLUIDA', label: 'Conclu├¡da', color: '#2fb15d' },
+    { value: 'CONCLUIDA', label: 'Concluída', color: '#2fb15d' },
     { value: 'ATRASADA', label: 'Atrasada', color: '#dc2626' }
   ];
 
@@ -873,7 +873,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
 
   const criarNovaDemanda = async () => {
     if (!novaDemandata.titulo.trim() || !novaDemandata.descricao.trim()) {
-      showToast('Preencha t├¡tulo e descrição', 'error');
+      showToast('Preencha título e descrição', 'error');
       return;
     }
 
@@ -950,7 +950,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       }
 
       if (!currentUser || !currentUser.id) {
-        console.error('[COMENTARIO] Usuario não dispon├¡vel:', currentUser);
+        console.error('[COMENTARIO] Usuario não disponível:', currentUser);
         showToast('Erro: Dados de usuário não encontrados. Faça login novamente.', 'error');
         return;
       }
@@ -1071,7 +1071,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       'EM_ANDAMENTO': 'Em andamento',
       'EM_REVISAO': 'Em revisão',
       'BLOQUEADA': 'Bloqueada',
-      'CONCLUIDA': 'Conclu├¡da',
+      'CONCLUIDA': 'Concluída',
       'ATRASADA': 'Atrasada'
     };
     return statusMap[status] || status;
@@ -1196,7 +1196,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                   </th>
                   <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
                     <div className="flex items-center cursor-pointer hover:text-gray-700">
-                      T├¡tulo <ArrowUpDown size={10} className="ml-1" />
+                      Título <ArrowUpDown size={10} className="ml-1" />
                     </div>
                   </th>
                   <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
@@ -1312,7 +1312,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[11px] font-bold text-gray-500 uppercase">T├¡tulo</label>
+                      <label className="text-[11px] font-bold text-gray-500 uppercase">Título</label>
                       <p className="text-[14px] text-gray-800 font-medium mt-1">{selectedDemanda.titulo}</p>
                     </div>
                     <div>
@@ -1477,7 +1477,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
               ) : (
                 <>
                   <div>
-                    <label className="text-[11px] font-bold text-gray-600">T├¡tulo</label>
+                    <label className="text-[11px] font-bold text-gray-600">Título</label>
                     <input 
                       type="text" 
                       value={editFormData.titulo}
@@ -1507,7 +1507,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                         <option value="EM_ANDAMENTO">Em andamento</option>
                         <option value="EM_REVISAO">Em revisão</option>
                         <option value="BLOQUEADA">Bloqueada</option>
-                        <option value="CONCLUIDA">Conclu├¡da</option>
+                        <option value="CONCLUIDA">Concluída</option>
                         <option value="ATRASADA">Atrasada</option>
                       </select>
                     </div>
@@ -1561,7 +1561,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                           <option key={usuario.id} value={usuario.id}>{usuario.nome}</option>
                         ))
                       ) : (
-                        <option disabled>Nenhum técnico dispon├¡vel</option>
+                        <option disabled>Nenhum técnico disponível</option>
                       )}
                     </select>
                   </div>
@@ -1631,18 +1631,18 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                       <option key={empresa.id} value={empresa.id}>{empresa.nome}</option>
                     ))
                   ) : (
-                    <option disabled>Nenhuma empresa dispon├¡vel</option>
+                    <option disabled>Nenhuma empresa disponível</option>
                   )}
                 </select>
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-600">T├¡tulo *</label>
+                <label className="text-[11px] font-bold text-gray-600">Título *</label>
                 <input 
                   type="text" 
                   value={novaDemandata.titulo}
                   onChange={(e) => setNovaDemandata({ ...novaDemandata, titulo: e.target.value })}
-                  placeholder="Digite o t├¡tulo da demanda"
+                  placeholder="Digite o título da demanda"
                   className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                 />
               </div>
@@ -1695,7 +1695,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                       <option key={usuario.id} value={usuario.id}>{usuario.nome}</option>
                     ))
                   ) : (
-                    <option disabled>Nenhum técnico dispon├¡vel</option>
+                    <option disabled>Nenhum técnico disponível</option>
                   )}
                 </select>
               </div>
@@ -1755,7 +1755,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       {showConfirmDelete && confirmDeleteDemanda && (
         <div className="fixed inset-0 bg-black/50 z-[150] flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-[450px] overflow-hidden animate-in fade-in zoom-in duration-300">
-            {/* Header com ├¡cone */}
+            {/* Header com ícone */}
             <div className="bg-gradient-to-br from-red-50 to-red-100/50 px-6 py-6 border-b border-red-200/50 flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <Trash2 size={24} className="text-red-600" />
@@ -1902,7 +1902,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       {showDeleteCommentModal && commentToDeleteId && (
         <div className="fixed inset-0 bg-black/50 z-[150] flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-[420px] overflow-hidden animate-in fade-in zoom-in duration-300">
-            {/* Header com ├¡cone */}
+            {/* Header com ícone */}
             <div className="bg-gradient-to-br from-red-50 to-red-100/50 px-6 py-6 border-b border-red-200/50 flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <Trash2 size={24} className="text-red-600" />
@@ -2219,7 +2219,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
     const statusMap: Record<string, string> = {
       'PLANEJAMENTO': 'Planejamento',
       'EM_EXECUCAO': 'Em execução',
-      'CONCLUIDO': 'Conclu├¡do',
+      'CONCLUIDO': 'Concluído',
       'ATRASADO': 'Atrasado',
       'SUSPENSO': 'Suspenso'
     };
@@ -2375,7 +2375,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                 </div>
 
                 <div className="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
-                  <span className="text-[10px] text-gray-400">In├¡cio: {formatDate(projeto.dataInicio)}</span>
+                  <span className="text-[10px] text-gray-400">Início: {formatDate(projeto.dataInicio)}</span>
                   <div className="flex items-center space-x-2">
                     <button 
                       onClick={(e) => {
@@ -2521,7 +2521,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                     <option value="PLANEJAMENTO">Planejamento</option>
                     <option value="EM_ANDAMENTO">Em Andamento</option>
                     <option value="EM_REVISAO">Em Revisão</option>
-                    <option value="CONCLUIDO">Conclu├¡do</option>
+                    <option value="CONCLUIDO">Concluído</option>
                     <option value="ATRASADO">Atrasado</option>
                     <option value="BLOQUEADO">Bloqueado</option>
                   </select>
@@ -2542,7 +2542,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] font-bold text-gray-600">Data In├¡cio</label>
+                  <label className="text-[11px] font-bold text-gray-600">Data Início</label>
                   <input 
                     type="date" 
                     value={editFormData.dataInicio}
@@ -2640,14 +2640,14 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                     <option value="PLANEJAMENTO">Planejamento</option>
                     <option value="EM_ANDAMENTO">Em Andamento</option>
                     <option value="EM_REVISAO">Em Revisão</option>
-                    <option value="CONCLUIDO">Conclu├¡do</option>
+                    <option value="CONCLUIDO">Concluído</option>
                     <option value="ATRASADO">Atrasado</option>
                     <option value="BLOQUEADO">Bloqueado</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-gray-600">Data In├¡cio</label>
+                  <label className="text-[11px] font-bold text-gray-600">Data Início</label>
                   <input 
                     type="date" 
                     value={novoProjeto.dataInicio}
@@ -2793,7 +2793,7 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
 
           <div className="grid grid-cols-2 gap-x-3 gap-y-2.5">
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-gray-600">Data de in├¡cio</label>
+              <label className="text-[11px] font-bold text-gray-600">Data de início</label>
               <div className="relative">
                 <input 
                   type="text" 
@@ -2827,7 +2827,7 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
                   <option>Em andamento</option>
                   <option>Atrasado</option>
                   <option>Planejamento</option>
-                  <option>Conclu├¡do</option>
+                  <option>Concluído</option>
                 </select>
                 <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
               </div>
@@ -3143,7 +3143,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
       {showConfirmDelete && confirmEvidencia && (
         <div className="fixed inset-0 bg-black/50 z-[150] flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-[450px] overflow-hidden animate-in fade-in zoom-in duration-300">
-            {/* Header com ├¡cone */}
+            {/* Header com ícone */}
             <div className="bg-gradient-to-br from-red-50 to-red-100/50 px-6 py-6 border-b border-red-200/50 flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <Trash2 size={24} className="text-red-600" />
@@ -3240,7 +3240,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
 
 // --- Mock Data for Report ---
 const reportKpiData = [
-  { title: 'Conclu├¡das', value: '124', color: 'bg-[#2fb15d]', icon: CheckCircle2 },
+  { title: 'Concluídas', value: '124', color: 'bg-[#2fb15d]', icon: CheckCircle2 },
   { title: 'Em andamento', value: '42', color: 'bg-[#3578d4]', icon: Clock },
   { title: 'Bloqueadas', value: '12', color: 'bg-[#ef4444]', icon: AlertCircle },
   { title: 'Taxa de conclusão', value: '82%', color: 'bg-[#7c3aed]', icon: FileBarChart },
@@ -3265,7 +3265,7 @@ const demandsByResponsibleData = [
 ];
 
 const summaryByStatusData = [
-  { status: 'Conclu├¡da', count: 124, percent: 65, color: 'bg-green-50 text-green-600' },
+  { status: 'Concluída', count: 124, percent: 65, color: 'bg-green-50 text-green-600' },
   { status: 'Em andamento', count: 42, percent: 22, color: 'bg-blue-50 text-blue-600' },
   { status: 'Pendente', count: 15, percent: 8, color: 'bg-orange-50 text-orange-600' },
   { status: 'Bloqueada', count: 12, percent: 5, color: 'bg-red-50 text-red-600' },
@@ -3276,7 +3276,7 @@ const RelatorioExecucaoView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('Março / 2026');
-  const [selectedArea, setSelectedArea] = useState('Todas as ├üreas');
+  const [selectedArea, setSelectedArea] = useState('Todas as üreas');
 
   useEffect(() => {
     const loadReportData = async () => {
@@ -3318,7 +3318,7 @@ const RelatorioExecucaoView = () => {
         const taxaConclusao = demandas.length > 0 ? Math.round((concluidas / demandas.length) * 100) : 0;
 
         const reportKpiData = [
-          { title: 'Conclu├¡das', value: String(concluidas), color: 'bg-[#2fb15d]', icon: CheckCircle2 },
+          { title: 'Concluídas', value: String(concluidas), color: 'bg-[#2fb15d]', icon: CheckCircle2 },
           { title: 'Em andamento', value: String(emAndamento), color: 'bg-[#3578d4]', icon: Clock },
           { title: 'Bloqueadas', value: String(bloqueadas), color: 'bg-[#ef4444]', icon: AlertCircle },
           { title: 'Taxa de conclusão', value: `${taxaConclusao}%`, color: 'bg-[#7c3aed]', icon: FileBarChart },
@@ -3356,7 +3356,7 @@ const RelatorioExecucaoView = () => {
         // Resumo por Status
         const statusSummary: { [key: string]: number } = {};
         demandas.forEach((d: any) => {
-          const status = d.status === 'CONCLUIDA' ? 'Conclu├¡da' :
+          const status = d.status === 'CONCLUIDA' ? 'Concluída' :
                         d.status === 'EM_ANDAMENTO' ? 'Em andamento' :
                         d.status === 'BLOQUEADA' ? 'Bloqueada' :
                         d.status === 'ABERTA' ? 'Aberta' :
@@ -3369,7 +3369,7 @@ const RelatorioExecucaoView = () => {
         const summaryByStatusData = Object.entries(statusSummary).map(([status, count]) => {
           const percent = totalDemandas > 0 ? Math.round((count / totalDemandas) * 100) : 0;
           const colorMap: { [key: string]: string } = {
-            'Conclu├¡da': 'bg-green-50 text-green-600',
+            'Concluída': 'bg-green-50 text-green-600',
             'Em andamento': 'bg-blue-50 text-blue-600',
             'Pendente': 'bg-orange-50 text-orange-600',
             'Bloqueada': 'bg-red-50 text-red-600',
@@ -3455,7 +3455,7 @@ const RelatorioExecucaoView = () => {
 
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-tight">Per├¡odo:</span>
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-tight">Período:</span>
             <div className="relative">
               <select 
                 value={selectedPeriod}
@@ -3470,14 +3470,14 @@ const RelatorioExecucaoView = () => {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-tight">├ürea:</span>
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-tight">ürea:</span>
             <div className="relative">
               <select 
                 value={selectedArea}
                 onChange={(e) => setSelectedArea(e.target.value)}
                 className="h-[32px] bg-gray-50 border border-gray-200 rounded-[4px] pl-3 pr-8 text-[11px] text-gray-600 font-bold outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] min-w-[140px]"
               >
-                <option>Todas as ├üreas</option>
+                <option>Todas as üreas</option>
               </select>
               <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
             </div>
@@ -3579,7 +3579,7 @@ const RelatorioExecucaoView = () => {
                   <tr className="bg-gray-50">
                     <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Responsível</th>
                     <th className="py-3 px-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Total</th>
-                    <th className="py-3 px-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Conclu├¡das</th>
+                    <th className="py-3 px-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Concluídas</th>
                     <th className="py-3 px-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Pendentes</th>
                   </tr>
                 </thead>
@@ -3720,7 +3720,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
             </div>
           </div>
           <div className="space-y-1">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">In├¡cio</span>
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Início</span>
             <div className="flex items-center space-x-2 text-[#1e315d]">
               <Calendar size={16} className="text-gray-400" />
               <span className="text-[13px] font-medium">{project.inicio}</span>
@@ -3838,7 +3838,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                     <option>Em andamento</option>
                     <option>Atrasado</option>
                     <option>Bloqueado</option>
-                    <option>Conclu├¡do</option>
+                    <option>Concluído</option>
                   </select>
                   <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
@@ -3915,7 +3915,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                 <span className="text-[12px] font-bold text-[#1e315d]">2</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[12px] text-gray-500">Demandas conclu├¡das</span>
+                <span className="text-[12px] text-gray-500">Demandas concluídas</span>
                 <span className="text-[12px] font-bold text-green-600">1</span>
               </div>
               <div className="flex items-center justify-between">
@@ -3923,7 +3923,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                 <span className="text-[12px] font-bold text-[#3578d4]">4</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                <span className="text-[12px] text-gray-500">├Ültima atualização</span>
+                <span className="text-[12px] text-gray-500">ültima atualização</span>
                 <span className="text-[12px] font-bold text-gray-600">20/03/2026</span>
               </div>
             </div>
@@ -4035,7 +4035,7 @@ const NotificationItem = ({ notif, compact = false }: { notif: any, compact?: bo
             </div>
             <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
               <span className={cn("h-2 w-2 rounded-full", notif.lida ? "bg-slate-300" : "bg-[#3578d4]")} />
-              <span>{notif.lida ? 'Acompanhamento conclu├¡do' : 'Aguardando leitura'}</span>
+              <span>{notif.lida ? 'Acompanhamento concluído' : 'Aguardando leitura'}</span>
             </div>
           </div>
         )}
@@ -4084,7 +4084,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
               <p className="mt-1 text-lg font-bold text-[#1e315d]">{totalDemandas}</p>
             </div>
             <div className="rounded-[10px] border border-slate-100 bg-slate-50 px-3 py-3">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">├Ültima atualização</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">ültima atualização</p>
               <p className="mt-1 text-sm font-semibold text-[#1e315d]">Hoje, 11:15</p>
             </div>
           </div>
@@ -4120,12 +4120,12 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
               </div>
 
               <div className="space-y-1.5">
-                <label className="ml-1 text-[9px] font-bold uppercase tracking-wider text-gray-400">Per├¡odo</label>
+                <label className="ml-1 text-[9px] font-bold uppercase tracking-wider text-gray-400">Período</label>
                 <div className="relative">
                   <select className="h-[36px] min-w-[120px] w-full appearance-none rounded-[8px] border border-gray-200 bg-white pl-3 pr-8 text-[12px] text-gray-600 outline-none focus:ring-1 focus:ring-[#3578d4]">
                     <option>Hoje</option>
-                    <option>├Ültimos 7 dias</option>
-                    <option>Este m~s</option>
+                    <option>Últimos 7 dias</option>
+                    <option>Este mês</option>
                   </select>
                   <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
@@ -4137,7 +4137,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Buscar por t├¡tulo, descrição ou responsível..."
+                    placeholder="Buscar por título, descrição ou responsível..."
                     className="h-[36px] w-full rounded-[8px] border border-gray-200 bg-white pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                   />
                 </div>
@@ -4475,7 +4475,7 @@ const AdministracaoView = ({
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Empresa</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Perfil</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">├Ültimo Acesso</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">ültimo Acesso</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Ações</th>
                   </tr>
                 </thead>
@@ -5058,7 +5058,7 @@ const UsuarioDetalheModal = ({ usuario, onClose }: { usuario: any, onClose: () =
             <p className="text-[13px] font-medium text-gray-600">usuário Principal</p>
           </div>
           <div className="space-y-1">
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">├Ültimo Acesso</span>
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">ültimo Acesso</span>
             <p className="text-[13px] font-medium text-gray-600">{usuario.ultimoAcesso}</p>
           </div>
           <div className="space-y-1">
@@ -5512,7 +5512,7 @@ const EmpresaDetalheModal = ({ empresa, onClose }: { empresa: any, onClose: () =
             </div>
           </div>
           <div className="space-y-4">
-            <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Estat├¡sticas</h4>
+            <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Estatísticas</h4>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-3 rounded-[6px]">
                 <span className="text-[9px] font-bold text-gray-400 uppercase">usuários</span>
@@ -5737,7 +5737,7 @@ const UsuariosEmpresaView = ({
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Telefone</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Perfil</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">├Ültimo Acesso</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">ültimo Acesso</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Ações</th>
                   </tr>
                 </thead>
@@ -5858,7 +5858,7 @@ const UsuariosEmpresaView = ({
                               <Edit size={14} />
                             </button>
                           </NexusTooltip>
-                          <NexusTooltip text="Alterar v├¡nculo">
+                          <NexusTooltip text="Alterar vínculo">
                             <button className="p-1.5 text-gray-400 hover:text-[#3578d4] hover:bg-blue-50 rounded transition-colors">
                               <LinkIcon size={14} />
                             </button>
@@ -6361,7 +6361,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
               </div>
             )}
 
-            {/* TAB: T├ëCNICOS */}
+            {/* TAB: TéCNICOS */}
             {perfilTab === 'tecnicos' && (
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
@@ -6562,7 +6562,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
       'Valida': 'VALIDA',
       'Vílida': 'VALIDA',
       'VALIDA': 'VALIDA',
-      'V├üLIDA': 'VALIDA',
+      'VüLIDA': 'VALIDA',
       'Atrasada': 'ATRASADA',
       'ATRASADA': 'ATRASADA',
       'Rejeitada': 'REJEITADA',
@@ -6711,7 +6711,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
             />
           </div>
 
-          {/* ├ürea de Upload de Arquivo */}
+          {/* ürea de Upload de Arquivo */}
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-gray-600">Anexar arquivo (opcional)</label>
             <div 
@@ -6931,7 +6931,7 @@ export default function App() {
       const projetosData = projetos.map((projeto: any) => ({
         id: projeto.id,
         titulo: projeto.nome,
-        status: projeto.status === 'EM_ANDAMENTO' ? 'Em andamento' : projeto.status === 'CONCLUIDO' ? 'Conclu├¡do' : projeto.status,
+        status: projeto.status === 'EM_ANDAMENTO' ? 'Em andamento' : projeto.status === 'CONCLUIDO' ? 'Concluído' : projeto.status,
         statusColor: projeto.status === 'EM_ANDAMENTO' ? 'bg-blue-50 text-blue-500' : projeto.status === 'CONCLUIDO' ? 'bg-green-50 text-green-500' : 'bg-gray-100 text-gray-500',
         borderColor: projeto.status === 'EM_ANDAMENTO' ? 'border-t-[#3578d4]' : projeto.status === 'CONCLUIDO' ? 'border-t-[#2fb15d]' : 'border-t-[#94a3b8]',
         descricao: projeto.descricao,
@@ -6951,7 +6951,7 @@ export default function App() {
         descricao: demanda.titulo,
         responsavel: demanda.responsavel?.nome || 'N/A',
         prioridade: demanda.prioridade === 'ALTA' ? 'Alta' : demanda.prioridade === 'BAIXA' ? 'Baixa' : 'Média',
-        status: demanda.status === 'EM_ANDAMENTO' ? 'Em andamento' : demanda.status === 'CONCLUIDA' ? 'Conclu├¡da' : demanda.status,
+        status: demanda.status === 'EM_ANDAMENTO' ? 'Em andamento' : demanda.status === 'CONCLUIDA' ? 'Concluída' : demanda.status,
         progresso: demanda.progresso,
         progressoColor: demanda.progresso >= 80 ? '#2fb15d' : demanda.progresso >= 40 ? '#3578d4' : '#f59e0b',
       }));
@@ -6962,7 +6962,7 @@ export default function App() {
         tipo: evidencia.tipoArquivo,
         data: toDateBr(evidencia.dataEnvio),
         responsavel: evidencia.responsavel?.nome || 'N/A',
-        vinculo: evidencia.demanda?.titulo || evidencia.projeto?.nome || 'Sem v├¡nculo',
+        vinculo: evidencia.demanda?.titulo || evidencia.projeto?.nome || 'Sem vínculo',
         descricao: evidencia.observacoes || 'Sem observações.',
         status: evidencia.status === 'VALIDA' ? 'Vílida' : evidencia.status === 'PENDENTE' ? 'Pendente' : 'Atrasada',
         statusColor: evidencia.status === 'VALIDA' ? 'bg-green-50 text-green-600' : evidencia.status === 'PENDENTE' ? 'bg-orange-50 text-orange-600' : 'bg-red-50 text-red-600',
