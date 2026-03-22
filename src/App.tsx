@@ -79,12 +79,12 @@ function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * API Base URL - usando vari├ível de ambiente ou caminho relativo
+ * API Base URL - usando variível de ambiente ou caminho relativo
  */
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://nexus-api-nbna.onrender.com/api';
 
 /**
- * Fun├º├úo auxiliar para fazer fetch com tratamento robusto de resposta JSON
+ * Função auxiliar para fazer fetch com tratamento robusto de resposta JSON
  */
 async function fetchAPI(url: string, options?: RequestInit) {
   const response = await fetch(url, options);
@@ -99,7 +99,7 @@ async function fetchAPI(url: string, options?: RequestInit) {
         data = JSON.parse(textContent);
       } catch (e) {
         console.error('[FETCH_API] JSON Parse Error:', e, 'Content:', textContent.substring(0, 200));
-        throw new Error(`JSON inv├ílido: ${(e as any).message}`);
+        throw new Error(`JSON invílido: ${(e as any).message}`);
       }
     }
   } else if (!response.ok) {
@@ -158,13 +158,13 @@ const LoginView = ({
               </div>
             </div>
             <h1 className="mt-3 text-[18px] font-extrabold tracking-tight">NEXUS</h1>
-            <p className="mt-2 text-[12px] text-blue-100/90">Sistema de Gest├úo de Demandas e Projetos</p>
+            <p className="mt-2 text-[12px] text-blue-100/90">Sistema de Gestão de Demandas e Projetos</p>
           </div>
 
           <div className="px-8 pb-6 pt-6">
             <form className="space-y-4" onSubmit={handleSubmit}>
               <label className="block">
-                <span className="mb-2 block text-[13px] font-bold text-[#243963]">E-mail / Usu├írio</span>
+                <span className="mb-2 block text-[13px] font-bold text-[#243963]">E-mail / Usuírio</span>
                 <input
                   type="text"
                   value={email}
@@ -274,7 +274,7 @@ const ChartCard = ({ title, subtitle, children, className }: { title: string, su
 const PriorityTag = ({ level }: { level: string }) => {
   const styles: Record<string, string> = {
     'Alta': 'bg-red-50 text-red-500',
-    'M├®dia': 'bg-yellow-50 text-yellow-600',
+    'Média': 'bg-yellow-50 text-yellow-600',
     'Baixa': 'bg-green-50 text-green-600',
   };
   return (
@@ -286,7 +286,7 @@ const PriorityTag = ({ level }: { level: string }) => {
 
 const StatusTag = ({ status }: { status: string }) => {
   const styles: Record<string, string> = {
-    'Em revis├úo': 'bg-purple-50 text-purple-500',
+    'Em revisão': 'bg-purple-50 text-purple-500',
     'Em andamento': 'bg-yellow-50 text-yellow-600',
     'Bloqueada': 'bg-red-50 text-red-500',
     'Aberta': 'bg-blue-50 text-blue-500',
@@ -343,7 +343,7 @@ const ProgressBar = ({ value, color }: { value: number, color: string }) => (
 const statusColorMap: Record<string, string> = {
   'Aberta': '#ef4444',
   'Em andamento': '#f59e0b',
-  'Em revis├úo': '#8b5cf6',
+  'Em revisão': '#8b5cf6',
   'Bloqueada': '#3578d4',
   'Conclu├¡da': '#2fb15d'
 };
@@ -361,7 +361,7 @@ const DashboardView = () => {
         
         const token = localStorage.getItem('nexus_token');
         if (!token) {
-          setError('Token n├úo encontrado');
+          setError('Token não encontrado');
           return;
         }
 
@@ -373,7 +373,7 @@ const DashboardView = () => {
         });
 
         if (!data?.data) {
-          throw new Error('Dados inv├ílidos do dashboard');
+          throw new Error('Dados invílidos do dashboard');
         }
 
         setDashboardData(data.data);
@@ -442,8 +442,8 @@ const DashboardView = () => {
       {/* KPI Row */}
       <div className="grid grid-cols-4 gap-3">
         <KPICard title="Demandas Abertas" value={String(kpis?.demandasAbertas || 0)} color="bg-[#2fb15d]" icon={ListTodo} />
-        <KPICard title="Em Execu├º├úo" value={String(kpis?.emExecucao || 0)} color="bg-[#3578d4]" icon={CheckCircle2} />
-        <KPICard title="Evid├¬ncias Pendentes" value={String(kpis?.evidenciasPendentes || 0)} color="bg-[#f59e0b]" icon={Clock} />
+        <KPICard title="Em Execução" value={String(kpis?.emExecucao || 0)} color="bg-[#3578d4]" icon={CheckCircle2} />
+        <KPICard title="Evid~ncias Pendentes" value={String(kpis?.evidenciasPendentes || 0)} color="bg-[#f59e0b]" icon={Clock} />
         <KPICard title="Bloqueadas / Atrasadas" value={String(kpis?.bloqueadasAtrasadas || 0)} color="bg-[#ef4444]" icon={AlertCircle} />
       </div>
 
@@ -517,7 +517,7 @@ const DashboardView = () => {
 
         <ChartCard 
           title="Status das Demandas" 
-          subtitle="Distribui├º├úo atual"
+          subtitle="Distribuição atual"
           className="h-[380px]"
         >
           <div className="flex flex-col h-full">
@@ -594,7 +594,7 @@ const DashboardView = () => {
 
         <ChartCard 
           title="Demandas por ├ürea" 
-          subtitle="Distribui├º├úo por departamento"
+          subtitle="Distribuição por departamento"
           className="h-[380px]"
         >
           <div className="flex h-full items-center">
@@ -662,13 +662,13 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
   const statusOptions = [
     { value: 'ABERTA', label: 'Aberta', color: '#ef4444' },
     { value: 'EM_ANDAMENTO', label: 'Em andamento', color: '#3578d4' },
-    { value: 'EM_REVISAO', label: 'Em revis├úo', color: '#f59e0b' },
+    { value: 'EM_REVISAO', label: 'Em revisão', color: '#f59e0b' },
     { value: 'BLOQUEADA', label: 'Bloqueada', color: '#8b5cf6' },
     { value: 'CONCLUIDA', label: 'Conclu├¡da', color: '#2fb15d' },
     { value: 'ATRASADA', label: 'Atrasada', color: '#dc2626' }
   ];
 
-  // Estados para coment├írios e anexos
+  // Estados para comentírios e anexos
   const [comentarios, setComentarios] = useState<any[]>([]);
   const [novoComentario, setNovoComentario] = useState('');
   const [isAddingComment, setIsAddingComment] = useState(false);
@@ -685,7 +685,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         
         const token = localStorage.getItem('nexus_token');
         if (!token) {
-          setError('Token n├úo encontrado');
+          setError('Token não encontrado');
           return;
         }
 
@@ -708,14 +708,14 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     loadDemandas();
   }, []);
 
-  // Carregar coment├írios e evid├¬ncias ao selecionar uma demanda
+  // Carregar comentírios e evid~ncias ao selecionar uma demanda
   useEffect(() => {
     if (selectedDemanda && showModal && modalMode === 'view') {
       const loadRelated = async () => {
         try {
           const token = localStorage.getItem('nexus_token');
           
-          // Carregar coment├írios
+          // Carregar comentírios
           const commentsRes = await fetch(`${API_BASE_URL}/comentarios?demandaId=${selectedDemanda.id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
@@ -724,7 +724,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
             setComentarios(commentsData.data || []);
           }
 
-          // Carregar evid├¬ncias
+          // Carregar evid~ncias
           const evidenciasRes = await fetch(`${API_BASE_URL}/evidencias?demandaId=${selectedDemanda.id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
@@ -755,7 +755,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       setShowModal(true);
       console.log('[DEMANDA] Abrindo detalhes modo view');
     } else if (acao === 'Editar') {
-      console.log('[DEMANDA] Preparando edi├º├úo:', { demanda});
+      console.log('[DEMANDA] Preparando edição:', { demanda});
       setSelectedDemanda(demanda);
       setEditFormData({ ...demanda });
       setModalMode('edit');
@@ -825,8 +825,8 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       const token = localStorage.getItem('nexus_token');
       
       if (!token) {
-        console.error('[SALVAR] Token n├úo encontrado');
-        showToast('Erro: Token n├úo encontrado. Fa├ºa login novamente.', 'error');
+        console.error('[SALVAR] Token não encontrado');
+        showToast('Erro: Token não encontrado. Faça login novamente.', 'error');
         return;
       }
 
@@ -871,12 +871,12 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
 
   const criarNovaDemanda = async () => {
     if (!novaDemandata.titulo.trim() || !novaDemandata.descricao.trim()) {
-      showToast('Preencha t├¡tulo e descri├º├úo', 'error');
+      showToast('Preencha t├¡tulo e descrição', 'error');
       return;
     }
 
     if (!currentUser) {
-      showToast('Erro: Usu├írio n├úo autenticado', 'error');
+      showToast('Erro: Usuírio não autenticado', 'error');
       return;
     }
 
@@ -885,7 +885,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       const token = localStorage.getItem('nexus_token');
       
       if (!token) {
-        showToast('Token n├úo encontrado. Fa├ºa login novamente.', 'error');
+        showToast('Token não encontrado. Faça login novamente.', 'error');
         return;
       }
 
@@ -943,13 +943,13 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       });
 
       if (!token) {
-        showToast('Erro: Token n├úo encontrado. Fa├ºa login novamente.', 'error');
+        showToast('Erro: Token não encontrado. Faça login novamente.', 'error');
         return;
       }
 
       if (!currentUser || !currentUser.id) {
-        console.error('[COMENTARIO] Usuario n├úo dispon├¡vel:', currentUser);
-        showToast('Erro: Dados de usu├írio n├úo encontrados. Fa├ºa login novamente.', 'error');
+        console.error('[COMENTARIO] Usuario não dispon├¡vel:', currentUser);
+        showToast('Erro: Dados de usuírio não encontrados. Faça login novamente.', 'error');
         return;
       }
 
@@ -972,15 +972,15 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       console.log('[COMENTARIO] Resposta:', { status: response.status, data: responseData });
 
       if (!response.ok) {
-        throw new Error(responseData.message || 'Erro ao adicionar coment├írio');
+        throw new Error(responseData.message || 'Erro ao adicionar comentírio');
       }
       
       setComentarios([...comentarios, responseData.data]);
       setNovoComentario('');
-      showToast('Coment├írio adicionado com sucesso', 'success');
+      showToast('Comentírio adicionado com sucesso', 'success');
     } catch (err: any) {
       console.error('[COMENTARIO ERROR]', err);
-      showToast(err.message || 'Erro ao adicionar coment├írio', 'error');
+      showToast(err.message || 'Erro ao adicionar comentírio', 'error');
     } finally {
       setIsAddingComment(false);
     }
@@ -990,7 +990,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     try {
       const token = localStorage.getItem('nexus_token');
       if (!token) {
-        showToast('Erro: Token n├úo encontrado. Fa├ºa login novamente.', 'error');
+        showToast('Erro: Token não encontrado. Faça login novamente.', 'error');
         return;
       }
 
@@ -1003,14 +1003,14 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       });
 
       if (!response.ok) {
-        throw new Error('Erro ao deletar coment├írio');
+        throw new Error('Erro ao deletar comentírio');
       }
 
       setComentarios(comentarios.filter(c => c.id !== comentarioId));
-      showToast('Coment├írio deletado com sucesso', 'success');
+      showToast('Comentírio deletado com sucesso', 'success');
     } catch (err: any) {
       console.error('[DELETE COMENTARIO ERROR]', err);
-      showToast(err.message || 'Erro ao deletar coment├írio', 'error');
+      showToast(err.message || 'Erro ao deletar comentírio', 'error');
     }
   };
 
@@ -1022,7 +1022,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
       const formData = new FormData();
       formData.append('arquivo', file);
       formData.append('demandaId', selectedDemanda.id);
-      formData.append('empresaId', currentUser.empresaId || ''); // Campo obrigat├│rio
+      formData.append('empresaId', currentUser.empresaId || ''); // Campo obrigatório
       formData.append('nomeArquivo', file.name);
       formData.append('tipoArquivo', file.type);
 
@@ -1067,7 +1067,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
     const statusMap: Record<string, string> = {
       'ABERTA': 'Aberta',
       'EM_ANDAMENTO': 'Em andamento',
-      'EM_REVISAO': 'Em revis├úo',
+      'EM_REVISAO': 'Em revisão',
       'BLOQUEADA': 'Bloqueada',
       'CONCLUIDA': 'Conclu├¡da',
       'ATRASADA': 'Atrasada'
@@ -1078,7 +1078,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
   const formatPrioridade = (prioridade: string) => {
     const prioridadeMap: Record<string, string> = {
       'ALTA': 'Alta',
-      'MEDIA': 'M├®dia',
+      'MEDIA': 'Média',
       'BAIXA': 'Baixa'
     };
     return prioridadeMap[prioridade] || prioridade;
@@ -1120,7 +1120,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
   return (
     <main className="flex-1 overflow-y-auto p-5">
       <div className="mb-4">
-        <h1 className="text-lg font-bold text-[#1e315d]">Gest├úo de Demandas</h1>
+        <h1 className="text-lg font-bold text-[#1e315d]">Gestão de Demandas</h1>
       </div>
 
       {/* Toolbar */}
@@ -1138,7 +1138,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
           </button>
           <button className="h-[34px] px-3 bg-white border border-gray-200 text-gray-600 text-[12px] font-medium rounded-[6px] flex items-center hover:bg-gray-50 transition-colors">
             <FileBarChart size={14} className="mr-2 text-blue-500" />
-            Relat├│rios
+            Relatórios
           </button>
         </div>
 
@@ -1153,7 +1153,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
           </div>
           <div className="relative">
             <select className="h-[34px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
-              <option>Todas as ├íreas</option>
+              <option>Todas as íreas</option>
             </select>
             <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
@@ -1181,7 +1181,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
           <div className="p-12 text-center">
             <ListTodo size={40} className="text-gray-300 mx-auto mb-3" />
             <p className="text-gray-500 font-medium">Nenhuma demanda cadastrada</p>
-            <p className="text-gray-400 text-sm mt-1">As demandas aparecer├úo aqui quando forem criadas</p>
+            <p className="text-gray-400 text-sm mt-1">As demandas aparecerão aqui quando forem criadas</p>
           </div>
         ) : (
           <>
@@ -1203,18 +1203,18 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                   </th>
                   <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
                     <div className="flex items-center cursor-pointer hover:text-gray-700">
-                      Descri├º├úo <ArrowUpDown size={10} className="ml-1" />
+                      Descrição <ArrowUpDown size={10} className="ml-1" />
                     </div>
                   </th>
                   <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">
                     <div className="flex items-center cursor-pointer hover:text-gray-700">
-                      Respons├ível <ArrowUpDown size={10} className="ml-1" />
+                      Responsível <ArrowUpDown size={10} className="ml-1" />
                     </div>
                   </th>
                   <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Prioridade</th>
                   <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Status</th>
                   <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Progresso</th>
-                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">A├º├úo</th>
+                  <th className="py-3 px-3 text-[11px] font-bold text-gray-500 uppercase tracking-tight">Ação</th>
                 </tr>
               </thead>
               <tbody>
@@ -1258,7 +1258,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                           }}
                           defaultValue=""
                         >
-                          <option value="">ÔÇö A├º├úo ÔÇö</option>
+                          <option value="">ÔÇö Ação ÔÇö</option>
                           <option value="Ver detalhes">Ver detalhes</option>
                           <option value="Editar">Editar</option>
                           <option value="Alterar Status">Alterar Status</option>
@@ -1274,7 +1274,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
 
             {/* Footer / Pagination */}
             <div className="px-4 py-3 bg-white flex items-center justify-between border-t border-gray-100">
-              <span className="text-[11px] text-gray-400 font-medium">P├ígina 1 de 1 ┬À {demandas.length} demanda{demandas.length !== 1 ? 's' : ''}</span>
+              <span className="text-[11px] text-gray-400 font-medium">Pígina 1 de 1 ┬À {demandas.length} demanda{demandas.length !== 1 ? 's' : ''}</span>
               <div className="flex items-center space-x-1">
                 <button className="px-2 py-1 text-[11px] text-gray-500 border border-gray-200 rounded hover:bg-gray-50">Ant</button>
                 <button className="px-2.5 py-1 text-[11px] text-white bg-[#3578d4] rounded font-bold">1</button>
@@ -1285,7 +1285,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         )}
       </div>
 
-      {/* Modal de Detalhes/Edi├º├úo */}
+      {/* Modal de Detalhes/Edição */}
       {showModal && selectedDemanda && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
           <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[700px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
@@ -1331,13 +1331,13 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-gray-500 uppercase">Descri├º├úo</label>
+                    <label className="text-[11px] font-bold text-gray-500 uppercase">Descrição</label>
                     <p className="text-[13px] text-gray-600 mt-2 leading-relaxed">{selectedDemanda.descricao}</p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[11px] font-bold text-gray-500 uppercase">Respons├ível</label>
+                      <label className="text-[11px] font-bold text-gray-500 uppercase">Responsível</label>
                       <p className="text-[14px] text-gray-800 font-medium mt-1">{selectedDemanda.responsavel?.nome || '-'}</p>
                     </div>
                     <div>
@@ -1346,7 +1346,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     </div>
                   </div>
 
-                  {/* Se├º├úo de Anexos */}
+                  {/* Seção de Anexos */}
                   <div className="border-t border-gray-200 pt-4">
                     <label className="text-[11px] font-bold text-gray-500 uppercase flex items-center gap-2">
                       <Paperclip size={12} />
@@ -1386,14 +1386,14 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     )}
                   </div>
 
-                  {/* Se├º├úo de Coment├írios */}
+                  {/* Seção de Comentírios */}
                   <div className="border-t border-gray-200 pt-4">
                     <label className="text-[11px] font-bold text-gray-500 uppercase flex items-center gap-2">
                       <MessageSquare size={12} />
-                      Coment├írios
+                      Comentírios
                     </label>
                     
-                    {/* Lista de Coment├írios */}
+                    {/* Lista de Comentírios */}
                     <div className="mt-3 max-h-[200px] overflow-y-auto space-y-2">
                       {comentarios.length > 0 ? (
                         comentarios.map((com) => (
@@ -1403,7 +1403,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                                 <div className="flex items-center gap-2">
                                   <UserCircle size={14} className="text-[#1e315d] flex-shrink-0" />
                                   <p className="text-[11px] font-bold text-[#1e315d]">
-                                    {com.usuario?.nome || com.usuarioId || 'Usu├írio An├┤nimo'}
+                                    {com.usuario?.nome || com.usuarioId || 'Usuírio An├┤nimo'}
                                   </p>
                                 </div>
                                 <p className="text-[12px] text-gray-700 mt-2">{com.texto || com.conteudo}</p>
@@ -1414,8 +1414,8 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                                   onChange={(e) => {
                                     const action = e.target.value;
                                     if (action === 'editar') {
-                                      // Implementar edi├º├úo
-                                      console.log('Editar coment├írio:', com.id);
+                                      // Implementar edição
+                                      console.log('Editar comentírio:', com.id);
                                     } else if (action === 'deletar') {
                                       setCommentToDeleteId(com.id);
                                       setShowDeleteCommentModal(true);
@@ -1431,9 +1431,9 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                                     backgroundSize: '12px',
                                     paddingRight: '20px'
                                   }}
-                                  title="Selecionar a├º├úo"
+                                  title="Selecionar ação"
                                 >
-                                  <option value="">A├º├úo</option>
+                                  <option value="">Ação</option>
                                   <option value="editar">Editar</option>
                                   <option value="deletar">Deletar</option>
                                 </select>
@@ -1442,18 +1442,18 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                           </div>
                         ))
                       ) : (
-                        <p className="text-[12px] text-gray-400 italic">Nenhum coment├írio ainda</p>
+                        <p className="text-[12px] text-gray-400 italic">Nenhum comentírio ainda</p>
                       )}
                     </div>
 
-                    {/* Adicionar Coment├írio */}
+                    {/* Adicionar Comentírio */}
                     <div className="mt-3 flex gap-2">
                       <input 
                         type="text"
                         value={novoComentario}
                         onChange={(e) => setNovoComentario(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && adicionarComentario()}
-                        placeholder="Digite seu coment├írio..."
+                        placeholder="Digite seu comentírio..."
                         className="flex-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                       />
                       <button 
@@ -1483,7 +1483,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-gray-600">Descri├º├úo</label>
+                    <label className="text-[11px] font-bold text-gray-600">Descrição</label>
                     <textarea 
                       value={editFormData.descricao}
                       onChange={(e) => setEditFormData({ ...editFormData, descricao: e.target.value })}
@@ -1501,7 +1501,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                       >
                         <option value="ABERTA">Aberta</option>
                         <option value="EM_ANDAMENTO">Em andamento</option>
-                        <option value="EM_REVISAO">Em revis├úo</option>
+                        <option value="EM_REVISAO">Em revisão</option>
                         <option value="BLOQUEADA">Bloqueada</option>
                         <option value="CONCLUIDA">Conclu├¡da</option>
                         <option value="ATRASADA">Atrasada</option>
@@ -1516,7 +1516,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                         className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                       >
                         <option value="ALTA">Alta</option>
-                        <option value="MEDIA">M├®dia</option>
+                        <option value="MEDIA">Média</option>
                         <option value="BAIXA">Baixa</option>
                       </select>
                     </div>
@@ -1545,19 +1545,19 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-gray-600">Respons├ível</label>
+                    <label className="text-[11px] font-bold text-gray-600">Responsível</label>
                     <select 
                       value={editFormData.responsavelId || ''}
                       onChange={(e) => setEditFormData({ ...editFormData, responsavelId: e.target.value || null })}
                       className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                     >
-                      <option value="">Sem respons├ível</option>
+                      <option value="">Sem responsível</option>
                       {usuariosAdminList && usuariosAdminList.length > 0 ? (
                         usuariosAdminList.map((usuario) => (
                           <option key={usuario.id} value={usuario.id}>{usuario.nome}</option>
                         ))
                       ) : (
-                        <option disabled>Nenhum t├®cnico dispon├¡vel</option>
+                        <option disabled>Nenhum técnico dispon├¡vel</option>
                       )}
                     </select>
                   </div>
@@ -1579,7 +1579,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                   disabled={isSaving}
                   className="px-4 py-2 bg-[#3578d4] text-white rounded-[6px] text-[13px] font-medium hover:bg-[#2d66b5] transition-colors disabled:opacity-50"
                 >
-                  {isSaving ? 'Salvando...' : 'Salvar Altera├º├Áes'}
+                  {isSaving ? 'Salvando...' : 'Salvar Alterações'}
                 </button>
               )}
             </div>
@@ -1587,7 +1587,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         </div>
       )}
 
-      {/* Modal de Cria├º├úo de Demanda */}
+      {/* Modal de Criação de Demanda */}
       {showFormNew && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
           <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -1644,11 +1644,11 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-600">Descri├º├úo *</label>
+                <label className="text-[11px] font-bold text-gray-600">Descrição *</label>
                 <textarea 
                   value={novaDemandata.descricao}
                   onChange={(e) => setNovaDemandata({ ...novaDemandata, descricao: e.target.value })}
-                  placeholder="Digite a descri├º├úo da demanda"
+                  placeholder="Digite a descrição da demanda"
                   className="w-full mt-1 h-[100px] bg-white border border-gray-200 rounded-[6px] px-3 py-2 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none"
                 />
               </div>
@@ -1662,7 +1662,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                     className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                   >
                     <option value="ALTA">Alta</option>
-                    <option value="MEDIA">M├®dia</option>
+                    <option value="MEDIA">Média</option>
                     <option value="BAIXA">Baixa</option>
                   </select>
                 </div>
@@ -1679,19 +1679,19 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-600">Respons├ível</label>
+                <label className="text-[11px] font-bold text-gray-600">Responsível</label>
                 <select 
                   value={novaDemandata.responsavelId}
                   onChange={(e) => setNovaDemandata({ ...novaDemandata, responsavelId: e.target.value })}
                   className="w-full mt-1 h-[36px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                 >
-                  <option value="">Selecione um respons├ível</option>
+                  <option value="">Selecione um responsível</option>
                   {usuariosAdminList && usuariosAdminList.length > 0 ? (
                     usuariosAdminList.map((usuario) => (
                       <option key={usuario.id} value={usuario.id}>{usuario.nome}</option>
                     ))
                   ) : (
-                    <option disabled>Nenhum t├®cnico dispon├¡vel</option>
+                    <option disabled>Nenhum técnico dispon├¡vel</option>
                   )}
                 </select>
               </div>
@@ -1700,7 +1700,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <p className="text-[12px] text-blue-800 flex items-start gap-2">
                   <Info size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    A demanda ser├í criada com status "Aberta" e progresso 0%.
+                    A demanda serí criada com status "Aberta" e progresso 0%.
                   </span>
                 </p>
               </div>
@@ -1747,7 +1747,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         </div>
       )}
 
-      {/* Modal de Confirma├º├úo Elegante */}
+      {/* Modal de Confirmação Elegante */}
       {showConfirmDelete && confirmDeleteDemanda && (
         <div className="fixed inset-0 bg-black/50 z-[150] flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-[450px] overflow-hidden animate-in fade-in zoom-in duration-300">
@@ -1758,7 +1758,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
               </div>
               <div>
                 <h3 className="text-[16px] font-bold text-[#1e315d]">Excluir demanda?</h3>
-                <p className="text-[13px] text-gray-500 mt-1">Esta a├º├úo n├úo pode ser desfeita</p>
+                <p className="text-[13px] text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
               </div>
             </div>
 
@@ -1787,7 +1787,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    Todas as evid├¬ncias e coment├írios vinculados ├á demanda tamb├®m ser├úo removidos.
+                    Todas as evid~ncias e comentírios vinculados õ demanda também serão removidos.
                   </span>
                 </p>
               </div>
@@ -1827,7 +1827,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         </div>
       )}
 
-      {/* Modal de Altera├º├úo de Status */}
+      {/* Modal de Alteração de Status */}
       {showStatusDropdown && selectedDemandaForStatus && (
         <div className="fixed inset-0 bg-black/40 z-[150] flex items-center justify-center p-4 backdrop-blur-[1px]">
           <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[400px] overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -1894,7 +1894,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
         </div>
       )}
 
-      {/* Modal de Exclus├úo de Coment├írio */}
+      {/* Modal de Exclusão de Comentírio */}
       {showDeleteCommentModal && commentToDeleteId && (
         <div className="fixed inset-0 bg-black/50 z-[150] flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-[420px] overflow-hidden animate-in fade-in zoom-in duration-300">
@@ -1904,21 +1904,21 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <Trash2 size={24} className="text-red-600" />
               </div>
               <div>
-                <h3 className="text-[16px] font-bold text-[#1e315d]">Excluir coment├írio?</h3>
-                <p className="text-[13px] text-gray-500 mt-1">Esta a├º├úo n├úo pode ser desfeita</p>
+                <h3 className="text-[16px] font-bold text-[#1e315d]">Excluir comentírio?</h3>
+                <p className="text-[13px] text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
               </div>
             </div>
 
             {/* Body */}
             <div className="px-6 py-5">
               <div className="bg-gray-50 rounded-[10px] p-4 mb-4 border border-gray-200">
-                <p className="text-[12px] text-gray-500 uppercase tracking-wide mb-2 font-semibold">Coment├írio a excluir</p>
+                <p className="text-[12px] text-gray-500 uppercase tracking-wide mb-2 font-semibold">Comentírio a excluir</p>
                 {comentarios.find(c => c.id === commentToDeleteId) && (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <UserCircle size={14} className="text-[#1e315d] flex-shrink-0" />
                       <p className="text-[13px] font-semibold text-[#1e315d]">
-                        {comentarios.find(c => c.id === commentToDeleteId)?.usuario?.nome || 'Usu├írio'}
+                        {comentarios.find(c => c.id === commentToDeleteId)?.usuario?.nome || 'Usuírio'}
                       </p>
                     </div>
                     <p className="text-[12px] text-gray-600 bg-white rounded-[6px] p-2 border border-gray-200">
@@ -1932,7 +1932,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    Voc├¬ tem certeza que deseja excluir este coment├írio?
+                    Voc~ tem certeza que deseja excluir este comentírio?
                   </span>
                 </p>
               </div>
@@ -1969,7 +1969,7 @@ const DemandasView = ({ usuariosAdminList, currentUser }: { usuariosAdminList: a
                 ) : (
                   <>
                     <Trash2 size={16} />
-                    Excluir coment├írio
+                    Excluir comentírio
                   </>
                 )}
               </button>
@@ -2057,7 +2057,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
         
         const token = localStorage.getItem('nexus_token');
         if (!token) {
-          setError('Token n├úo encontrado');
+          setError('Token não encontrado');
           return;
         }
 
@@ -2154,7 +2154,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
 
   const criarNovoProjeto = async () => {
     if (!novoProjeto.nome.trim() || !novoProjeto.descricao.trim()) {
-      showToast('Preencha nome e descri├º├úo', 'error');
+      showToast('Preencha nome e descrição', 'error');
       return;
     }
 
@@ -2214,7 +2214,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
   const formatStatus = (status: string) => {
     const statusMap: Record<string, string> = {
       'PLANEJAMENTO': 'Planejamento',
-      'EM_EXECUCAO': 'Em execu├º├úo',
+      'EM_EXECUCAO': 'Em execução',
       'CONCLUIDO': 'Conclu├¡do',
       'ATRASADO': 'Atrasado',
       'SUSPENSO': 'Suspenso'
@@ -2269,7 +2269,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
   return (
     <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="mb-4">
-        <h1 className="text-lg font-bold text-[#1e315d]">Gest├úo de Projetos</h1>
+        <h1 className="text-lg font-bold text-[#1e315d]">Gestão de Projetos</h1>
       </div>
 
       {/* Toolbar */}
@@ -2312,7 +2312,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
           <div className="text-center">
             <Briefcase size={48} className="text-gray-300 mx-auto mb-3" />
             <p className="text-gray-500 font-medium">Nenhum projeto cadastrado</p>
-            <p className="text-gray-400 text-sm mt-1">Os projetos aparecer├úo aqui quando forem criados</p>
+            <p className="text-gray-400 text-sm mt-1">Os projetos aparecerão aqui quando forem criados</p>
           </div>
         </div>
       ) : (
@@ -2333,7 +2333,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                 </div>
                 
                 <p className="text-[11px] text-gray-500 mb-4 line-clamp-3 leading-relaxed min-h-[48px]">
-                  {projeto.descricao || 'Sem descri├º├úo'}
+                  {projeto.descricao || 'Sem descrição'}
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -2402,7 +2402,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
         </div>
       )}
 
-      {/* Modal de Confirma├º├úo de Exclus├úo */}
+      {/* Modal de Confirmação de Exclusão */}
       {showConfirmDelete && confirmDeleteProjeto && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
           <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[400px] overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -2430,7 +2430,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    Todas as demandas e coment├írios vinculados ao projeto tamb├®m ser├úo removidos.
+                    Todas as demandas e comentírios vinculados ao projeto também serão removidos.
                   </span>
                 </p>
               </div>
@@ -2470,7 +2470,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
         </div>
       )}
 
-      {/* Modal de Edi├º├úo */}
+      {/* Modal de Edição */}
       {showEditModal && editFormData && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
           <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
@@ -2498,7 +2498,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-600">Descri├º├úo</label>
+                <label className="text-[11px] font-bold text-gray-600">Descrição</label>
                 <textarea 
                   value={editFormData.descricao}
                   onChange={(e) => setEditFormData({ ...editFormData, descricao: e.target.value })}
@@ -2516,7 +2516,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                   >
                     <option value="PLANEJAMENTO">Planejamento</option>
                     <option value="EM_ANDAMENTO">Em Andamento</option>
-                    <option value="EM_REVISAO">Em Revis├úo</option>
+                    <option value="EM_REVISAO">Em Revisão</option>
                     <option value="CONCLUIDO">Conclu├¡do</option>
                     <option value="ATRASADO">Atrasado</option>
                     <option value="BLOQUEADO">Bloqueado</option>
@@ -2547,7 +2547,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold text-gray-600">Data T├®rmino Previsto</label>
+                  <label className="text-[11px] font-bold text-gray-600">Data Término Previsto</label>
                   <input 
                     type="date" 
                     value={editFormData.dataPrevista}
@@ -2571,14 +2571,14 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                 disabled={isSaving}
                 className="px-4 py-2 bg-[#3578d4] text-white rounded-[6px] text-[13px] font-medium hover:bg-[#2d66b5] transition-colors disabled:opacity-50"
               >
-                {isSaving ? 'Salvando...' : 'Salvar Altera├º├Áes'}
+                {isSaving ? 'Salvando...' : 'Salvar Alterações'}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modal de Cria├º├úo de Projeto */}
+      {/* Modal de Criação de Projeto */}
       {showFormNew && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
           <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -2616,11 +2616,11 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-600">Descri├º├úo *</label>
+                <label className="text-[11px] font-bold text-gray-600">Descrição *</label>
                 <textarea 
                   value={novoProjeto.descricao}
                   onChange={(e) => setNovoProjeto({ ...novoProjeto, descricao: e.target.value })}
-                  placeholder="Digite a descri├º├úo do projeto"
+                  placeholder="Digite a descrição do projeto"
                   className="w-full mt-1 h-[100px] bg-white border border-gray-200 rounded-[6px] px-3 py-2 text-[13px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none"
                 />
               </div>
@@ -2635,7 +2635,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                   >
                     <option value="PLANEJAMENTO">Planejamento</option>
                     <option value="EM_ANDAMENTO">Em Andamento</option>
-                    <option value="EM_REVISAO">Em Revis├úo</option>
+                    <option value="EM_REVISAO">Em Revisão</option>
                     <option value="CONCLUIDO">Conclu├¡do</option>
                     <option value="ATRASADO">Atrasado</option>
                     <option value="BLOQUEADO">Bloqueado</option>
@@ -2654,7 +2654,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-gray-600">Data T├®rmino Prevista</label>
+                <label className="text-[11px] font-bold text-gray-600">Data Término Prevista</label>
                 <input 
                   type="date" 
                   value={novoProjeto.dataPrevista}
@@ -2667,7 +2667,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
                 <p className="text-[12px] text-blue-800 flex items-start gap-2">
                   <Info size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    O projeto ser├í criado com status inicial e progresso 0%.
+                    O projeto serí criado com status inicial e progresso 0%.
                   </span>
                 </p>
               </div>
@@ -2778,7 +2778,7 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-gray-600">Respons├ível</label>
+              <label className="text-[11px] font-bold text-gray-600">Responsível</label>
               <input 
                 type="text" 
                 defaultValue={project.responsavel}
@@ -2800,7 +2800,7 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-gray-600">Data de t├®rmino</label>
+              <label className="text-[11px] font-bold text-gray-600">Data de término</label>
               <div className="relative">
                 <input 
                   type="text" 
@@ -2839,7 +2839,7 @@ const EditProjectModal = ({ project, onClose }: { project: any, onClose: () => v
           </div>
 
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Descri├º├úo</label>
+            <label className="text-[11px] font-bold text-gray-600">Descrição</label>
             <textarea 
               defaultValue={project.descricao}
               rows={4}
@@ -2881,7 +2881,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
 
   const statusOptions = [
     { value: 'Todos', label: 'Todos os status' },
-    { value: 'V├ílida', label: 'V├ílida' },
+    { value: 'Vílida', label: 'Vílida' },
     { value: 'Pendente', label: 'Pendente' },
     { value: 'Atrasada', label: 'Atrasada' },
     { value: 'Rejeitada', label: 'Rejeitada' }
@@ -2895,7 +2895,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
         
         const token = localStorage.getItem('nexus_token');
         if (!token) {
-          setError('Token n├úo encontrado');
+          setError('Token não encontrado');
           return;
         }
 
@@ -2906,13 +2906,13 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
           }
         });
 
-        if (!response.ok) throw new Error('Erro ao carregar evid├¬ncias');
+        if (!response.ok) throw new Error('Erro ao carregar evid~ncias');
         
         const data = await response.json();
         setEvidenciasAPI(data.data || []);
       } catch (err) {
         console.error('Erro:', err);
-        setError('Erro ao carregar evid├¬ncias');
+        setError('Erro ao carregar evid~ncias');
       } finally {
         setIsLoading(false);
       }
@@ -2950,10 +2950,10 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
       setEvidenciasAPI(evidenciasAPI.filter(e => e.id !== confirmEvidencia.id));
       setShowConfirmDelete(false);
       setConfirmEvidencia(null);
-      showToast('Evid├¬ncia exclu├¡da com sucesso', 'success');
+      showToast('Evid~ncia exclu├¡da com sucesso', 'success');
     } catch (err) {
       console.error('Erro:', err);
-      showToast('Erro ao excluir evid├¬ncia', 'error');
+      showToast('Erro ao excluir evid~ncia', 'error');
     } finally {
       setIsDeleting(false);
     }
@@ -2961,7 +2961,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
 
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'V├ílida': return 'bg-green-50 text-green-600';
+      case 'Vílida': return 'bg-green-50 text-green-600';
       case 'Pendente': return 'bg-orange-50 text-orange-600';
       case 'Atrasada': return 'bg-red-50 text-red-600';
       case 'Rejeitada': return 'bg-red-50 text-red-600';
@@ -2999,7 +2999,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
   return (
     <main className="flex-1 overflow-y-auto p-5 bg-[#f3f4f6]">
       <div className="mb-4">
-        <h1 className="text-lg font-bold text-[#1e315d]">Gest├úo de Evid├¬ncias</h1>
+        <h1 className="text-lg font-bold text-[#1e315d]">Gestão de Evid~ncias</h1>
       </div>
 
       {/* Toolbar */}
@@ -3009,7 +3009,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
             onClick={onAdd}
             className="h-[34px] px-4 bg-[#3578d4] text-white text-[13px] font-bold rounded-[6px] flex items-center hover:bg-[#2d66b5] transition-colors"
           >
-            + Adicionar Evid├¬ncia
+            + Adicionar Evid~ncia
           </button>
           <button className="h-[34px] px-3 bg-white border border-gray-200 text-gray-600 text-[12px] font-medium rounded-[6px] flex items-center hover:bg-gray-50 transition-colors">
             <FileBarChart size={14} className="mr-2 text-blue-500" />
@@ -3025,7 +3025,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
               type="text" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar evid├¬ncia..." 
+              placeholder="Buscar evid~ncia..." 
               className="h-[34px] w-[200px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
             />
           </div>
@@ -3049,7 +3049,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
             <div className="w-10 h-10 border-3 border-gray-300 border-t-[#3578d4] rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-gray-500 text-[13px]">Carregando evid├¬ncias...</p>
+            <p className="text-gray-500 text-[13px]">Carregando evid~ncias...</p>
           </div>
         </div>
       ) : error ? (
@@ -3059,8 +3059,8 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
       ) : filteredEvidencias.length === 0 ? (
         <div className="bg-white rounded-[10px] p-12 text-center border border-gray-100">
           <Paperclip size={40} className="mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 text-[14px]">Nenhuma evid├¬ncia encontrada</p>
-          <p className="text-gray-400 text-[12px] mt-1">{searchTerm ? 'Tente ajustar seus filtros' : 'Comece adicionando uma evid├¬ncia'}</p>
+          <p className="text-gray-500 text-[14px]">Nenhuma evid~ncia encontrada</p>
+          <p className="text-gray-400 text-[12px] mt-1">{searchTerm ? 'Tente ajustar seus filtros' : 'Comece adicionando uma evid~ncia'}</p>
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-4">
@@ -3135,7 +3135,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
         </div>
       )}
 
-      {/* Modal de Confirma├º├úo de Exclus├úo */}
+      {/* Modal de Confirmação de Exclusão */}
       {showConfirmDelete && confirmEvidencia && (
         <div className="fixed inset-0 bg-black/50 z-[150] flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-[16px] shadow-2xl w-full max-w-[450px] overflow-hidden animate-in fade-in zoom-in duration-300">
@@ -3145,15 +3145,15 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                 <Trash2 size={24} className="text-red-600" />
               </div>
               <div>
-                <h3 className="text-[16px] font-bold text-[#1e315d]">Excluir evid├¬ncia?</h3>
-                <p className="text-[13px] text-gray-500 mt-1">Esta a├º├úo n├úo pode ser desfeita</p>
+                <h3 className="text-[16px] font-bold text-[#1e315d]">Excluir evid~ncia?</h3>
+                <p className="text-[13px] text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
               </div>
             </div>
 
             {/* Body com contexto */}
             <div className="px-6 py-5">
               <div className="bg-gray-50 rounded-[10px] p-4 mb-4 border border-gray-200">
-                <p className="text-[12px] text-gray-500 uppercase tracking-wide mb-2">Evid├¬ncia a excluir</p>
+                <p className="text-[12px] text-gray-500 uppercase tracking-wide mb-2">Evid~ncia a excluir</p>
                 <div className="space-y-2">
                   <div>
                     <p className="text-[13px] text-gray-600">
@@ -3175,7 +3175,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                 <p className="text-[12px] text-yellow-800 flex items-start gap-2">
                   <AlertCircle size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                   <span>
-                    A evid├¬ncia ser├í removida do banco de dados e n├úo poder├í ser recuperada.
+                    A evid~ncia serí removida do banco de dados e não poderí ser recuperada.
                   </span>
                 </p>
               </div>
@@ -3206,7 +3206,7 @@ const EvidenciasView = ({ onAdd, onEdit, syncVersion }: { onAdd: () => void, onE
                 ) : (
                   <>
                     <Trash2 size={16} />
-                    Excluir evid├¬ncia
+                    Excluir evid~ncia
                   </>
                 )}
               </button>
@@ -3239,16 +3239,16 @@ const reportKpiData = [
   { title: 'Conclu├¡das', value: '124', color: 'bg-[#2fb15d]', icon: CheckCircle2 },
   { title: 'Em andamento', value: '42', color: 'bg-[#3578d4]', icon: Clock },
   { title: 'Bloqueadas', value: '12', color: 'bg-[#ef4444]', icon: AlertCircle },
-  { title: 'Taxa de conclus├úo', value: '82%', color: 'bg-[#7c3aed]', icon: FileBarChart },
+  { title: 'Taxa de conclusão', value: '82%', color: 'bg-[#7c3aed]', icon: FileBarChart },
 ];
 
 const executionByProjectData = [
   { name: 'Plataforma B2B v3', progress: 78, target: 100 },
   { name: 'Conformidade ISO 27001', progress: 55, target: 100 },
-  { name: 'Integra├º├úo ERP SAP', progress: 34, target: 100 },
+  { name: 'Integração ERP SAP', progress: 34, target: 100 },
   { name: 'App Mobile Vendas', progress: 91, target: 100 },
   { name: 'Portal RH Digital', progress: 12, target: 100 },
-  { name: 'Seguran├ºa Cibern├®tica', progress: 45, target: 100 },
+  { name: 'Segurança Cibernética', progress: 45, target: 100 },
   { name: 'Redesign Portal Cliente', progress: 62, target: 100 },
 ];
 
@@ -3271,7 +3271,7 @@ const RelatorioExecucaoView = () => {
   const [reportData, setReportData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedPeriod, setSelectedPeriod] = useState('Mar├ºo / 2026');
+  const [selectedPeriod, setSelectedPeriod] = useState('Março / 2026');
   const [selectedArea, setSelectedArea] = useState('Todas as ├üreas');
 
   useEffect(() => {
@@ -3282,7 +3282,7 @@ const RelatorioExecucaoView = () => {
         
         const token = localStorage.getItem('nexus_token');
         if (!token) {
-          setError('Token n├úo encontrado');
+          setError('Token não encontrado');
           return;
         }
 
@@ -3297,7 +3297,7 @@ const RelatorioExecucaoView = () => {
         ]);
 
         if (!demandasRes.ok || !projetosRes.ok) {
-          throw new Error('Erro ao carregar dados para o relat├│rio');
+          throw new Error('Erro ao carregar dados para o relatório');
         }
 
         const demandasData = await demandasRes.json();
@@ -3306,7 +3306,7 @@ const RelatorioExecucaoView = () => {
         const demandas = demandasData.data || [];
         const projetos = projetosData.data || [];
 
-        // Processar dados para o relat├│rio
+        // Processar dados para o relatório
         // KPIs
         const concluidas = demandas.filter((d: any) => d.status === 'CONCLUIDA').length;
         const emAndamento = demandas.filter((d: any) => d.status === 'EM_ANDAMENTO').length;
@@ -3317,20 +3317,20 @@ const RelatorioExecucaoView = () => {
           { title: 'Conclu├¡das', value: String(concluidas), color: 'bg-[#2fb15d]', icon: CheckCircle2 },
           { title: 'Em andamento', value: String(emAndamento), color: 'bg-[#3578d4]', icon: Clock },
           { title: 'Bloqueadas', value: String(bloqueadas), color: 'bg-[#ef4444]', icon: AlertCircle },
-          { title: 'Taxa de conclus├úo', value: `${taxaConclusao}%`, color: 'bg-[#7c3aed]', icon: FileBarChart },
+          { title: 'Taxa de conclusão', value: `${taxaConclusao}%`, color: 'bg-[#7c3aed]', icon: FileBarChart },
         ];
 
-        // Execu├º├úo por Projeto
+        // Execução por Projeto
         const executionByProjectData = projetos.map((proj: any) => ({
           name: proj.nome,
           progress: proj.progresso || 0,
           target: 100,
         }));
 
-        // Demandas por Respons├ível
+        // Demandas por Responsível
         const demandsByResponsible: { [key: string]: { total: number; completed: number; pending: number } } = {};
         demandas.forEach((d: any) => {
-          const responsavel = d.responsavel?.nome || 'Sem respons├ível';
+          const responsavel = d.responsavel?.nome || 'Sem responsível';
           if (!demandsByResponsible[responsavel]) {
             demandsByResponsible[responsavel] = { total: 0, completed: 0, pending: 0 };
           }
@@ -3356,7 +3356,7 @@ const RelatorioExecucaoView = () => {
                         d.status === 'EM_ANDAMENTO' ? 'Em andamento' :
                         d.status === 'BLOQUEADA' ? 'Bloqueada' :
                         d.status === 'ABERTA' ? 'Aberta' :
-                        d.status === 'EM_REVISAO' ? 'Em revis├úo' :
+                        d.status === 'EM_REVISAO' ? 'Em revisão' :
                         d.status === 'ATRASADA' ? 'Atrasada' : 'Outro';
           statusSummary[status] = (statusSummary[status] || 0) + 1;
         });
@@ -3370,7 +3370,7 @@ const RelatorioExecucaoView = () => {
             'Pendente': 'bg-orange-50 text-orange-600',
             'Bloqueada': 'bg-red-50 text-red-600',
             'Aberta': 'bg-gray-50 text-gray-600',
-            'Em revis├úo': 'bg-purple-50 text-purple-600',
+            'Em revisão': 'bg-purple-50 text-purple-600',
             'Atrasada': 'bg-red-50 text-red-600',
           };
           return {
@@ -3388,8 +3388,8 @@ const RelatorioExecucaoView = () => {
           summaryByStatusData,
         });
       } catch (err) {
-        console.error('Erro ao carregar relat├│rio:', err);
-        setError('Falha ao carregar dados do relat├│rio. Tente novamente.');
+        console.error('Erro ao carregar relatório:', err);
+        setError('Falha ao carregar dados do relatório. Tente novamente.');
       } finally {
         setIsLoading(false);
       }
@@ -3403,7 +3403,7 @@ const RelatorioExecucaoView = () => {
       <main className="flex-1 overflow-y-auto p-4 space-y-3 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#3578d4] mb-3"></div>
-          <p className="text-gray-500 text-sm">Carregando relat├│rio...</p>
+          <p className="text-gray-500 text-sm">Carregando relatório...</p>
         </div>
       </main>
     );
@@ -3414,7 +3414,7 @@ const RelatorioExecucaoView = () => {
       <main className="flex-1 overflow-y-auto p-4 space-y-3 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle size={32} className="text-red-500 mb-3 mx-auto" />
-          <p className="text-red-600 font-medium">{error || 'Erro ao carregar relat├│rio'}</p>
+          <p className="text-red-600 font-medium">{error || 'Erro ao carregar relatório'}</p>
           <button 
             onClick={() => window.location.reload()}
             className="mt-3 px-4 py-2 bg-[#3578d4] text-white rounded text-sm font-medium hover:bg-[#2d66b5]"
@@ -3437,7 +3437,7 @@ const RelatorioExecucaoView = () => {
             onClick={() => window.location.reload()}
             className="h-[32px] px-4 bg-[#3578d4] text-white text-[12px] font-bold rounded-[4px] hover:bg-[#2d66b5] transition-colors shadow-sm"
           >
-            Atualizar Relat├│rio
+            Atualizar Relatório
           </button>
           <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[4px] flex items-center hover:bg-gray-50 transition-colors">
             <FileText size={14} className="mr-2 text-red-500" />
@@ -3458,7 +3458,7 @@ const RelatorioExecucaoView = () => {
                 onChange={(e) => setSelectedPeriod(e.target.value)}
                 className="h-[32px] bg-gray-50 border border-gray-200 rounded-[4px] pl-3 pr-8 text-[11px] text-gray-600 font-bold outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] min-w-[140px]"
               >
-                <option>Mar├ºo / 2026</option>
+                <option>Março / 2026</option>
                 <option>Fevereiro / 2026</option>
                 <option>Janeiro / 2026</option>
               </select>
@@ -3505,7 +3505,7 @@ const RelatorioExecucaoView = () => {
         <div className="bg-white rounded-[8px] shadow-sm border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-[15px] font-bold text-[#1e315d]">Execu├º├úo por Projeto</h3>
+              <h3 className="text-[15px] font-bold text-[#1e315d]">Execução por Projeto</h3>
               <p className="text-[11px] text-gray-400 mt-0.5">Progresso real vs Meta estabelecida</p>
             </div>
             <div className="flex items-center space-x-4">
@@ -3564,16 +3564,16 @@ const RelatorioExecucaoView = () => {
 
         {/* Bottom Row: Tables */}
         <div className="grid grid-cols-2 gap-4">
-          {/* Table 1: Respons├íveis */}
+          {/* Table 1: Responsíveis */}
           <div className="bg-white rounded-[8px] shadow-sm border border-gray-100 overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-50">
-              <h3 className="text-[14px] font-bold text-[#1e315d]">Demandas por Respons├ível</h3>
+              <h3 className="text-[14px] font-bold text-[#1e315d]">Demandas por Responsível</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50">
-                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Respons├ível</th>
+                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Responsível</th>
                     <th className="py-3 px-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Total</th>
                     <th className="py-3 px-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Conclu├¡das</th>
                     <th className="py-3 px-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Pendentes</th>
@@ -3700,7 +3700,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
           <div className="space-y-1">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Respons├ível</span>
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Responsível</span>
             <div className="flex items-center space-x-2 text-[#1e315d]">
               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-[#3578d4]">
                 {project.responsavel.split(' ').map((n: string) => n[0]).join('')}
@@ -3751,7 +3751,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
         <div className="lg:col-span-2 space-y-5">
           <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 flex flex-col h-full">
             <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="text-[14px] font-bold text-[#1e315d]">Coment├írios e Hist├│rico</h3>
+              <h3 className="text-[14px] font-bold text-[#1e315d]">Comentírios e Histórico</h3>
               <MessageSquare size={16} className="text-gray-400" />
             </div>
             
@@ -3767,7 +3767,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                     <span className="text-[10px] text-gray-400">15/03/2026 09:30</span>
                   </div>
                   <div className="bg-gray-50 rounded-[8px] p-3 text-[12px] text-gray-600 leading-relaxed">
-                    Iniciado redesenho da interface principal. Foco em melhorar a usabilidade da gest├úo de evid├¬ncias.
+                    Iniciado redesenho da interface principal. Foco em melhorar a usabilidade da gestão de evid~ncias.
                   </div>
                 </div>
               </div>
@@ -3782,7 +3782,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                     <span className="text-[10px] text-gray-400">18/03/2026 14:10</span>
                   </div>
                   <div className="bg-gray-50 rounded-[8px] p-3 text-[12px] text-gray-600 leading-relaxed">
-                    Depend├¬ncia identificada com a homologa├º├úo da API financeira. Aguardando retorno do time de infra.
+                    Depend~ncia identificada com a homologação da API financeira. Aguardando retorno do time de infra.
                   </div>
                 </div>
               </div>
@@ -3805,12 +3805,12 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
 
             <div className="p-5 border-t border-gray-50 bg-gray-50/50">
               <textarea 
-                placeholder="Escreva uma atualiza├º├úo, observa├º├úo ou coment├írio gerencial..."
+                placeholder="Escreva uma atualização, observação ou comentírio gerencial..."
                 className="w-full h-[80px] bg-white border border-gray-200 rounded-[8px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none mb-3"
               ></textarea>
               <div className="flex justify-end">
                 <button className="h-[32px] px-5 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm">
-                  Adicionar coment├írio
+                  Adicionar comentírio
                 </button>
               </div>
             </div>
@@ -3852,12 +3852,12 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                   <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Prioridade</label>
                   <select className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] text-gray-600 outline-none focus:ring-1 focus:ring-[#3578d4]">
                     <option>Alta</option>
-                    <option>M├®dia</option>
+                    <option>Média</option>
                     <option>Baixa</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Situa├º├úo</label>
+                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Situação</label>
                   <select className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-2 text-[12px] text-gray-600 outline-none focus:ring-1 focus:ring-[#3578d4]">
                     <option>No prazo</option>
                     <option>Em risco</option>
@@ -3873,7 +3873,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
 
           {/* Management Actions Card */}
           <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 p-5">
-            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">A├º├Áes Gerenciais</h3>
+            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">Ações Gerenciais</h3>
             <div className="grid grid-cols-1 gap-2">
               <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[6px] flex items-center space-x-2 hover:bg-gray-50 transition-colors">
                 <Plus size={14} className="text-[#3578d4]" />
@@ -3885,15 +3885,15 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
               </button>
               <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[6px] flex items-center space-x-2 hover:bg-gray-50 transition-colors">
                 <Paperclip size={14} className="text-[#3578d4]" />
-                <span>Adicionar evid├¬ncia</span>
+                <span>Adicionar evid~ncia</span>
               </button>
               <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[6px] flex items-center space-x-2 hover:bg-gray-50 transition-colors">
                 <User size={14} className="text-[#3578d4]" />
-                <span>Alterar respons├ível</span>
+                <span>Alterar responsível</span>
               </button>
               <button className="h-[32px] px-3 bg-white border border-gray-200 text-gray-600 text-[11px] font-bold rounded-[6px] flex items-center space-x-2 hover:bg-gray-50 transition-colors">
                 <Users size={14} className="text-[#3578d4]" />
-                <span>Marcar reuni├úo</span>
+                <span>Marcar reunião</span>
               </button>
               <button className="h-[32px] px-3 bg-white border border-[#ef4444] text-[#ef4444] text-[11px] font-bold rounded-[6px] flex items-center space-x-2 hover:bg-red-50 transition-colors">
                 <CheckCircle size={14} />
@@ -3904,7 +3904,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
 
           {/* Quick Indicators Card */}
           <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 p-5">
-            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">Indicadores R├ípidos</h3>
+            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">Indicadores Rípidos</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[12px] text-gray-500">Demandas abertas</span>
@@ -3915,11 +3915,11 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
                 <span className="text-[12px] font-bold text-green-600">1</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[12px] text-gray-500">Evid├¬ncias anexadas</span>
+                <span className="text-[12px] text-gray-500">Evid~ncias anexadas</span>
                 <span className="text-[12px] font-bold text-[#3578d4]">4</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                <span className="text-[12px] text-gray-500">├Ültima atualiza├º├úo</span>
+                <span className="text-[12px] text-gray-500">├Ültima atualização</span>
                 <span className="text-[12px] font-bold text-gray-600">20/03/2026</span>
               </div>
             </div>
@@ -3927,7 +3927,7 @@ const DetalheProjetoView = ({ project, onBack, onEdit }: { project: any, onBack:
 
           {/* Files / Evidence Card */}
           <div className="bg-white rounded-[10px] shadow-sm border border-gray-100 p-5">
-            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">Arquivos / Evid├¬ncias</h3>
+            <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">Arquivos / Evid~ncias</h3>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-2 bg-gray-50 rounded-[6px]">
                 <div className="flex items-center space-x-2 overflow-hidden">
@@ -3986,7 +3986,7 @@ const NotificationItem = ({ notif, compact = false }: { notif: any, compact?: bo
                 "rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]",
                 notif.lida ? "bg-slate-100 text-slate-500" : "bg-blue-100 text-blue-700"
               )}>
-                {notif.lida ? 'Lida' : 'N├úo lida'}
+                {notif.lida ? 'Lida' : 'Não lida'}
               </span>
               <span className="text-[11px] font-medium text-slate-400">{notif.data}</span>
             </div>
@@ -4027,7 +4027,7 @@ const NotificationItem = ({ notif, compact = false }: { notif: any, compact?: bo
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
             <div className="flex items-center gap-2 text-[11px] font-medium text-slate-400">
               <Clock size={12} className="text-slate-400" />
-              <span>Atualiza├º├úo registrada em {notif.data}</span>
+              <span>Atualização registrada em {notif.data}</span>
             </div>
             <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
               <span className={cn("h-2 w-2 rounded-full", notif.lida ? "bg-slate-300" : "bg-[#3578d4]")} />
@@ -4049,15 +4049,15 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
     <main className="flex-1 overflow-y-auto bg-[#f3f4f6] p-5">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-lg font-bold text-[#1e315d]">Notifica├º├Áes</h1>
-          <p className="mt-0.5 text-[11px] text-gray-500">Acompanhe alertas, a├º├Áes pendentes e atualiza├º├Áes do sistema</p>
+          <h1 className="text-lg font-bold text-[#1e315d]">Notificações</h1>
+          <p className="mt-0.5 text-[11px] text-gray-500">Acompanhe alertas, ações pendentes e atualizações do sistema</p>
         </div>
         <div className="flex items-center gap-2">
           <button className="h-[34px] rounded-[8px] bg-[#3578d4] px-4 text-[12px] font-bold text-white shadow-sm transition-colors hover:bg-[#2d66b5]">
             Marcar todas como lidas
           </button>
           <button className="h-[34px] rounded-[8px] border border-gray-200 bg-white px-4 text-[12px] font-bold text-gray-600 transition-colors hover:bg-gray-50">
-            Limpar notifica├º├Áes
+            Limpar notificações
           </button>
         </div>
       </div>
@@ -4066,7 +4066,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
         <aside className="rounded-[12px] border border-slate-100 bg-white p-4 shadow-sm">
           <div className="rounded-[12px] bg-[linear-gradient(180deg,_#315c9d_0%,_#3775d2_100%)] p-4 text-white">
             <p className="text-[11px] uppercase tracking-[0.22em] text-blue-100">Central de alertas</p>
-            <h2 className="mt-2 text-xl font-black">{totalNaoLidas} n├úo lidas</h2>
+            <h2 className="mt-2 text-xl font-black">{totalNaoLidas} não lidas</h2>
             <p className="mt-1 text-[12px] text-blue-100/85">Priorize os avisos mais recentes para manter o time alinhado.</p>
           </div>
 
@@ -4080,7 +4080,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
               <p className="mt-1 text-lg font-bold text-[#1e315d]">{totalDemandas}</p>
             </div>
             <div className="rounded-[10px] border border-slate-100 bg-slate-50 px-3 py-3">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">├Ültima atualiza├º├úo</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">├Ültima atualização</p>
               <p className="mt-1 text-sm font-semibold text-[#1e315d]">Hoje, 11:15</p>
             </div>
           </div>
@@ -4096,7 +4096,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
                     <option>Todas</option>
                     <option>Demandas</option>
                     <option>Projetos</option>
-                    <option>Evid├¬ncias</option>
+                    <option>Evid~ncias</option>
                     <option>Sistema</option>
                   </select>
                   <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -4108,7 +4108,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
                 <div className="relative">
                   <select className="h-[36px] min-w-[120px] w-full appearance-none rounded-[8px] border border-gray-200 bg-white pl-3 pr-8 text-[12px] text-gray-600 outline-none focus:ring-1 focus:ring-[#3578d4]">
                     <option>Todas</option>
-                    <option>N├úo lidas</option>
+                    <option>Não lidas</option>
                     <option>Lidas</option>
                   </select>
                   <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -4121,7 +4121,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
                   <select className="h-[36px] min-w-[120px] w-full appearance-none rounded-[8px] border border-gray-200 bg-white pl-3 pr-8 text-[12px] text-gray-600 outline-none focus:ring-1 focus:ring-[#3578d4]">
                     <option>Hoje</option>
                     <option>├Ültimos 7 dias</option>
-                    <option>Este m├¬s</option>
+                    <option>Este m~s</option>
                   </select>
                   <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
@@ -4133,7 +4133,7 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Buscar por t├¡tulo, descri├º├úo ou respons├ível..."
+                    placeholder="Buscar por t├¡tulo, descrição ou responsível..."
                     className="h-[36px] w-full rounded-[8px] border border-gray-200 bg-white pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
                   />
                 </div>
@@ -4150,13 +4150,13 @@ const NotificacoesView = ({ notificacoesList }: { notificacoesList: any[] }) => 
           </div>
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3 px-1">
-            <span className="text-[11px] font-medium tracking-wide text-gray-400">P├ígina 1 de 5 ┬À Exibindo 6 notifica├º├Áes</span>
+            <span className="text-[11px] font-medium tracking-wide text-gray-400">Pígina 1 de 5 ┬À Exibindo 6 notificações</span>
             <div className="flex items-center gap-1">
               <button className="rounded-[6px] border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-bold text-gray-500 transition-colors hover:bg-gray-50">Anterior</button>
               <button className="rounded-[6px] bg-[#3578d4] px-3 py-1.5 text-[11px] font-bold text-white shadow-sm">1</button>
               <button className="rounded-[6px] border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-bold text-gray-600 transition-colors hover:bg-gray-50">2</button>
               <button className="rounded-[6px] border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-bold text-gray-600 transition-colors hover:bg-gray-50">3</button>
-              <button className="rounded-[6px] border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-bold text-gray-500 transition-colors hover:bg-gray-50">Pr├│xima</button>
+              <button className="rounded-[6px] border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-bold text-gray-500 transition-colors hover:bg-gray-50">Próxima</button>
             </div>
           </div>
         </section>
@@ -4179,7 +4179,7 @@ const NotificationDropdown = ({ onClose, onViewAll, notificacoesList }: { onClos
       <div className="border-b border-slate-100 bg-white px-4 py-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Notifica├º├Áes</h3>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Notificações</h3>
             <p className="mt-1 text-[11px] text-slate-400">{totalNaoLidas} pendentes de leitura</p>
           </div>
           <button className="text-[11px] font-bold text-[#3578d4] hover:underline">
@@ -4204,7 +4204,7 @@ const NotificationDropdown = ({ onClose, onViewAll, notificacoesList }: { onClos
           }}
           className="text-[11px] font-bold text-gray-500 transition-colors hover:text-[#3578d4]"
         >
-          Ver todas notifica├º├Áes
+          Ver todas notificações
         </button>
       </div>
     </motion.div>
@@ -4257,7 +4257,7 @@ const AdministracaoView = ({
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-lg font-bold text-[#1e315d]">Administrador</h1>
-          <p className="text-[11px] text-gray-500 mt-0.5">Gerencie empresas, usu├írios e permiss├Áes do sistema</p>
+          <p className="text-[11px] text-gray-500 mt-0.5">Gerencie empresas, usuírios e permissões do sistema</p>
         </div>
         <div className="flex items-center space-x-2">
           <button 
@@ -4272,7 +4272,7 @@ const AdministracaoView = ({
             className="h-[32px] px-4 bg-white border border-gray-200 text-gray-600 text-[12px] font-bold rounded-[6px] hover:bg-gray-50 transition-colors flex items-center shadow-sm"
           >
             <UserPlus size={14} className="mr-2 text-gray-400" />
-            Novo usu├írio
+            Novo usuírio
           </button>
         </div>
       </div>
@@ -4286,7 +4286,7 @@ const AdministracaoView = ({
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input 
                 type="text" 
-                placeholder="Buscar empresa, usu├írio ou e-mail..." 
+                placeholder="Buscar empresa, usuírio ou e-mail..." 
                 className="h-[32px] w-[280px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]"
               />
             </div>
@@ -4352,7 +4352,7 @@ const AdministracaoView = ({
             activeTab === 'usuarios' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
           )}
         >
-          Usu├írios
+          Usuírios
           {activeTab === 'usuarios' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
         </button>
         <button 
@@ -4362,7 +4362,7 @@ const AdministracaoView = ({
             activeTab === 'subusuarios' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
           )}
         >
-          Subusu├írios
+          Subusuírios
           {activeTab === 'subusuarios' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
         </button>
         <button 
@@ -4372,7 +4372,7 @@ const AdministracaoView = ({
             activeTab === 'permissoes' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
           )}
         >
-          Permiss├Áes
+          Permissões
           {activeTab === 'permissoes' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
         </button>
       </div>
@@ -4382,7 +4382,7 @@ const AdministracaoView = ({
         {activeTab === 'empresas' && (
           <div>
             <div className="p-4 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="text-[13px] font-bold text-[#1e315d]">Gest├úo de Empresas</h3>
+              <h3 className="text-[13px] font-bold text-[#1e315d]">Gestão de Empresas</h3>
               <button 
                 onClick={onNewCompany}
                 className="text-[11px] font-bold text-[#3578d4] hover:underline flex items-center"
@@ -4397,11 +4397,11 @@ const AdministracaoView = ({
                   <tr className="bg-gray-50/50 border-b border-gray-100">
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Empresa</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">CNPJ</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Respons├ível</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Responsível</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">E-mail</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Plano</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">A├º├Áes</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -4454,13 +4454,13 @@ const AdministracaoView = ({
         {activeTab === 'usuarios' && (
           <div>
             <div className="p-4 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="text-[13px] font-bold text-[#1e315d]">Usu├írios Principais</h3>
+              <h3 className="text-[13px] font-bold text-[#1e315d]">Usuírios Principais</h3>
               <button 
                 onClick={onNewUser}
                 className="text-[11px] font-bold text-[#3578d4] hover:underline flex items-center"
               >
                 <Plus size={14} className="mr-1" />
-                Novo usu├írio
+                Novo usuírio
               </button>
             </div>
             <div className="overflow-x-auto">
@@ -4472,7 +4472,7 @@ const AdministracaoView = ({
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Perfil</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">├Ültimo Acesso</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">A├º├Áes</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -4520,13 +4520,13 @@ const AdministracaoView = ({
         {activeTab === 'subusuarios' && (
           <div>
             <div className="p-4 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="text-[13px] font-bold text-[#1e315d]">Subusu├írios Vinculados</h3>
+              <h3 className="text-[13px] font-bold text-[#1e315d]">Subusuírios Vinculados</h3>
               <button 
                 onClick={onNewSubUser}
                 className="text-[11px] font-bold text-[#3578d4] hover:underline flex items-center"
               >
                 <Plus size={14} className="mr-1" />
-                Novo subusu├írio
+                Novo subusuírio
               </button>
             </div>
             <div className="overflow-x-auto">
@@ -4539,7 +4539,7 @@ const AdministracaoView = ({
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Setor</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Perfil</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">A├º├Áes</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -4630,7 +4630,7 @@ const AdministracaoView = ({
           <button className="px-3 py-1.5 text-[11px] text-gray-500 border border-gray-200 rounded-[4px] bg-white hover:bg-gray-50 font-bold transition-colors">Anterior</button>
           <button className="px-3 py-1.5 text-[11px] text-white bg-[#3578d4] rounded-[4px] font-bold shadow-sm">1</button>
           <button className="px-3 py-1.5 text-[11px] text-gray-600 bg-white border border-gray-200 rounded-[4px] font-bold hover:bg-gray-50 transition-colors">2</button>
-          <button className="px-3 py-1.5 text-[11px] text-gray-500 border border-gray-200 rounded-[4px] bg-white hover:bg-gray-50 font-bold transition-colors">Pr├│xima</button>
+          <button className="px-3 py-1.5 text-[11px] text-gray-500 border border-gray-200 rounded-[4px] bg-white hover:bg-gray-50 font-bold transition-colors">Próxima</button>
         </div>
       </div>
     </main>
@@ -4660,7 +4660,7 @@ const EmpresaModal = ({ onClose, onSuccess, authToken }: { onClose: () => void, 
 
   const handleSubmit = async () => {
     if (!formData.nome || !formData.cnpj || !formData.email || !formData.telefone || !formData.responsavel || !formData.plano) {
-      alert('Por favor, preencha todos os campos obrigat├│rios');
+      alert('Por favor, preencha todos os campos obrigatórios');
       return;
     }
 
@@ -4772,13 +4772,13 @@ const EmpresaModal = ({ onClose, onSuccess, authToken }: { onClose: () => void, 
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-gray-600">Respons├ível</label>
+              <label className="text-[11px] font-bold text-gray-600">Responsível</label>
               <input 
                 type="text" 
                 name="responsavel"
                 value={formData.responsavel}
                 onChange={handleChange}
-                placeholder="Nome do respons├ível" 
+                placeholder="Nome do responsível" 
                 className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" 
               />
             </div>
@@ -4922,7 +4922,7 @@ const UserActionDropdown = ({
         }}
         className="w-full px-2 py-1 bg-white border border-gray-200 rounded-[4px] text-[10px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] focus:border-[#3578d4] cursor-pointer pr-6"
       >
-        <option value="">ÔÇö A├º├úo ÔÇö</option>
+        <option value="">ÔÇö Ação ÔÇö</option>
         <option value="view">Visualizar</option>
         <option value="edit">Editar</option>
         <option value="resetPassword">Redefinir Senha</option>
@@ -4978,10 +4978,10 @@ const CompanyActionDropdown = ({
         }}
         className="w-full px-2 py-1 bg-white border border-gray-200 rounded-[4px] text-[10px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4] focus:border-[#3578d4] cursor-pointer pr-6"
       >
-        <option value="">ÔÇö A├º├úo ÔÇö</option>
+        <option value="">ÔÇö Ação ÔÇö</option>
         <option value="view">Visualizar</option>
         <option value="edit">Editar</option>
-        <option value="manageUsers">Gerenciar Usu├írios</option>
+        <option value="manageUsers">Gerenciar Usuírios</option>
         <option value="toggleStatus">{isActive ? 'Desativar' : 'Ativar'}</option>
         <option value="delete" className="text-red-600">Deletar</option>
       </select>
@@ -5003,8 +5003,8 @@ const UsuarioDetalheModal = ({ usuario, onClose }: { usuario: any, onClose: () =
             <User size={16} className="text-[#3578d4]" />
           </div>
           <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Detalhes do Usu├írio</h3>
-            <p className="text-[11px] text-gray-400">Informa├º├Áes completas do cadastro</p>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Detalhes do Usuírio</h3>
+            <p className="text-[11px] text-gray-400">Informações completas do cadastro</p>
           </div>
         </div>
         <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors">
@@ -5051,7 +5051,7 @@ const UsuarioDetalheModal = ({ usuario, onClose }: { usuario: any, onClose: () =
           </div>
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tipo</span>
-            <p className="text-[13px] font-medium text-gray-600">Usu├írio Principal</p>
+            <p className="text-[13px] font-medium text-gray-600">Usuírio Principal</p>
           </div>
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">├Ültimo Acesso</span>
@@ -5095,8 +5095,8 @@ const UsuarioEditModal = ({ usuario, onClose, onSave }: { usuario: any, onClose:
               <Edit size={16} className="text-[#3578d4]" />
             </div>
             <div>
-              <h3 className="text-[15px] font-bold text-[#1e315d]">Editar Usu├írio</h3>
-              <p className="text-[11px] text-gray-400">Atualize as informa├º├Áes do cadastro</p>
+              <h3 className="text-[15px] font-bold text-[#1e315d]">Editar Usuírio</h3>
+              <p className="text-[11px] text-gray-400">Atualize as informações do cadastro</p>
             </div>
           </div>
           <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors">
@@ -5116,7 +5116,7 @@ const UsuarioEditModal = ({ usuario, onClose, onSave }: { usuario: any, onClose:
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-gray-600">E-mail (N├úo edit├ível)</label>
+              <label className="text-[11px] font-bold text-gray-600">E-mail (Não editível)</label>
               <input 
                 type="email" 
                 value={usuario.email}
@@ -5134,7 +5134,7 @@ const UsuarioEditModal = ({ usuario, onClose, onSave }: { usuario: any, onClose:
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[11px] font-bold text-gray-600">Empresa (N├úo edit├ível)</label>
+              <label className="text-[11px] font-bold text-gray-600">Empresa (Não editível)</label>
               <input 
                 type="text" 
                 value={usuario.empresa}
@@ -5177,12 +5177,12 @@ const UsuarioEditModal = ({ usuario, onClose, onSave }: { usuario: any, onClose:
             </div>
           </div>
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Observa├º├Áes Internas (Opcional)</label>
+            <label className="text-[11px] font-bold text-gray-600">Observações Internas (Opcional)</label>
             <textarea 
               value={formData.observacoes}
               onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
               className="w-full h-[80px] bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none"
-              placeholder="Notas sobre o usu├írio..."
+              placeholder="Notas sobre o usuírio..."
             />
           </div>
         </div>
@@ -5195,7 +5195,7 @@ const UsuarioEditModal = ({ usuario, onClose, onSave }: { usuario: any, onClose:
             onClick={() => onSave(formData)}
             className="h-[36px] px-6 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm"
           >
-            Salvar Altera├º├Áes
+            Salvar Alterações
           </button>
         </div>
       </motion.div>
@@ -5216,9 +5216,9 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
             <UserPlus size={16} className="text-[#3578d4]" />
           </div>
           <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo Usu├írio</h3>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo Usuírio</h3>
             <p className="text-[11px] text-gray-400">
-              {empresa ? `Vincular novo usu├írio ├á ${empresa.nome}` : 'Crie um acesso principal para um administrador de empresa'}
+              {empresa ? `Vincular novo usuírio õ ${empresa.nome}` : 'Crie um acesso principal para um administrador de empresa'}
             </p>
           </div>
         </div>
@@ -5231,7 +5231,7 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-gray-600">Nome Completo</label>
-            <input type="text" placeholder="Ex: Jo├úo Silva" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
+            <input type="text" placeholder="Ex: João Silva" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
           </div>
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-gray-600">E-mail de Acesso</label>
@@ -5297,7 +5297,7 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
         </div>
 
         <div className="space-y-1 mb-4">
-          <label className="text-[11px] font-bold text-gray-600">Senha Provis├│ria</label>
+          <label className="text-[11px] font-bold text-gray-600">Senha Provisória</label>
           <div className="relative">
             <Key size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input type="password" placeholder="ÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇó" className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-9 pr-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4]" />
@@ -5306,7 +5306,7 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
 
         <div className="flex items-center space-x-2">
           <input type="checkbox" id="sendEmail" className="w-3.5 h-3.5 text-[#3578d4] rounded" defaultChecked />
-          <label htmlFor="sendEmail" className="text-[12px] text-gray-600 cursor-pointer">Enviar dados de acesso por e-mail para o usu├írio</label>
+          <label htmlFor="sendEmail" className="text-[12px] text-gray-600 cursor-pointer">Enviar dados de acesso por e-mail para o usuírio</label>
         </div>
       </div>
 
@@ -5315,7 +5315,7 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
           Cancelar
         </button>
         <button onClick={onClose} className="h-[36px] px-6 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm">
-          Salvar usu├írio
+          Salvar usuírio
         </button>
       </div>
     </motion.div>
@@ -5335,9 +5335,9 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
             <Users size={16} className="text-purple-600" />
           </div>
           <div>
-            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo Subusu├írio</h3>
+            <h3 className="text-[15px] font-bold text-[#1e315d]">Cadastrar Novo Subusuírio</h3>
             <p className="text-[11px] text-gray-400">
-              {empresa ? `Vincular novo subusu├írio ├á ${empresa.nome}` : 'Vincule um novo colaborador a um usu├írio principal'}
+              {empresa ? `Vincular novo subusuírio õ ${empresa.nome}` : 'Vincule um novo colaborador a um usuírio principal'}
             </p>
           </div>
         </div>
@@ -5380,7 +5380,7 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
             </div>
           </div>
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Usu├írio Principal Vinculado</label>
+            <label className="text-[11px] font-bold text-gray-600">Usuírio Principal Vinculado</label>
             <div className="relative">
               <select className="w-full h-[36px] bg-white border border-gray-200 rounded-[6px] pl-3 pr-8 text-[12px] text-gray-600 outline-none appearance-none focus:ring-1 focus:ring-[#3578d4]">
                 <option>Carlos Alberto</option>
@@ -5424,8 +5424,8 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
         </div>
 
         <div className="space-y-1">
-          <label className="text-[11px] font-bold text-gray-600">Observa├º├Áes</label>
-          <textarea placeholder="Observa├º├Áes sobre o subusu├írio..." className="w-full h-[80px] bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none" />
+          <label className="text-[11px] font-bold text-gray-600">Observações</label>
+          <textarea placeholder="Observações sobre o subusuírio..." className="w-full h-[80px] bg-white border border-gray-200 rounded-[6px] p-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none" />
         </div>
       </div>
 
@@ -5434,7 +5434,7 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
           Cancelar
         </button>
         <button onClick={onClose} className="h-[36px] px-6 bg-purple-600 text-white text-[12px] font-bold rounded-[6px] hover:bg-purple-700 transition-colors shadow-sm">
-          Salvar subusu├írio
+          Salvar subusuírio
         </button>
       </div>
     </motion.div>
@@ -5488,11 +5488,11 @@ const EmpresaDetalheModal = ({ empresa, onClose }: { empresa: any, onClose: () =
 
         <div className="grid grid-cols-2 gap-8 mb-8">
           <div className="space-y-4">
-            <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Informa├º├Áes de Contato</h4>
+            <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Informações de Contato</h4>
             <div className="space-y-3">
               <div className="flex items-center text-[12px]">
                 <User size={14} className="text-gray-400 mr-3" />
-                <span className="text-gray-500 mr-2">Respons├ível:</span>
+                <span className="text-gray-500 mr-2">Responsível:</span>
                 <span className="font-medium text-[#1e315d]">{empresa.responsavel}</span>
               </div>
               <div className="flex items-center text-[12px]">
@@ -5511,7 +5511,7 @@ const EmpresaDetalheModal = ({ empresa, onClose }: { empresa: any, onClose: () =
             <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Estat├¡sticas</h4>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-3 rounded-[6px]">
-                <span className="text-[9px] font-bold text-gray-400 uppercase">Usu├írios</span>
+                <span className="text-[9px] font-bold text-gray-400 uppercase">Usuírios</span>
                 <p className="text-lg font-bold text-[#1e315d]">12</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-[6px]">
@@ -5523,14 +5523,14 @@ const EmpresaDetalheModal = ({ empresa, onClose }: { empresa: any, onClose: () =
         </div>
 
         <div className="space-y-4">
-          <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Hist├│rico Recente</h4>
+          <h4 className="text-[12px] font-bold text-[#1e315d] border-b border-gray-50 pb-2">Histórico Recente</h4>
           <div className="space-y-3">
             {[1, 2, 3].map(i => (
               <div key={i} className="flex items-start space-x-3 text-[11px]">
                 <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
                 <div>
-                  <p className="text-gray-600"><span className="font-bold text-[#1e315d]">Altera├º├úo de plano</span> realizada por Administrador</p>
-                  <span className="text-gray-400">12/03/2026 ├ás 14:30</span>
+                  <p className="text-gray-600"><span className="font-bold text-[#1e315d]">Alteração de plano</span> realizada por Administrador</p>
+                  <span className="text-gray-400">12/03/2026 õs 14:30</span>
                 </div>
               </div>
             ))}
@@ -5626,7 +5626,7 @@ const UsuariosEmpresaView = ({
             <ArrowLeft size={16} />
           </button>
           <div>
-            <h1 className="text-[20px] font-bold text-[#1e315d]">Usu├írios da Empresa</h1>
+            <h1 className="text-[20px] font-bold text-[#1e315d]">Usuírios da Empresa</h1>
             <p className="text-[12px] text-gray-400 flex items-center">
               <Building2 size={12} className="mr-1.5" />
               {empresa.nome}
@@ -5639,14 +5639,14 @@ const UsuariosEmpresaView = ({
             className="h-[36px] px-4 bg-[#3578d4] text-white text-[12px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm flex items-center"
           >
             <UserPlus size={14} className="mr-2" />
-            Novo usu├írio
+            Novo usuírio
           </button>
           <button 
             onClick={onNewSubUser}
             className="h-[36px] px-4 bg-white border border-gray-200 text-gray-600 text-[12px] font-bold rounded-[6px] hover:bg-gray-50 transition-colors shadow-sm flex items-center"
           >
             <Users size={14} className="mr-2" />
-            Novo subusu├írio
+            Novo subusuírio
           </button>
         </div>
       </div>
@@ -5663,7 +5663,7 @@ const UsuariosEmpresaView = ({
             <p className="text-[12px] font-medium text-gray-600 font-mono">{empresa.cnpj}</p>
           </div>
           <div className="space-y-1">
-            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Respons├ível</span>
+            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Responsível</span>
             <p className="text-[12px] font-medium text-gray-600">{empresa.responsavel}</p>
           </div>
           <div className="space-y-1">
@@ -5682,7 +5682,7 @@ const UsuariosEmpresaView = ({
             </div>
           </div>
           <div className="space-y-1">
-            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Total Usu├írios</span>
+            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Total Usuírios</span>
             <p className="text-[13px] font-bold text-[#1e315d]">{usuariosPrincipais.length + subusuarios.length}</p>
           </div>
         </div>
@@ -5698,7 +5698,7 @@ const UsuariosEmpresaView = ({
               activeTab === 'principais' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
             )}
           >
-            Usu├írios Principais
+            Usuírios Principais
             {activeTab === 'principais' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
           </button>
           <button 
@@ -5708,7 +5708,7 @@ const UsuariosEmpresaView = ({
               activeTab === 'subusuarios' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
             )}
           >
-            Subusu├írios
+            Subusuírios
             {activeTab === 'subusuarios' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
           </button>
           <button 
@@ -5718,7 +5718,7 @@ const UsuariosEmpresaView = ({
               activeTab === 'permissoes' ? "text-[#3578d4]" : "text-gray-400 hover:text-gray-600"
             )}
           >
-            Permiss├Áes
+            Permissões
             {activeTab === 'permissoes' && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#3578d4]" />}
           </button>
         </div>
@@ -5734,7 +5734,7 @@ const UsuariosEmpresaView = ({
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Perfil</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">├Ültimo Acesso</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">A├º├Áes</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -5766,7 +5766,7 @@ const UsuariosEmpresaView = ({
                       <td className="px-4 py-3 text-[11px] text-gray-500">{usuario.ultimoAcesso}</td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <NexusTooltip text="Visualizar usu├írio">
+                          <NexusTooltip text="Visualizar usuírio">
                             <button 
                               onClick={() => onViewUser(usuario)}
                               className="p-1.5 text-gray-400 hover:text-[#3578d4] hover:bg-blue-50 rounded transition-colors"
@@ -5774,7 +5774,7 @@ const UsuariosEmpresaView = ({
                               <Eye size={14} />
                             </button>
                           </NexusTooltip>
-                          <NexusTooltip text="Editar usu├írio">
+                          <NexusTooltip text="Editar usuírio">
                             <button 
                               onClick={() => onEditUser(usuario)}
                               className="p-1.5 text-gray-400 hover:text-[#3578d4] hover:bg-blue-50 rounded transition-colors"
@@ -5790,7 +5790,7 @@ const UsuariosEmpresaView = ({
                               <Key size={14} />
                             </button>
                           </NexusTooltip>
-                          <NexusTooltip text="Desativar usu├írio">
+                          <NexusTooltip text="Desativar usuírio">
                             <button 
                               onClick={() => onDeactivateUser(usuario)}
                               className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
@@ -5815,9 +5815,9 @@ const UsuariosEmpresaView = ({
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Nome</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Setor</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Perfil</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Respons├ível</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Responsível</th>
                     <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">A├º├Áes</th>
+                    <th className="px-4 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -5878,9 +5878,9 @@ const UsuariosEmpresaView = ({
               <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
                 <Lock size={32} className="text-[#3578d4]" />
               </div>
-              <h3 className="text-[16px] font-bold text-[#1e315d] mb-2">Gest├úo de Permiss├Áes</h3>
+              <h3 className="text-[16px] font-bold text-[#1e315d] mb-2">Gestão de Permissões</h3>
               <p className="text-[12px] text-gray-500 max-w-[400px] mx-auto">
-                Em breve voc├¬ poder├í gerenciar permiss├Áes granulares para cada perfil desta empresa.
+                Em breve voc~ poderí gerenciar permissões granulares para cada perfil desta empresa.
               </p>
             </div>
           )}
@@ -5900,7 +5900,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
 
-  // Estado para T├®cnicos
+  // Estado para Técnicos
   const [tecnicos, setTecnicos] = useState<any[]>([]);
   const [isLoadingTecnicos, setIsLoadingTecnicos] = useState(true);
   const [showTecnicoModal, setShowTecnicoModal] = useState(false);
@@ -5963,8 +5963,8 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
       const tecnicosFiltered = (data?.data || []).filter((u: any) => u.tipoUsuario === 'SUBUSUARIO');
       setTecnicos(tecnicosFiltered);
     } catch (error: any) {
-      console.error('Erro ao carregar t├®cnicos:', error.message);
-      showToast('Erro ao carregar t├®cnicos', 'error');
+      console.error('Erro ao carregar técnicos:', error.message);
+      showToast('Erro ao carregar técnicos', 'error');
     } finally {
       setIsLoadingTecnicos(false);
     }
@@ -5989,7 +5989,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
 
   const handleUploadPhoto = async () => {
     if (!selectedPhotoFile || !currentUser?.id) {
-      showToast('Usu├írio n├úo carregado', 'error');
+      showToast('Usuírio não carregado', 'error');
       return;
     }
 
@@ -6022,7 +6022,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
         userData = JSON.parse(responseText);
       } catch (parseError: any) {
         console.error('Erro ao fazer parse da resposta de upload:', parseError.message);
-        throw new Error(`Resposta inv├ílida: ${parseError.message}`);
+        throw new Error(`Resposta invílida: ${parseError.message}`);
       }
 
       showToast('Foto de perfil atualizada com sucesso', 'success');
@@ -6045,12 +6045,12 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
 
   const handleSaveProfile = async () => {
     if (!profileFormData.nome || !profileFormData.email) {
-      showToast('Nome e Email s├úo obrigat├│rios', 'error');
+      showToast('Nome e Email são obrigatórios', 'error');
       return;
     }
 
     if (!currentUser?.id) {
-      showToast('Usu├írio n├úo carregado', 'error');
+      showToast('Usuírio não carregado', 'error');
       return;
     }
 
@@ -6095,14 +6095,14 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
 
   const handleSaveTecnico = async () => {
     if (!tecnicoFormData.nome.trim()) {
-      showToast('Nome ├® obrigat├│rio', 'error');
+      showToast('Nome é obrigatório', 'error');
       return;
     }
 
-    // Garantir que temos o ID do usu├írio antes de prosseguir
+    // Garantir que temos o ID do usuírio antes de prosseguir
     if (!currentUser?.id) {
-      console.error('currentUser n├úo possui ID:', currentUser);
-      showToast('Erro: Usu├írio n├úo autenticado corretamente. Recarregue a p├ígina.', 'error');
+      console.error('currentUser não possui ID:', currentUser);
+      showToast('Erro: Usuírio não autenticado corretamente. Recarregue a pígina.', 'error');
       return;
     }
 
@@ -6120,7 +6120,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
         setor: tecnicoFormData.setor || null,
       };
 
-      // Se n├úo ├® edi├º├úo, adiciona dados para criar novo t├®cnico
+      // Se não é edição, adiciona dados para criar novo técnico
       if (!isEditing) {
         payload.telefone = null;
         payload.email = `tecnico.${Date.now()}@nexus.local`;
@@ -6145,17 +6145,17 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
       console.log('[TECNICO] Resposta:', response.status, data);
       
       if (!data?.success) {
-        throw new Error(data?.message || `Erro ao salvar t├®cnico`);
+        throw new Error(data?.message || `Erro ao salvar técnico`);
       }
 
-      showToast(isEditing ? 'T├®cnico atualizado com sucesso' : 'T├®cnico criado com sucesso', 'success');
+      showToast(isEditing ? 'Técnico atualizado com sucesso' : 'Técnico criado com sucesso', 'success');
       setTecnicoFormData({ nome: '', setor: '' });
       setEditingTecnicoId(null);
       setShowTecnicoModal(false);
       loadTecnicos();
     } catch (error: any) {
       console.error('[TECNICO ERROR]', error.message);
-      showToast(error.message || 'Erro ao salvar t├®cnico', 'error');
+      showToast(error.message || 'Erro ao salvar técnico', 'error');
     } finally {
       setIsSavingTecnico(false);
     }
@@ -6177,7 +6177,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
       setIsSavingTecnico(true);
       const token = localStorage.getItem('nexus_token');
       
-      console.log('[DELETE TECNICO] Deletando t├®cnico:', deleteConfirm.tecnicoId);
+      console.log('[DELETE TECNICO] Deletando técnico:', deleteConfirm.tecnicoId);
       
       const { response, data } = await fetchAPI(`${API_BASE_URL}/usuarios/${deleteConfirm.tecnicoId}`, {
         method: 'DELETE',
@@ -6190,17 +6190,17 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
       console.log('[DELETE TECNICO] Resposta:', response.status, data);
 
       if (!response.ok) {
-        throw new Error(data?.message || 'Erro ao deletar t├®cnico');
+        throw new Error(data?.message || 'Erro ao deletar técnico');
       }
 
       // Remover da lista localmente
       setTecnicos(tecnicos.filter(t => t.id !== deleteConfirm.tecnicoId));
       
-      showToast('T├®cnico removido com sucesso', 'success');
+      showToast('Técnico removido com sucesso', 'success');
       setDeleteConfirm(null);
     } catch (error: any) {
       console.error('[DELETE TECNICO ERROR]', error.message);
-      showToast(error.message || 'Erro ao deletar t├®cnico', 'error');
+      showToast(error.message || 'Erro ao deletar técnico', 'error');
     } finally {
       setIsSavingTecnico(false);
     }
@@ -6230,7 +6230,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              T├®cnicos Respons├íveis
+              Técnicos Responsíveis
             </button>
           </div>
 
@@ -6361,12 +6361,12 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
             {perfilTab === 'tecnicos' && (
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-[14px] font-bold text-[#1e315d]">T├®cnicos Respons├íveis</h3>
+                  <h3 className="text-[14px] font-bold text-[#1e315d]">Técnicos Responsíveis</h3>
                   <button 
                     onClick={() => setShowTecnicoModal(true)}
                     className="h-[32px] px-4 bg-[#3578d4] text-white text-[11px] font-bold rounded-[6px] hover:bg-[#2d66b5] transition-colors shadow-sm flex items-center gap-2"
                   >
-                    <Plus size={14} /> Novo t├®cnico
+                    <Plus size={14} /> Novo técnico
                   </button>
                 </div>
 
@@ -6378,7 +6378,7 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
                   </div>
                 ) : tecnicos.length === 0 ? (
                   <div className="text-center py-8 text-gray-500 text-[12px]">
-                    Nenhum t├®cnico respons├ível cadastrado
+                    Nenhum técnico responsível cadastrado
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -6422,12 +6422,12 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
         </div>
       )}
 
-      {/* Modal de Novo/Editar T├®cnico */}
+      {/* Modal de Novo/Editar Técnico */}
       {showTecnicoModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-[10px] shadow-lg border border-gray-100 p-6 w-full max-w-[400px]">
             <h3 className="text-[14px] font-bold text-[#1e315d] mb-4">
-              {editingTecnicoId ? 'Editar T├®cnico Respons├ível' : 'Novo T├®cnico Respons├ível'}
+              {editingTecnicoId ? 'Editar Técnico Responsível' : 'Novo Técnico Responsível'}
             </h3>
             
             <div className="space-y-4">
@@ -6477,12 +6477,12 @@ const ConfiguracoesView = ({ currentUser, setCurrentUser }: { currentUser: any; 
         </div>
       )}
 
-      {/* Modal de Confirma├º├úo de Exclus├úo */}
+      {/* Modal de Confirmação de Exclusão */}
       {deleteConfirm?.show && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-[10px] shadow-lg border border-gray-100 p-6 w-full max-w-[320px]">
-            <h3 className="text-[14px] font-bold text-[#1e315d] mb-3">Confirmar exclus├úo</h3>
-            <p className="text-[12px] text-gray-600 mb-6">Tem certeza que deseja excluir este t├®cnico?</p>
+            <h3 className="text-[14px] font-bold text-[#1e315d] mb-3">Confirmar exclusão</h3>
+            <p className="text-[12px] text-gray-600 mb-6">Tem certeza que deseja excluir este técnico?</p>
             
             <div className="flex gap-3">
               <button 
@@ -6556,7 +6556,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
       'Pendente': 'PENDENTE',
       'PENDENTE': 'PENDENTE',
       'Valida': 'VALIDA',
-      'V├ílida': 'VALIDA',
+      'Vílida': 'VALIDA',
       'VALIDA': 'VALIDA',
       'V├üLIDA': 'VALIDA',
       'Atrasada': 'ATRASADA',
@@ -6610,11 +6610,11 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
         throw new Error(errorData.message || 'Erro ao salvar');
       }
       
-      showToast(isEditing ? 'Evid├¬ncia atualizada com sucesso' : 'Evid├¬ncia salva com sucesso', 'success');
+      showToast(isEditing ? 'Evid~ncia atualizada com sucesso' : 'Evid~ncia salva com sucesso', 'success');
       setTimeout(() => onClose(), 1500);
     } catch (err) {
       console.error('Erro:', err);
-      showToast(`Erro ao salvar evid├¬ncia: ${err.message}`, 'error');
+      showToast(`Erro ao salvar evid~ncia: ${err.message}`, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -6625,7 +6625,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
       <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[760px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 sticky top-0 bg-white">
-          <h2 className="text-[14px] font-bold text-[#1e315d]">{evidence ? 'Editar Evid├¬ncia' : 'Adicionar Evid├¬ncia'}</h2>
+          <h2 className="text-[14px] font-bold text-[#1e315d]">{evidence ? 'Editar Evid~ncia' : 'Adicionar Evid~ncia'}</h2>
           <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 transition-colors">
             <X size={14} />
           </button>
@@ -6638,7 +6638,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
               <label className="text-[11px] font-bold text-gray-600">Nome do arquivo / documento *</label>
               <input 
                 type="text" 
-                placeholder="Ex: Relat├│rio auditoria Q1.pdf"
+                placeholder="Ex: Relatório auditoria Q1.pdf"
                 value={formData.nomeArquivo}
                 onChange={(e) => setFormData({ ...formData, nomeArquivo: e.target.value })}
                 className="w-full h-[32px] bg-white border border-gray-200 rounded-[6px] px-3 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] placeholder:text-gray-300"
@@ -6698,9 +6698,9 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
           </div>
 
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-gray-600">Observa├º├Áes</label>
+            <label className="text-[11px] font-bold text-gray-600">Observações</label>
             <textarea 
-              placeholder="Observa├º├Áes sobre a evid├¬ncia..."
+              placeholder="Observações sobre a evid~ncia..."
               value={formData.descricao}
               onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
               className="w-full h-[76px] bg-white border border-gray-200 rounded-[6px] p-2.5 text-[12px] outline-none focus:ring-1 focus:ring-[#3578d4] resize-none placeholder:text-gray-300"
@@ -6749,7 +6749,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
                   <p className="text-[11px] text-gray-600 font-medium">
                     {selectedFile ? `Ô£ô ${selectedFile.name}` : 'Clique ou arraste um arquivo'}
                   </p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">PDF, DOCX, XLSX, PNG ou JPG (m├íx. 50MB)</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">PDF, DOCX, XLSX, PNG ou JPG (míx. 50MB)</p>
                 </div>
               </label>
             </div>
@@ -6776,7 +6776,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
                 Salvando...
               </>
             ) : (
-              'Salvar evid├¬ncia'
+              'Salvar evid~ncia'
             )}
           </button>
         </div>
@@ -6854,7 +6854,7 @@ export default function App() {
   const mapNotificationVisual = (tipo: string) => {
     if (tipo === 'Demanda') return { icon: ListTodo, color: 'text-blue-500', bgColor: 'bg-blue-50' };
     if (tipo === 'Projeto') return { icon: Briefcase, color: 'text-purple-500', bgColor: 'bg-purple-50' };
-    if (tipo === 'Evid├¬ncia') return { icon: FileText, color: 'text-yellow-500', bgColor: 'bg-yellow-50' };
+    if (tipo === 'Evid~ncia') return { icon: FileText, color: 'text-yellow-500', bgColor: 'bg-yellow-50' };
     return { icon: AlertCircle, color: 'text-red-500', bgColor: 'bg-red-50' };
   };
 
@@ -6876,7 +6876,7 @@ export default function App() {
 
   const syncDataFromApi = async (retryCount = 0) => {
     try {
-      console.log('[SYNC] Iniciando sincroniza├º├úo de dados...', { authToken: !!authToken });
+      console.log('[SYNC] Iniciando sincronização de dados...', { authToken: !!authToken });
       const [empresas, usuarios, projetos, demandas, evidencias, notificacoes] = await Promise.all([
         apiRequest('/empresas'),
         apiRequest('/usuarios'),
@@ -6945,7 +6945,7 @@ export default function App() {
         vencimento: toDateBr(demanda.vencimento),
         descricao: demanda.titulo,
         responsavel: demanda.responsavel?.nome || 'N/A',
-        prioridade: demanda.prioridade === 'ALTA' ? 'Alta' : demanda.prioridade === 'BAIXA' ? 'Baixa' : 'M├®dia',
+        prioridade: demanda.prioridade === 'ALTA' ? 'Alta' : demanda.prioridade === 'BAIXA' ? 'Baixa' : 'Média',
         status: demanda.status === 'EM_ANDAMENTO' ? 'Em andamento' : demanda.status === 'CONCLUIDA' ? 'Conclu├¡da' : demanda.status,
         progresso: demanda.progresso,
         progressoColor: demanda.progresso >= 80 ? '#2fb15d' : demanda.progresso >= 40 ? '#3578d4' : '#f59e0b',
@@ -6958,8 +6958,8 @@ export default function App() {
         data: toDateBr(evidencia.dataEnvio),
         responsavel: evidencia.responsavel?.nome || 'N/A',
         vinculo: evidencia.demanda?.titulo || evidencia.projeto?.nome || 'Sem v├¡nculo',
-        descricao: evidencia.observacoes || 'Sem observa├º├Áes.',
-        status: evidencia.status === 'VALIDA' ? 'V├ílida' : evidencia.status === 'PENDENTE' ? 'Pendente' : 'Atrasada',
+        descricao: evidencia.observacoes || 'Sem observações.',
+        status: evidencia.status === 'VALIDA' ? 'Vílida' : evidencia.status === 'PENDENTE' ? 'Pendente' : 'Atrasada',
         statusColor: evidencia.status === 'VALIDA' ? 'bg-green-50 text-green-600' : evidencia.status === 'PENDENTE' ? 'bg-orange-50 text-orange-600' : 'bg-red-50 text-red-600',
       }));
 
@@ -6990,7 +6990,7 @@ export default function App() {
     } catch (error: any) {
       console.error('[SYNC ERROR]', error);
       
-      // Retry autom├ítico para erro de JSON parse (problema do backend "dormindo" no Render)
+      // Retry automítico para erro de JSON parse (problema do backend "dormindo" no Render)
       const isJsonError = error instanceof SyntaxError || 
                          error?.message?.includes('JSON') || 
                          error?.message?.includes('Unexpected token');
@@ -7004,7 +7004,7 @@ export default function App() {
       
       // Se for um erro de retry ou outro tipo de erro, apenas loga
       if (retryCount > 0) {
-        console.error('[SYNC FINAL ERROR] Falha mesmo ap├│s retry:', error);
+        console.error('[SYNC FINAL ERROR] Falha mesmo após retry:', error);
       }
     }
   };
@@ -7068,7 +7068,7 @@ export default function App() {
     setAuthError(null);
 
     try {
-      console.log('[LOGIN] Iniciando requisi├º├úo para', `${API_BASE_URL}/auth/login`);
+      console.log('[LOGIN] Iniciando requisição para', `${API_BASE_URL}/auth/login`);
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -7077,12 +7077,12 @@ export default function App() {
 
       console.log('[LOGIN] Status:', response.status);
 
-      // Verificar se a resposta ├® JSON antes de fazer parse
+      // Verificar se a resposta é JSON antes de fazer parse
       const contentType = response.headers.get('content-type');
       if (!contentType?.includes('application/json')) {
         const textContent = await response.text();
         console.error('[LOGIN] Tipo errado:', contentType);
-        throw new Error(`Servidor retornou tipo inv├ílido: ${contentType || 'vazio'}`);
+        throw new Error(`Servidor retornou tipo invílido: ${contentType || 'vazio'}`);
       }
 
       if (!response.ok) {
@@ -7112,11 +7112,11 @@ export default function App() {
       } catch (parseError: any) {
         console.error('[LOGIN] JSON parse error:', parseError.message);
         console.error('[LOGIN] Conte├║do recebido:', responseText?.substring(0, 500));
-        throw new Error(`Resposta inv├ílida do servidor: ${parseError.message}`);
+        throw new Error(`Resposta invílida do servidor: ${parseError.message}`);
       }
 
       if (!payload.success) {
-        throw new Error(payload.message || 'Autentica├º├úo falhou');
+        throw new Error(payload.message || 'Autenticação falhou');
       }
 
       const token = payload.data?.token;
@@ -7163,7 +7163,7 @@ export default function App() {
 
   const handleCloseEvidenceModal = () => {
     setIsEvidenceModalOpen(false);
-    // Recarregar lista de evid├¬ncias
+    // Recarregar lista de evid~ncias
     setDataSyncVersion((current) => current + 1);
   };
 
@@ -7191,7 +7191,7 @@ export default function App() {
     setSelectedEmpresa(empresa);
     setConfirmacaoConfig({
       title: 'Desativar Empresa',
-      message: `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados n├úo ser├úo exclu├¡dos, mas o acesso ser├í bloqueado.`,
+      message: `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados não serão exclu├¡dos, mas o acesso serí bloqueado.`,
       onConfirm: () => {
         showToast("Empresa desativada com sucesso");
       },
@@ -7219,7 +7219,7 @@ export default function App() {
     setSelectedUsuario(usuario);
     setConfirmacaoConfig({
       title: 'Redefinir Senha',
-      message: `Deseja redefinir a senha do usu├írio ${usuario.nome}? Um link de redefini├º├úo ser├í enviado para o e-mail ${usuario.email}.`,
+      message: `Deseja redefinir a senha do usuírio ${usuario.nome}? Um link de redefinição serí enviado para o e-mail ${usuario.email}.`,
       onConfirm: () => {
         showToast("Senha redefinida com sucesso");
       },
@@ -7231,10 +7231,10 @@ export default function App() {
   const handleDeactivateUser = (usuario: any) => {
     setSelectedUsuario(usuario);
     setConfirmacaoConfig({
-      title: 'Desativar Usu├írio',
-      message: `Deseja desativar o usu├írio ${usuario.nome}? O usu├írio perder├í acesso ao sistema at├® ser reativado.`,
+      title: 'Desativar Usuírio',
+      message: `Deseja desativar o usuírio ${usuario.nome}? O usuírio perderí acesso ao sistema até ser reativado.`,
       onConfirm: () => {
-        showToast("Usu├írio desativado com sucesso");
+        showToast("Usuírio desativado com sucesso");
       },
       type: 'danger'
     });
@@ -7245,12 +7245,12 @@ export default function App() {
     setSelectedUsuario(usuario);
     const isLocked = usuario.status === 'Bloqueado' || usuario.status === 'Inativo';
     setConfirmacaoConfig({
-      title: isLocked ? 'Desbloquear Usu├írio' : 'Bloquear Usu├írio',
+      title: isLocked ? 'Desbloquear Usuírio' : 'Bloquear Usuírio',
       message: isLocked 
-        ? `Deseja desbloquear o usu├írio ${usuario.nome}? O usu├írio voltar├í a ter acesso ao sistema.`
-        : `Deseja bloquear o usu├írio ${usuario.nome}? O usu├írio perder├í acesso imediatamente.`,
+        ? `Deseja desbloquear o usuírio ${usuario.nome}? O usuírio voltarí a ter acesso ao sistema.`
+        : `Deseja bloquear o usuírio ${usuario.nome}? O usuírio perderí acesso imediatamente.`,
       onConfirm: () => {
-        showToast(`Usu├írio ${isLocked ? 'desbloqueado' : 'bloqueado'} com sucesso`);
+        showToast(`Usuírio ${isLocked ? 'desbloqueado' : 'bloqueado'} com sucesso`);
       },
       type: isLocked ? 'warning' : 'danger'
     });
@@ -7260,8 +7260,8 @@ export default function App() {
   const handleDeleteUser = (usuario: any) => {
     setSelectedUsuario(usuario);
     setConfirmacaoConfig({
-      title: 'Deletar Usu├írio',
-      message: `Tem certeza que deseja deletar o usu├írio ${usuario.nome}? Esta a├º├úo ├® irrevers├¡vel e todos os dados associados ser├úo removidos do sistema.`,
+      title: 'Deletar Usuírio',
+      message: `Tem certeza que deseja deletar o usuírio ${usuario.nome}? Esta ação é irrevers├¡vel e todos os dados associados serão removidos do sistema.`,
       onConfirm: async () => {
         try {
           const response = await fetch(`/api/usuarios/${usuario.id}`, {
@@ -7271,14 +7271,14 @@ export default function App() {
             },
           });
           if (response.ok) {
-            showToast("Usu├írio deletado com sucesso");
+            showToast("Usuírio deletado com sucesso");
             syncDataFromApi();
           } else {
-            showToast("Erro ao deletar usu├írio", 'error');
+            showToast("Erro ao deletar usuírio", 'error');
           }
         } catch (error) {
           console.error('Delete user error:', error);
-          showToast("Erro ao deletar usu├írio", 'error');
+          showToast("Erro ao deletar usuírio", 'error');
         }
       },
       type: 'danger'
@@ -7292,8 +7292,8 @@ export default function App() {
     setConfirmacaoConfig({
       title: isActive ? 'Desativar Empresa' : 'Ativar Empresa',
       message: isActive
-        ? `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados n├úo ser├úo exclu├¡dos, mas o acesso ser├í bloqueado.`
-        : `Tem certeza que deseja ativar a empresa ${empresa.nome}? O acesso ser├í restaurado.`,
+        ? `Tem certeza que deseja desativar a empresa ${empresa.nome}? Os dados não serão exclu├¡dos, mas o acesso serí bloqueado.`
+        : `Tem certeza que deseja ativar a empresa ${empresa.nome}? O acesso serí restaurado.`,
       onConfirm: () => {
         showToast(`Empresa ${isActive ? 'desativada' : 'ativada'} com sucesso`);
         syncDataFromApi();
@@ -7307,7 +7307,7 @@ export default function App() {
     setSelectedEmpresa(empresa);
     setConfirmacaoConfig({
       title: 'Deletar Empresa',
-      message: `Tem certeza que deseja deletar a empresa ${empresa.nome}? Esta a├º├úo ├® irrevers├¡vel e todos os dados associados ser├úo removidos do sistema.`,
+      message: `Tem certeza que deseja deletar a empresa ${empresa.nome}? Esta ação é irrevers├¡vel e todos os dados associados serão removidos do sistema.`,
       onConfirm: async () => {
         try {
           const response = await fetch(`/api/empresas/${empresa.id}`, {
@@ -7335,7 +7335,7 @@ export default function App() {
   const onSaveUserEdit = (data: any) => {
     console.log("Saving user edit", data);
     setIsUsuarioEditModalOpen(false);
-    showToast("Usu├írio atualizado com sucesso");
+    showToast("Usuírio atualizado com sucesso");
   };
 
   if (!isAuthenticated) {
@@ -7363,7 +7363,7 @@ export default function App() {
             <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#a0aec0]" />
             <input 
               type="text" 
-              placeholder="Procurar op├º├úo do menu..." 
+              placeholder="Procurar opção do menu..." 
               className="w-full bg-[#253a6e] border-none rounded-md py-1.5 pl-8 pr-3 text-[11px] text-white placeholder:text-[#a0aec0]/60 focus:ring-1 focus:ring-[#3578d4] outline-none h-[30px]"
             />
           </div>
@@ -7391,19 +7391,19 @@ export default function App() {
           />
           <SidebarItem 
             icon={FileText} 
-            label="Evid├¬ncias" 
+            label="Evid~ncias" 
             active={currentView === 'evidencias'}
             onClick={() => setCurrentView('evidencias')}
           />
           <SidebarItem 
             icon={FileBarChart} 
-            label="Relat├│rio de Execu├º├úo" 
+            label="Relatório de Execução" 
             active={currentView === 'relatorio'}
             onClick={() => setCurrentView('relatorio')}
           />
           <SidebarItem 
             icon={Settings} 
-            label="Configura├º├Áes" 
+            label="Configurações" 
             active={currentView === 'configuracoes'}
             onClick={() => setCurrentView('configuracoes')}
           />
@@ -7435,14 +7435,14 @@ export default function App() {
         <header className="h-[46px] bg-white border-b border-gray-100 flex items-center justify-between px-4 shrink-0 z-10">
           <h2 className="text-[13px] font-bold text-[#1e315d]">
             {currentView === 'painel' ? 'Painel' : 
-             currentView === 'demandas' ? 'Gest├úo de Demandas' : 
-             currentView === 'projetos' ? 'Gest├úo de Projetos' : 
-             currentView === 'evidencias' ? 'Gest├úo de Evid├¬ncias' :
-             currentView === 'relatorio' ? 'Relat├│rio de Execu├º├úo' :
-             currentView === 'configuracoes' ? 'Configura├º├Áes' :
-             currentView === 'notificacoes' ? 'Notifica├º├Áes' :
+             currentView === 'demandas' ? 'Gestão de Demandas' : 
+             currentView === 'projetos' ? 'Gestão de Projetos' : 
+             currentView === 'evidencias' ? 'Gestão de Evid~ncias' :
+             currentView === 'relatorio' ? 'Relatório de Execução' :
+             currentView === 'configuracoes' ? 'Configurações' :
+             currentView === 'notificacoes' ? 'Notificações' :
              currentView === 'administracao' ? 'Administrador' :
-             currentView === 'usuarios-empresa' ? 'Usu├írios da Empresa' :
+             currentView === 'usuarios-empresa' ? 'Usuírios da Empresa' :
              'Detalhes do Projeto'}
           </h2>
           <div className="flex items-center space-x-3">
@@ -7612,4 +7612,5 @@ export default function App() {
     </div>
   );
 }
+
 
