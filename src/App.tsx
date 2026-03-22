@@ -1292,7 +1292,7 @@ const DemandasView = ({ usuariosAdminList, currentUser, empresasAdminData = [] }
       {/* Modal de Detalhes/Edição */}
       {showModal && selectedDemanda && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
-          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[700px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[700px] overflow-hidden sm:overflow-y-auto animate-in fade-in zoom-in duration-200 max-h-[90vh]">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white">
               <h2 className="text-[16px] font-bold text-[#1e315d]">
@@ -2476,7 +2476,7 @@ const ProjetosView = ({ onEdit, onViewDetail, currentUser }: { onEdit: (project:
       {/* Modal de Edição */}
       {showEditModal && editFormData && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4 backdrop-blur-[1px]">
-          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[600px] overflow-hidden sm:overflow-y-auto animate-in fade-in zoom-in duration-200 max-h-[90vh]">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white">
               <h2 className="text-[16px] font-bold text-[#1e315d]">Editar Projeto</h2>
@@ -4191,7 +4191,7 @@ const NotificationDropdown = ({ onClose, onViewAll, notificacoesList, onMarkAsRe
         </div>
       </div>
 
-      <div className="max-h-[420px] overflow-y-auto bg-slate-50/70 p-3">
+      <div className="max-h-[420px] overflow-hidden sm:overflow-y-auto bg-slate-50/70 p-3">
         {notificacoesList.slice(0, 10).map((notif) => (
           <div key={notif.id} className="mb-3 last:mb-0">
             <NotificationItem notif={notif} compact onMarkAsRead={onMarkAsRead} />
@@ -4716,7 +4716,7 @@ const EmpresaModal = ({ onClose, onSuccess, authToken }: { onClose: () => void, 
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[70vh]">
+        <div className="p-6 overflow-hidden sm:overflow-y-auto max-h-[70vh]">
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="space-y-1">
               <label className="text-[11px] font-bold text-gray-600">Nome da Empresa</label>
@@ -5230,7 +5230,7 @@ const UsuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: any
         </button>
       </div>
 
-      <div className="p-6 overflow-y-auto max-h-[70vh]">
+      <div className="p-6 overflow-hidden sm:overflow-y-auto max-h-[70vh]">
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-gray-600">Nome Completo</label>
@@ -5349,7 +5349,7 @@ const SubusuarioModal = ({ onClose, empresa }: { onClose: () => void, empresa?: 
         </button>
       </div>
 
-      <div className="p-6 overflow-y-auto max-h-[70vh]">
+      <div className="p-6 overflow-hidden sm:overflow-y-auto max-h-[70vh]">
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-gray-600">Nome Completo</label>
@@ -5466,7 +5466,7 @@ const EmpresaDetalheModal = ({ empresa, onClose }: { empresa: any, onClose: () =
         </button>
       </div>
 
-      <div className="p-6 overflow-y-auto max-h-[80vh]">
+      <div className="p-6 overflow-hidden sm:overflow-y-auto max-h-[80vh]">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">CNPJ</span>
@@ -6623,7 +6623,7 @@ const EvidenceModal = ({ evidence, onClose }: { evidence?: any, onClose: () => v
 
   return (
     <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-6 backdrop-blur-[2px]">
-      <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[760px] overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-[10px] shadow-2xl w-full max-w-[760px] overflow-hidden sm:overflow-y-auto animate-in fade-in zoom-in duration-200 max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 sticky top-0 bg-white">
           <h2 className="text-[14px] font-bold text-[#1e315d]">{evidence ? 'Editar evidência' : 'Adicionar evidência'}</h2>
