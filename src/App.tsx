@@ -7391,7 +7391,7 @@ export default function App() {
           />
           <SidebarItem 
             icon={FileText} 
-            label="evidências" 
+            label="Evidências" 
             active={currentView === 'evidencias'}
             onClick={() => setCurrentView('evidencias')}
           />
