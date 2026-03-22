@@ -6885,7 +6885,7 @@ export default function App() {
         apiRequest('/projetos'),
         apiRequest('/demandas'),
         apiRequest('/evidencias'),
-        apiRequest('/notificacoes'),
+        apiRequest(`/notificacoes?usuarioId=${currentUser?.id}`),
       ]);
       console.log('[SYNC] Dados recebidos:', { empresas: empresas.length, usuarios: usuarios.length });
 
