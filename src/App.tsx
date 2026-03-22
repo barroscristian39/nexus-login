@@ -7379,38 +7379,51 @@ export default function App() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden sm:pb-0 pb-[68px]">
         {/* Topbar - Premium Design */}
-        <header className="h-[56px] bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-5 shrink-0 z-10 shadow-sm">
-          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#1e315d] truncate">
-            {currentView === 'painel' ? 'Painel' : 
-             currentView === 'demandas' ? 'Gestão de Demandas' : 
-             currentView === 'projetos' ? 'Gestão de Projetos' : 
-             currentView === 'evidencias' ? 'Gestão de evidências' :
-             currentView === 'relatorio' ? 'Relatório de Execução' :
-             currentView === 'configuracoes' ? 'Configurações' :
-             currentView === 'notificacoes' ? 'Notificações' :
-             currentView === 'administracao' ? 'Administrador' :
-             currentView === 'usuarios-empresa' ? 'Usuários da Empresa' :
-             'Detalhes do Projeto'}
-          </h2>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2">
-              <span className="text-[12px] font-medium text-gray-600">{currentUser?.nome || 'Usuário'}</span>
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-[12px] font-bold">
+        <header className="h-[64px] bg-gradient-to-r from-white to-gray-50/80 border-b border-gray-200 flex items-center justify-between px-5 sm:px-6 shrink-0 z-10 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full opacity-80"></div>
+            <h2 className="text-[15px] sm:text-[16px] font-bold text-[#1e315d] truncate leading-tight">
+              {currentView === 'painel' ? 'Painel' : 
+               currentView === 'demandas' ? 'Gestão de Demandas' : 
+               currentView === 'projetos' ? 'Gestão de Projetos' : 
+               currentView === 'evidencias' ? 'Gestão de evidências' :
+               currentView === 'relatorio' ? 'Relatório de Execução' :
+               currentView === 'configuracoes' ? 'Configurações' :
+               currentView === 'notificacoes' ? 'Notificações' :
+               currentView === 'administracao' ? 'Administrador' :
+               currentView === 'usuarios-empresa' ? 'Usuários da Empresa' :
+               'Detalhes do Projeto'}
+            </h2>
+          </div>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="hidden sm:flex items-center gap-3 px-3 py-2 rounded-[10px] bg-white/60 hover:bg-white/80 transition-colors duration-200">
+              <span className="text-[12px] font-semibold text-gray-700">{currentUser?.nome || 'Usuário'}</span>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 flex items-center justify-center text-white text-[12px] font-bold shadow-sm">
                 {currentUser?.nome?.charAt(0).toUpperCase() || 'U'}
               </div>
             </div>
+            <div className="w-px h-6 bg-gray-200 hidden sm:block"></div>
             <div 
               ref={bellRef}
               className="relative cursor-pointer" 
               onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center hover:shadow-lg transition-all">
-                <Bell size={16} className="text-white" />
-              </div>
+              <motion.div 
+                className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 via-blue-500 to-blue-600 flex items-center justify-center hover:shadow-lg hover:shadow-blue-200 transition-all duration-200"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Bell size={18} className="text-white" strokeWidth={2} />
+              </motion.div>
               {notificacoesList.filter((notif) => !notif.lida).length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gradient-to-br from-red-500 to-red-600 text-white text-[8px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-md">
+                <motion.span 
+                  className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-red-500 to-red-600 text-white text-[8px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-lg"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                >
                   {notificacoesList.filter((notif) => !notif.lida).length > 9 ? '9+' : notificacoesList.filter((notif) => !notif.lida).length}
-                </span>
+                </motion.span>
               )}
 
               <AnimatePresence>
@@ -7426,13 +7439,15 @@ export default function App() {
                 )}
               </AnimatePresence>
             </div>
-            <button
+            <motion.button
               onClick={handleLogout}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] border border-red-200 text-red-600 text-[11px] font-semibold hover:bg-red-50 hover:border-red-300 transition-all"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-gradient-to-r from-red-50 to-red-50/50 border border-red-300 text-red-700 text-[11px] font-semibold hover:bg-red-100 hover:border-red-400 hover:shadow-md transition-all duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <LogOut size={14} />
+              <LogOut size={15} />
               Sair
-            </button>
+            </motion.button>
           </div>
         </header>
 
