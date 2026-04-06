@@ -453,7 +453,7 @@ const DashboardView = () => {
   return (
     <>
       {/* Header Mobile - Fixed */}
-      <section className="fixed top-0 left-0 right-0 z-30 bg-white px-6 pt-5 pb-6 sm:px-8 sm:pt-6 sm:pb-7 border-b border-gray-200 shadow-sm">
+      <section className="fixed top-0 left-0 right-0 z-30 bg-white px-6 pt-5 pb-6 sm:px-8 sm:pt-6 sm:pb-7 border-b border-gray-200 shadow-sm sm:hidden">
         {/* Top Bar: Menu Icon + Avatar */}
         <div className="flex items-center justify-between mb-4">
           {/* Menu Icon */}
@@ -499,9 +499,9 @@ const DashboardView = () => {
       </section>
 
       {/* Gradient Transition */}
-      <div className="fixed top-[122px] sm:top-[132px] left-0 right-0 h-8 bg-gradient-to-b from-white via-white to-transparent z-20 pointer-events-none"></div>
+      <div className="fixed top-[122px] sm:top-[132px] left-0 right-0 h-8 bg-gradient-to-b from-white via-white to-transparent z-20 pointer-events-none sm:hidden"></div>
 
-      <main className="flex-1 overflow-y-auto bg-white pt-[280px] sm:pt-[300px]">
+      <main className="flex-1 overflow-y-auto bg-white pt-[280px] sm:pt-0">
         {/* KPI Row */}
         <div className="px-3 sm:px-5 space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">

@@ -5,9 +5,9 @@ services:
     plan: free
     buildCommand: >
       npm install &&
-      npm run build &&
-      npx prisma migrate deploy
-    startCommand: node backend/server-prod.js
+      npx prisma generate &&
+      npm run build
+    startCommand: node backend/server.js
     envVars:
       - key: NODE_ENV
         value: production
