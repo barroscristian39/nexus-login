@@ -16,7 +16,8 @@
     "verify:deploy": "node verify-deployment.mjs",
     "test:prod": "node test-production.mjs",
     "start": "npm run build && NODE_ENV=production node backend/server.js",
-    "start:dev": "npm run api:dev"
+    "start:dev": "npm run api:dev",
+    "start:prod": "NODE_ENV=production node backend/server.js"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",

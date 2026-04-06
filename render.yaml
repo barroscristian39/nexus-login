@@ -3,11 +3,8 @@ services:
     name: nexus-api
     runtime: node
     plan: free
-    buildCommand: >
-      npm install &&
-      npx prisma generate &&
-      npm run build
-    startCommand: node backend/server.js
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production

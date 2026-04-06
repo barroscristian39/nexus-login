@@ -35,6 +35,9 @@ app.use(express.urlencoded({ extended: true }));
 // Servir arquivos estáticos da pasta uploads
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// Servir frontend buildado (Vite dist/)
+app.use(express.static(path.join(__dirname, '../../dist')));
+
 app.use('/api', routes);
 
 app.use(errorHandler);
