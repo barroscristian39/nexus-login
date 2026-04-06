@@ -452,8 +452,27 @@ const DashboardView = () => {
 
   return (
     <>
+      {/* Header Desktop - Fixed */}
+      <section className="hidden sm:block fixed top-0 left-0 right-0 z-30 bg-white px-8 py-4 border-b border-gray-200 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-[#1976D2]">NEXUS</h1>
+          <div className="relative w-96">
+            <input
+              type="text"
+              placeholder="Pesquisar"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 rounded-[14px] bg-[#F5F5F5] border-0 text-[13px] text-[#212121] placeholder-[#9A9AB0] focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#1976D2] transition-all"
+            />
+            <button className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-[10px] bg-[#1976D2] hover:bg-[#1565C0] flex items-center justify-center transition-colors">
+              <Search className="text-white" size={18} />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Header Mobile - Fixed */}
-      <section className="fixed top-0 left-0 right-0 z-30 bg-white px-6 pt-5 pb-6 sm:px-8 sm:pt-6 sm:pb-7 border-b border-gray-200 shadow-sm">
+      <section className="sm:hidden fixed top-0 left-0 right-0 z-30 bg-white px-6 pt-5 pb-6 border-b border-gray-200 shadow-sm">
         {/* Top Bar: Menu Icon + Avatar */}
         <div className="flex items-center justify-between mb-4">
           {/* Menu Icon */}
@@ -463,7 +482,7 @@ const DashboardView = () => {
           </div>
           
           {/* Avatar */}
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#1976D2] to-[#1565C0] shadow-lg flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1976D2] to-[#1565C0] shadow-lg flex items-center justify-center flex-shrink-0">
             <span className="text-white font-bold text-[13px]">
               {(currentUser?.nome || 'US').split(' ').map((n: string) => n[0]).join('').toUpperCase()}
             </span>
@@ -473,7 +492,7 @@ const DashboardView = () => {
         {/* Greeting Title */}
         <div className="mb-2">
           <h2 className="text-[14px] text-[#212121] font-normal">Olá!</h2>
-          <h1 className="text-[30px] sm:text-[32px] font-black text-[#212121] leading-tight -mt-1">
+          <h1 className="text-[30px] font-black text-[#212121] leading-tight -mt-1">
             {currentUser?.nome || 'Usuário'}
           </h1>
         </div>
@@ -499,9 +518,9 @@ const DashboardView = () => {
       </section>
 
       {/* Gradient Transition */}
-      <div className="fixed top-[122px] sm:top-[132px] left-0 right-0 h-8 bg-gradient-to-b from-white via-white to-transparent z-20 pointer-events-none"></div>
+      <div className="sm:hidden fixed top-[122px] left-0 right-0 h-8 bg-gradient-to-b from-white via-white to-transparent z-20 pointer-events-none"></div>
 
-      <main className="flex-1 overflow-y-auto bg-white pt-[280px] sm:pt-[300px]">
+      <main className="flex-1 overflow-y-auto bg-white pt-[280px] sm:pt-16">
         {/* KPI Row */}
         <div className="px-3 sm:px-5 space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
