@@ -502,6 +502,11 @@ const DashboardView = () => {
       <div className="sm:hidden fixed top-[122px] left-0 right-0 h-8 bg-gradient-to-b from-white via-white to-transparent z-20 pointer-events-none"></div>
 
       <main className="flex-1 overflow-y-auto bg-white pt-[280px] sm:pt-16">
+        {/* Page Title - Mobile Only */}
+        <div className="sm:hidden px-3 pt-4 pb-3">
+          <h1 className="text-[24px] font-bold text-[#212121]">Painel</h1>
+        </div>
+
         {/* KPI Row */}
         <div className="px-3 sm:px-5 space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
